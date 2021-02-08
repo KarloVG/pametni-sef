@@ -1,0 +1,65 @@
+<div class="container-fluid p-0">
+  <div class="auth-bg-video">
+    <video id="bg-video" loop muted autoplay oncanplay="this.play()" onloadedmetadata="this.muted = true">
+      <source src="assets/video/auth-bg.mp4" type="video/mp4">
+    </video>
+    <div class="authentication-box">
+      <div class="pendulum_box d-flex justify-content-center">
+        <div class="ball first">F</div>
+        <div class="ball">l</div>
+        <div class="ball">e</div>
+        <div class="ball">k</div>
+        <div class="ball">s</div>
+        <div class="ball">b</div>
+        <div class="ball">1</div>
+        <div class="ball last">t</div>
+      </div>
+      <!-- <a href="javascript:void(0)"><img src="assets/images/fleksbit-logo.png" alt=""></a> -->
+      <div class="card mt-4">
+        <div class="card-body">
+          <div class="text-center">
+            <h4>Prijava u sustav</h4>
+            <h6>Upišite email i lozinku</h6>
+          </div>
+          <form class="theme-form" [formGroup]="loginForm" #ngLoginForm="ngForm" (ngSubmit)="login()"
+            autocomplete="off">
+            <div class="form-group">
+              <label class="col-form-label pt-0">Email</label>
+              <input class="form-control" formControlName="email" type="email"
+                [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched || ngLoginForm.submitted)}">
+              <div class="invalid-feedback"
+                *ngIf="email.invalid && email.errors?.required && (email.dirty || email.touched || ngLoginForm.submitted)">
+                Polje email je obavezno
+              </div>
+              <div class="invalid-feedback"
+                *ngIf="email.invalid && email.errors?.email && (email.dirty || email.touched || ngLoginForm.submitted)">
+                Polje email nije ispravno
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Lozinka</label>
+              <input class="form-control" type="password" formControlName="password" minlength=4
+                [ngClass]="{'is-invalid': password.invalid && (password.dirty || password.touched || ngLoginForm.submitted)}">
+              <div class="invalid-feedback" *ngIf="password.invalid && password.errors?.required">
+                Polje lozinka je obavezno
+              </div>
+              <div class="invalid-feedback" *ngIf="password.invalid && password.errors.minlength">
+                Polje lozinka mora sadržavati minimalno 4 znaka
+              </div>
+            </div>
+            <!-- <div class="checkbox p-0">
+              <input id="checkbox1" type="checkbox">
+              <label for="checkbox1">Zapamti podatke prijave</label>
+            </div> -->
+            <div class="form-group form-row mt-3 mb-0">
+              <button class="btn btn-primary btn-block btn-lg"
+                [class.loader--text]="this._authenticationService.isLoaderActive"
+                type="submit"><span>{{ this._authenticationService.isLoaderActive ? '' : 'Prijava' }}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

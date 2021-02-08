@@ -1,0 +1,95 @@
+.loader--text {
+  position: absolute;
+  top: 200%;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.loader--text:after {
+  content: "Učitavanje";
+  font-weight: bold;
+  animation-name: loading-text;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loader {
+  15% {
+    transform: translateX(0);
+  }
+  45% {
+    transform: translateX(230px);
+  }
+  65% {
+    transform: translateX(230px);
+  }
+  95% {
+    transform: translateX(0);
+  }
+}
+@keyframes loading-text {
+  0% {
+    content: "Učitavanje";
+  }
+  25% {
+    content: "Učitavanje.";
+  }
+  50% {
+    content: "Učitavanje..";
+  }
+  75% {
+    content: "Učitavanje...";
+  }
+}
+
+.pendulum_box{
+    display: flex;
+    flex: 1;
+  }
+  .ball{
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: #11B9F0;
+    position: relative;
+    transform-origin: 50% -300%;
+    color: white;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+    .ball::before{
+      content: '';
+      width: 2px;
+      height: 25px;
+      background-color:#D3D3D3;
+      left: 10px;
+      top: -25px;
+      position: absolute;
+    }
+
+  .ball.first{
+    animation: firstball .9s alternate ease-in infinite;
+  }
+
+  @keyframes firstball{
+    0%{
+      transform: rotate(28deg);
+    }
+    50%{
+      transform: rotate(0deg);
+    }
+  }
+
+  .ball.last{
+    animation: lastball .9s alternate ease-out infinite;
+  }
+
+  @keyframes lastball{
+    50%{
+      transform: rotate(0deg);
+    }
+    100%{
+      transform: rotate(-28deg);
+    }
+  }

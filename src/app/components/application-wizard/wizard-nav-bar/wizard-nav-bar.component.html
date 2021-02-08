@@ -1,0 +1,16 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body step-indicator">
+          <aw-wizard navBarLayout="large-filled-symbols" [disableNavigationBar]="true">
+            <aw-wizard-step [navigationSymbol]="{ symbol: '&#xf03e;', fontFamily: 'FontAwesome' }"
+              [stepTitle]="isCroatianLanguageActive ? 'Slike' : 'Pictures'">
+              <app-upload-input></app-upload-input>
+            </aw-wizard-step>
+          </aw-wizard>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

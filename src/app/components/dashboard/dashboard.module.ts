@@ -1,0 +1,46 @@
+import { NgModule } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { DashboardOverviewComponent } from './dashboard-overview/dashboard-overview.component';
+import { RouterModule } from '@angular/router';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+import { DashboardService } from './services/dashboard.service';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { GalleryModule } from '@ks89/angular-modal-gallery';
+import { TranslateModule } from '@ngx-translate/core';
+import { CountToModule } from 'angular-count-to';
+
+@NgModule({
+  declarations: [DashboardOverviewComponent],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    CarouselModule,
+    NgxDatatableModule,
+    CountToModule,
+    LeafletModule.forRoot(),
+    GalleryModule.forRoot(),
+    // Malo ruta pa nema potrebe za novim file-om
+    RouterModule.forChild([
+      {
+        path: '',
+        component: DashboardOverviewComponent,
+        data: {
+          title: "Dashboard",
+          breadcrumb: "General Information",
+          icon: "monitor"
+        }
+      },
+      {
+        path: '**',
+        redirectTo: '',
+        pathMatch: 'full'
+      }
+    ])
+  ],
+  providers: [
+    DatePipe,
+    DashboardService
+  ]
+})
+export class DashboardModule { }
