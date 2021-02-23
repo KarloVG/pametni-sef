@@ -16,7 +16,6 @@ export class SidebarComponent {
   constructor(private router: Router, public navServices: NavService) {
     this.navServices.items.subscribe(menuItems => {
       this.menuItems = menuItems;
-      console.log('menu items', menuItems)
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
           menuItems.filter(items => {
@@ -39,7 +38,7 @@ export class SidebarComponent {
   }
 
   // Active Nave state
-  setNavActive(item) {
+  setNavActive(item: Menu): void {
     this.menuItems.filter(menuItem => {
       if (menuItem != item)
         menuItem.active = false
@@ -57,7 +56,7 @@ export class SidebarComponent {
   }
 
   // Click Toggle menu
-  toggletNavActive(item) {
+  toggletNavActive(item: Menu): void {
     if (!item.active) {
       this.menuItems.forEach(a => {
         if (this.menuItems.includes(item))

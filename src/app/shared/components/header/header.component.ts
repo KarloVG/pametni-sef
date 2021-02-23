@@ -4,6 +4,9 @@ import { NavService, Menu } from '../../services/nav.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DOCUMENT } from '@angular/common';
 import { CustomHTMLElement } from '../../models/custom-html-element';
+import { LocalStorageService } from '../../services/authorization/local-storage.service';
+import { Router } from '@angular/router';
+import { LanguageDeterminator } from '../../services/utils/language-determinator';
 
 @Component({
   selector: 'app-header',
@@ -30,48 +33,51 @@ export class HeaderComponent implements OnInit {
 
   /* #region  Constructor */
   constructor(
-    public navServices: NavService,
+    public _navServices: NavService,
     @Inject(DOCUMENT) private document: any,
-    private translate: TranslateService
+    private _translate: TranslateService,
+    private readonly _localStorageService: LocalStorageService,
+    private readonly _router: Router,
+    private _languageDeterminator: LanguageDeterminator
   ) {
     this.localStorePrimaryColor = localStorage.getItem("primary_color");
-    translate.setDefaultLang('hr');
-    translate.currentLang = 'hr';
+    _translate.setDefaultLang('hr');
+    _translate.currentLang = 'hr';
   }
   /* #endregion */
 
   /* #region  Component methods */
   ngOnInit(): void {
     this.elem = document.documentElement;
-    this.navServices.items.subscribe(menuItems => {
+    this._navServices.items.subscribe(menuItems => {
       this.items = menuItems;
     });
-    this.language = this.translate.currentLang;
+    this.language = this._translate.currentLang;
   }
 
   // I18n language change
   changeLanguage(lang: string): void {
     this.language = lang;
-    this.translate.use(lang);
+    this._translate.use(lang);
+    this._languageDeterminator.changeActiveLanguage(lang);
   }
 
   // Open / Close navigation
   collapseSidebar(): void {
-    this.navServices.collapseSidebar = !this.navServices.collapseSidebar;
+    this._navServices.collapseSidebar = !this._navServices.collapseSidebar;
   }
 
   // Toglle full sreen - support for other browsers included
-  toggleFullScreen() {
-    if (this.navServices.fullScreen) {
+  toggleFullScreen(): void {
+    if (this._navServices.fullScreen) {
       this.closeFullScreen();
     } else {
       this.openFullScreen();
     }
-
   }
 
   // Open full screen
-  openFullScreen() {
+  openFullScreen(): void {
     const docElmWithBrowsersFullScreenFunctions = document.documentElement as HTMLElement & {
       mozRequestFullScreen(): Promise<void>;
       webkitRequestFullscreen(): Promise<void>;
@@ -88,11 +94,11 @@ export class HeaderComponent implements OnInit {
       /* IE/Edge */
       docElmWithBrowsersFullScreenFunctions.msRequestFullscreen();
     }
-    this.navServices.fullScreen = true;
+    this._navServices.fullScreen = true;
   }
 
   // Close full screen
-  closeFullScreen() {
+  closeFullScreen(): void {
     const docWithBrowsersExitFunctions = document as Document & {
       mozCancelFullScreen(): Promise<void>;
       webkitExitFullscreen(): Promise<void>;
@@ -110,11 +116,17 @@ export class HeaderComponent implements OnInit {
       /* IE/Edge */
       docWithBrowsersExitFunctions.msExitFullscreen();
     }
-    this.navServices.fullScreen = false;
+    this._navServices.fullScreen = false;
+  }
+
+  // Sign user out of the app and remove tokens
+  signout(): void {
+    this._localStorageService.remove('is_authenticated');
+    this._router.navigate(['prijava']);
   }
 
   // Open mobile navigation for nav-menus
-  openMobileNav() {
+  openMobileNav(): void {
     this.openNav = !this.openNav;
   }
   /* #endregion */

@@ -10,6 +10,8 @@ export class FeatherIconsComponent implements OnInit {
 
   @Input('icon') public icon;
   @Input('color') public color;
+  @Input('width') public width;
+  @Input('height') public height;
 
   constructor() { }
 
