@@ -40,7 +40,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     LocalStorageService,
-    AuthorizationGuard
+    AuthorizationGuard,
     //httpInterceptorProviders - providers
   ],
   bootstrap: [AppComponent]

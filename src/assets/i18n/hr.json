@@ -35,5 +35,19 @@
   "List of emails for sending reports": "Mail lista za slanje izvješća",
   "For more email adresses separate them with": "više email adresa odvojite znakom",
   "Control center name is required": "Polje naziv kontrolnog centra je obavezno",
-  "One or more email is required": "Polje email mora sadržavati minimalno 1 email adresu"
+  "One or more email is required": "Polje email mora sadržavati minimalno 1 email adresu",
+  "Company": "Tvrtka",
+  "Companies": "Tvrtke",
+  "Preview companies": "Pregled tvrtki",
+  "Edit company": "Uredi tvrtku",
+  "Add company": "Dodaj tvrtku",
+  "Submit": "Potvrdi",
+  "Close": "Odustani",
+  "Company name": "Naziv tvrtke",
+  "Company name is requred": "Polje naziv tvrtke je obavezno",
+  "Company address": "Adresa tvrtke",
+  "Company address is required": "Polje adresa tvrtke je obavezno",
+  "Company headquaters": "Sjedište tvrtke",
+  "Company headquaters is required": "Sjedište tvrtke je obavezno polje",
+  "Company identificator": "Identifikator kompanije"
 }

@@ -10,6 +10,10 @@ export const content: Routes = [
     loadChildren: () => import('../../components/administration/control-center/control-center.module').then(m => m.ControlCenterModule)
   },
   {
+    path: 'administracija/tvrtka',
+    loadChildren: () => import('../../components/administration/company/company.module').then(m => m.CompanyModule)
+  },
+  {
     path: 'mapa',
     loadChildren: () => import('../../components/map/map.module').then(m => m.MapModule)
   },

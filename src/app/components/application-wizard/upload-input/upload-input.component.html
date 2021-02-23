@@ -32,12 +32,6 @@
                         <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }">
                         </div>
                       </div>
-                      <span *ngIf="item.isSuccess">
-                        <app-feather-icons [icon]="'check-square'" [color]="'green'"></app-feather-icons>
-                      </span>
-                      <span *ngIf="item.isError">
-                        <app-feather-icons [icon]="'trash-2'" [color]="'red'"></app-feather-icons>
-                      </span>
                     </td>
                     <td nowrap>
                       <button type="button" class="btn btn-success btn-xs mr-1" (click)="item.upload()"
