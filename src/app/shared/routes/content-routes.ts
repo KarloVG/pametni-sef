@@ -6,6 +6,10 @@ export const content: Routes = [
     loadChildren: () => import('../../components/dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
+    path: 'administracija/kontrolni-centar',
+    loadChildren: () => import('../../components/administration/control-center/control-center.module').then(m => m.ControlCenterModule)
+  },
+  {
     path: 'mapa',
     loadChildren: () => import('../../components/map/map.module').then(m => m.MapModule)
   },
@@ -20,5 +24,10 @@ export const content: Routes = [
   {
     path: 'o-nama',
     loadChildren: () => import('../../components/about-us/about-us.module').then(m => m.AboutUsModule)
+  },
+  {
+    path: '',
+    redirectTo: 'naslovna',
+    pathMatch: 'full'
   }
 ];

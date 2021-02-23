@@ -8,7 +8,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title: string = 'appapp-starterkit';
   private componentBeforeNavigation: string | Type<any>;
 
   constructor(private route: ActivatedRoute, private router: Router, private ngxSpinner: NgxSpinnerService) {
@@ -26,7 +25,7 @@ export class AppComponent {
           if (window) window.scrollTo(0, 0);
         }
         this.componentBeforeNavigation = currentRoute.component;
-        setTimeout(() => { this.ngxSpinner.hide() }, 1000)
+        setTimeout(() => { this.ngxSpinner.hide() }, 500)
       }
     });
   }

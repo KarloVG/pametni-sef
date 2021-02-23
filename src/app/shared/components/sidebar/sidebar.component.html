@@ -1,14 +1,15 @@
 <div class="main-header-left d-none d-lg-block">
   <div class="logo-wrapper">
     <div class="pendulum_box d-flex justify-content-center">
-      <div class="ball first">F</div>
-      <div class="ball">l</div>
+      <div class="ball first">S</div>
       <div class="ball">e</div>
-      <div class="ball">k</div>
-      <div class="ball">s</div>
-      <div class="ball">b</div>
-      <div class="ball">1</div>
-      <div class="ball last">t</div>
+      <div class="ball">c</div>
+      <div class="ball">u</div>
+      <div class="ball">r</div>
+      <div class="ball">i</div>
+      <div class="ball">t</div>
+      <div class="ball">a</div>
+      <div class="ball last">s</div>
     </div>
   </div>
 </div>
@@ -47,42 +48,42 @@
         <i class="fa fa-angle-right pull-right" *ngIf="menuItem.children"></i>
       </a>
       <!-- 2nd Level Menu -->
-      <!-- <ul class="sidebar-submenu" [ngClass]="{'menu-open': menuItem.active, 'menu-close': !menuItem.active }"
+      <ul class="sidebar-submenu" [ngClass]="{'menu-open': menuItem.active, 'menu-close': !menuItem.active }"
         *ngIf="menuItem.children">
         <li *ngFor="let childrenItem of menuItem.children" [ngClass]="{active: childrenItem.active}">
-           Sub
+          <!-- Sub -->
           <a href="javascript:void(0)" *ngIf="childrenItem.type === 'sub'" (click)="toggletNavActive(childrenItem)">
-            <i class="fa fa-circle"></i>{{childrenItem.title}} <span
+            <i class="fa fa-circle"></i>{{childrenItem.title | translate}} <span
               class="badge badge-{{childrenItem.badgeType}} pull-right"
               *ngIf="childrenItem.badgeType">{{childrenItem.badgeValue | translate}}</span>
             <i class="fa fa-angle-down pull-right" *ngIf="childrenItem.children"></i>
           </a>
-           Link
+          <!-- Link -->
           <a [routerLink]="!childrenItem.type ? null : [childrenItem.path]" *ngIf="childrenItem.type === 'link'"
             routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-            <i class="fa fa-circle"></i>{{childrenItem.title}} <span
+            <i class="fa fa-circle"></i>{{childrenItem.title | translate}} <span
               class="badge badge-{{childrenItem.badgeType}} pull-right"
               *ngIf="childrenItem.badgeType">{{childrenItem.badgeValue | translate}}</span>
             <i class="fa fa-angle-down pull-right" *ngIf="childrenItem.children"></i>
           </a>
-           External Link
-          <a href="{{ !childrenItem.type ? null : childrenItem.path }}" *ngIf="childrenItem.type === 'extLink'"
+          <!-- External Link -->
+          <!-- <a href="{{ !childrenItem.type ? null : childrenItem.path }}" *ngIf="childrenItem.type === 'extLink'"
             routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
             <i class="fa fa-circle"></i>{{childrenItem.title}} <span
               class="badge badge-{{childrenItem.badgeType}} pull-right"
               *ngIf="childrenItem.badgeType">{{childrenItem.badgeValue | translate}}</span>
             <i class="fa fa-angle-down pull-right" *ngIf="childrenItem.children"></i>
-          </a>
-           External Tab Link
-          <a href="{{ !childrenItem.type ? null : childrenItem.path }}" target="_blank"
+          </a> -->
+          <!-- External Tab Link -->
+          <!-- <a href="{{ !childrenItem.type ? null : childrenItem.path }}" target="_blank"
             *ngIf="childrenItem.type === 'extTabLink'">
             <i class="fa fa-circle"></i>{{childrenItem.title}} <span
               class="badge badge-{{childrenItem.badgeType}} pull-right"
               *ngIf="childrenItem.badgeType">{{childrenItem.badgeValue | translate}}</span>
             <i class="fa fa-angle-down pull-right" *ngIf="childrenItem.children"></i>
-          </a>
-           3rd Level Menu
-          <ul class="sidebar-submenu" *ngIf="childrenItem.children">
+          </a> -->
+          <!-- 3rd Level Menu -->
+          <!-- <ul class="sidebar-submenu" *ngIf="childrenItem.children">
             <li *ngFor="let childrenSubItem of childrenItem.children">
                Link
               <a [routerLink]="!childrenSubItem.type ? null : [childrenSubItem.path]"
@@ -108,9 +109,9 @@
                   *ngIf="childrenSubItem.badgeType">{{childrenSubItem.badgeValue | translate}}</span>
               </a>
             </li>
-          </ul>
+          </ul> -->
         </li>
-      </ul> -->
+      </ul>
     </li>
   </ul>
 </div>

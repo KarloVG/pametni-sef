@@ -1,6 +1,8 @@
 ## Project 
 > Pametni sef \
-> README will be populated during WIP
+
+## Project requirements
+> In order for authentication (local storage) to work, user must not start app on older browsers. For example browser memory doesn't work on **IE7** \
 
 ## Before working on project
 > Make sure you have installed Angular Essentials extension pack for Visual Studio Code

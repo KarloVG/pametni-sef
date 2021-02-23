@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
 
 @Injectable({
@@ -6,68 +6,68 @@ import Swal from 'sweetalert2';
 })
 export class NotificationService {
   /* #region  constructor */
- constructor() { }
- /* #endregion */
+  constructor() { }
+  /* #endregion */
 
- fireErrorNotification(title: string,message: string): void {
-  Swal.fire({
-    icon: 'error',
-    title: title,
-    text: message,
-    customClass: {
-      confirmButton: "d-flex btn-primary"
-    },
-    confirmButtonText:
-     'U redu',
-     showClass: {
-        popup: 'animate__animated animate__fadeInDown'
+  fireErrorNotification(title: string, message: string): void {
+    Swal.fire({
+      icon: 'error',
+      title: title,
+      text: message,
+      customClass: {
+        confirmButton: "d-flex btn-primary"
+      },
+      confirmButtonText:
+        'U redu',
+      showClass: {
+        popup: 'animated fadeInDown'
       },
       hideClass: {
-        popup: 'animate__animated animate__fadeOutUp'
+        popup: 'animated fadeOutUp'
       },
-     heightAuto: false
-  })
- }
+      heightAuto: false
+    })
+  }
 
- fireSuccessMessage(title: string,message: string): void {
-  Swal.fire({
-    icon: 'success',
-    title: title,
-    text: message,
-    showConfirmButton: true,
-    customClass: {
-      confirmButton: "d-flex btn-primary"
-    },
-    confirmButtonText:
-     ' U redu',
-     showClass: {
-        popup: 'animate__animated animate__fadeInDown'
+  fireSuccessMessage(title: string, message: string): void {
+    Swal.fire({
+      icon: 'success',
+      title: title,
+      text: message,
+      showConfirmButton: true,
+      customClass: {
+        confirmButton: "d-flex btn-primary"
+      },
+      confirmButtonText:
+        ' U redu',
+      showClass: {
+        popup: 'animated fadeInDown'
       },
       hideClass: {
-        popup: 'animate__animated animate__fadeOutUp'
+        popup: 'animated fadeOutUp'
       },
-     heightAuto: false
-  });
- }
+      heightAuto: false
+    });
+  }
 
- fireWarningMessage(title: string, message: string) {
+  fireWarningMessage(title: string, message: string) {
     Swal.fire({
       icon: 'warning',
       title: title,
       text: message,
       customClass: {
-      confirmButton: "d-flex btn-primary"
+        confirmButton: "d-flex btn-primary"
       },
       confirmButtonText:
-      ' U redu',
+        ' U redu',
       showClass: {
-          popup: 'animate__animated animate__fadeInDown'
-        },
-        hideClass: {
-          popup: 'animate__animated animate__fadeOutUp'
-        },
+        popup: 'animated fadeInDown'
+      },
+      hideClass: {
+        popup: 'animated fadeOutUp'
+      },
       heightAuto: false
     });
- }
+  }
 
 }

@@ -1,17 +1,18 @@
 <!-- Page Header Start-->
-<div class="page-main-header" [ngClass]="{'open' : navServices.collapseSidebar}" id="page-main-header">
+<div class="page-main-header" [ngClass]="{'open' : _navServices.collapseSidebar}" id="page-main-header">
   <div class="main-header-right row">
     <div class="main-header-left d-lg-none">
       <div class="logo-wrapper">
         <div class="pendulum_box d-flex justify-content-center">
-          <div class="ball first">F</div>
-          <div class="ball">l</div>
+          <div class="ball first">S</div>
           <div class="ball">e</div>
-          <div class="ball">k</div>
-          <div class="ball">s</div>
-          <div class="ball">b</div>
-          <div class="ball">1</div>
-          <div class="ball last">t</div>
+          <div class="ball">c</div>
+          <div class="ball">u</div>
+          <div class="ball">r</div>
+          <div class="ball">i</div>
+          <div class="ball">t</div>
+          <div class="ball">a</div>
+          <div class="ball last">s</div>
         </div>
       </div>
     </div>
@@ -51,10 +52,19 @@
                   class="flag-icon flag-icon-gb"></i> English</a></li>
           </ul>
         </li>
-        <li>
-          <a href="javascript:void(0)" class="text-dark" routerLink="/kontakt">
-            <app-feather-icons [icon]="'help-circle'"></app-feather-icons>
-          </a>
+        <li class="onhover-dropdown">
+          <div class="media align-items-center">
+            <app-feather-icons class="align-self-center pull-right rounded-circle" [icon]="'user'">
+            </app-feather-icons>
+          </div>
+          <ul class="profile-dropdown onhover-show-div p-20">
+            <li><a href="javascript:void(0)">
+                <app-feather-icons [icon]="'settings'"></app-feather-icons>{{ 'Settings' | translate}}
+              </a></li>
+            <li><a href="javascript:void(0)" (click)="signout()">
+                <app-feather-icons [icon]="'log-out'"></app-feather-icons>{{ 'Logout' | translate}}
+              </a></li>
+          </ul>
         </li>
       </ul>
       <div class="d-lg-none mobile-toggle pull-right" (click)="openMobileNav()">

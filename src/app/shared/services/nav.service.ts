@@ -48,17 +48,22 @@ export class NavService {
   /* #region  Menu Items */
   MENUITEMS: Menu[] = [
     {
-      path: '/naslovna', title: 'Dashboard', icon: 'monitor', type: 'link', badgeType: 'primary', badgeValue: 'new', active: true
+      path: '/naslovna', title: 'Dashboard', icon: 'monitor', type: 'link', active: true
     },
     {
-      path: '/upload', title: 'Upload', icon: 'alert-triangle', type: 'link', badgeType: 'primary', badgeValue: 'new', active: true
+      title: 'Administration', icon: 'tool', type: 'sub', active: true, children: [
+        { path: '/administracija/kontrolni-centar', title: 'Control Center', type: 'link' },
+      ]
     },
-    {
-      path: '/mapa', title: 'Map example', icon: 'map', type: 'link', badgeType: 'primary', badgeValue: 'new', active: true
-    },
-    {
-      path: '/o-nama', title: 'About Us', icon: 'info', type: 'link', badgeType: 'primary', badgeValue: 'new', active: true
-    },
+    // {
+    //   path: '/upload', title: 'Upload', icon: 'alert-triangle', type: 'link', badgeType: 'primary', badgeValue: 'new', active: true
+    // },
+    // {
+    //   path: '/mapa', title: 'Map example', icon: 'map', type: 'link', badgeType: 'primary', badgeValue: 'new', active: true
+    // },
+    // {
+    //   path: '/o-nama', title: 'About Us', icon: 'info', type: 'link', badgeType: 'primary', badgeValue: 'new', active: true
+    // },
   ];
 
   items = new BehaviorSubject<Menu[]>(this.MENUITEMS);

@@ -7473,7 +7473,7 @@ aw-wizard-navigation-bar.horizontal.large-filled-symbols ul.steps-indicator {
   .theme-form .form-group input[type=password], .theme-form .form-group input[type=number], .theme-form .form-group input[type=tel], .theme-form .form-group input[type=date], .theme-form .form-group input[type=datetime-local]
   , .theme-form .form-group input[type=time], .theme-form .form-group input[type=datetime-local], .theme-form .form-group input[type=month], .theme-form .form-group input[type=week],
   .theme-form .form-group input[type=url], .theme-form .form-group input[type=file], .theme-form .form-group select {
-    border-color: #eff0f1;
+    border-color: #D3D3D3;
     background-color: #fff;
     font-size: 14px;
     color: #898989;
@@ -13463,7 +13463,7 @@ body.dark-only {
         body.dark-only .page-wrapper .page-main-header .main-header-right .nav-right > ul > li {
           border-left: 1px solid #374558; }
           body.dark-only .page-wrapper .page-main-header .main-header-right .nav-right > ul > li:last-child, body.dark-only .page-wrapper .page-main-header .main-header-right .nav-right > ul > li:nth-child(5), body.dark-only .page-wrapper .page-main-header .main-header-right .nav-right > ul > li:nth-child(1) {
-            border-left: none; }
+            border-left: 1px solid #374558; }
           body.dark-only .page-wrapper .page-main-header .main-header-right .nav-right > ul > li:nth-child(5) {
             border-right: 1px solid #374558; }
           body.dark-only .page-wrapper .page-main-header .main-header-right .nav-right > ul > li:first-child .search-form .form-group:before {
@@ -17132,7 +17132,7 @@ body.dark-header-sidebar-mix {
         body.dark-header-sidebar-mix .page-wrapper .page-main-header .main-header-right .nav-right > ul > li {
           border-left: 1px solid #374558; }
           body.dark-header-sidebar-mix .page-wrapper .page-main-header .main-header-right .nav-right > ul > li:last-child, body.dark-header-sidebar-mix .page-wrapper .page-main-header .main-header-right .nav-right > ul > li:nth-child(5), body.dark-header-sidebar-mix .page-wrapper .page-main-header .main-header-right .nav-right > ul > li:nth-child(1) {
-            border-left: none; }
+            border-left: 1px solid #374558; }
           body.dark-header-sidebar-mix .page-wrapper .page-main-header .main-header-right .nav-right > ul > li:nth-child(5) {
             border-right: 1px solid #374558; }
           body.dark-header-sidebar-mix .page-wrapper .page-main-header .main-header-right .nav-right > ul > li:first-child .search-form .form-group:before {
