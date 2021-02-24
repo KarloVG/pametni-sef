@@ -24,6 +24,12 @@
       text-transform: $card-header-font-transform;
       font-weight: $card-header-font-weight;
     }
+    h6{
+      font-size:15px;
+      margin-bottom: 0;
+      text-transform: $card-header-font-transform;
+      font-weight: $card-header-font-weight;
+    }
     > span{
       font-size: $card-header-span-size;
       color: $card-header-span-color;

@@ -1,0 +1,51 @@
+<form class="theme-form" [formGroup]="controlCurrencyGroup" #ngControlCurrencyForm="ngForm"
+  (ngSubmit)="addOrEditCurrency()" autocomplete="off">
+  <div class="d-flex">
+  <div class="card-body pt-0 pb-0 col-lg-6">
+    <div class="form-group">
+      <label class="col-form-label pt-0 required">{{ 'Currency code' | translate }} <span
+          class="text-danger">*</span></label>
+      <input class="form-control" formControlName="name" type="text" placeholder="HRK"
+        [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched || ngControlCurrencyForm.submitted)}">
+      <div class="invalid-feedback"
+        *ngIf="name.invalid && name.errors?.required && (name.dirty || name.touched || ngControlCurrencyForm.submitted)">
+        {{ 'Currency code name is required' | translate}}
+      </div>
+    </div>
+  </div>
+  <div class="card-body pt-0 pb-0 col-lg-4">
+    <div class="form-group">
+      <label class="col-form-label pt-0 required">
+        {{'Currency ratio' | translate}}
+        <span class="text-danger"> *</span>
+      </label>
+      <input class="form-control" type="text" formControlName="ratio"
+        placeholder="1"
+        [ngClass]="{'is-invalid': ratio.invalid && (ratio.dirty || ratio.touched || ngControlCurrencyForm.submitted)}">
+      <div class="invalid-feedback" *ngIf="ratio.invalid && ratio.errors?.required">
+        {{ 'Currency ratio is required' | translate }}
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="form-group form-row float-right mb-3 mt-3 mr-4">
+    <div>
+    <button class="btn btn-primary"
+      type="submit">
+      {{'Save' | translate }}
+      <!-- <span>{{ this._controlCenterService.isLoaderActive ? '' : 'Uredi' }}</span> -->
+    </button>
+  </div>
+  <div class="pl-2 pr-2">
+    <button class="btn btn-danger">
+      {{'Delete' | translate }}
+    </button>
+  </div>
+  <div>
+    <button class="btn btn-secondary" (click)="apoenStructure()">
+      {{'Denomination structure' | translate }}
+    </button>
+  </div>
+  </div>
+</form>
+

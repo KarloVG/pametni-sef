@@ -35,5 +35,15 @@
   "List of emails for sending reports": "Mail lista za slanje izvješća",
   "For more email adresses separate them with": "više email adresa odvojite znakom",
   "Control center name is required": "Polje naziv kontrolnog centra je obavezno",
-  "One or more email is required": "Polje email mora sadržavati minimalno 1 email adresu"
+  "One or more email is required": "Polje email mora sadržavati minimalno 1 email adresu",
+  "Currency ratio": "Omjer valute",
+  "New currency": "Nova valuta",
+  "Export data": "Izvezi podatke",
+  "Import data": "Uvezi podatke",
+  "Currency list": "Lista valuta",
+  "Currency ratio is required": "Omjer valute je obavezan",
+  "Currency": "Valuta",
+  "Denomination structure": "Apoenska struktura",
+  "Currency code name is required": "Polje kod valute je obavezno",
+  "Currency code": "Kod valute"
 }

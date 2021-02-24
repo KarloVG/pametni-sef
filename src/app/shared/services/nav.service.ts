@@ -53,6 +53,7 @@ export class NavService {
     {
       title: 'Administration', icon: 'tool', type: 'sub', active: true, children: [
         { path: '/administracija/kontrolni-centar', title: 'Control Center', type: 'link' },
+        { path: '/administracija/valuta', title: 'Currency', type: 'link' }
       ]
     },
     // {
