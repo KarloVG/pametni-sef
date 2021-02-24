@@ -6,9 +6,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { ControlCenterDetailComponent } from './control-center-detail/control-center-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalAoeControlCenterComponent } from './modal-aoe-control-center/modal-aoe-control-center.component';
 
 @NgModule({
-  declarations: [ControlCenterOverviewComponent, ControlCenterDetailComponent],
+  declarations: [ControlCenterOverviewComponent, ControlCenterDetailComponent, ModalAoeControlCenterComponent],
   imports: [
     CommonModule,
     NgxDatatableModule,
