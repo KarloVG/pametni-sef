@@ -1,29 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlCenterOverviewComponent } from './control-center-overview/control-center-overview.component';
+import { CompanyOverviewComponent } from './company-overview/company-overview.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalAoeControlCenterComponent } from './modal-aoe-control-center/modal-aoe-control-center.component';
+import { RouterModule } from '@angular/router';
+import { ModalAoeCompanyComponent } from './modal-aoe-company/modal-aoe-company.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [ControlCenterOverviewComponent, ModalAoeControlCenterComponent],
+  declarations: [CompanyOverviewComponent, ModalAoeCompanyComponent],
   imports: [
     CommonModule,
     NgxDatatableModule,
     TranslateModule,
     FormsModule,
-    ReactiveFormsModule,
     NgbModule,
+    ReactiveFormsModule,
     RouterModule.forChild([
       {
         path: '',
-        component: ControlCenterOverviewComponent,
+        component: CompanyOverviewComponent,
         data: {
           title: "Administration",
-          breadcrumb: "Control Center",
+          breadcrumb: "Company",
           icon: "monitor"
         }
       },
@@ -33,7 +33,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         pathMatch: 'full'
       }
     ])
-  ],
-  // providers: [ControlCenterService]
+  ]
 })
-export class ControlCenterModule { }
+export class CompanyModule { }

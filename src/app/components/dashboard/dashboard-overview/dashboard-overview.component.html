@@ -5,7 +5,6 @@
         <div class="bg-primary b-r-4 card-body">
           <div class="media static-top-widget">
             <div class="align-self-center text-center">
-              <app-feather-icons [icon]="slide.icon"></app-feather-icons>
             </div>
             <div class="media-body"><span class="m-0">{{slide.title | translate}}</span>
               <h4 *ngIf="slide.number !== 0; else number0" class="mb-0 counter" [CountTo]=slide.number [from]="0"

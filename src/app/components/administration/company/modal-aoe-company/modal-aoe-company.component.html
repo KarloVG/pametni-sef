@@ -1,0 +1,64 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="row; else addCompany">{{ 'Edit company' | translate}}</h4>
+  <ng-template #addCompany>
+    <h4 class="modal-title">{{ 'Add company' | translate }}</h4>
+  </ng-template>
+  <button type="button" class="close" aria-label="Close" (click)="modalClose('dismiss')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form class="needs-validation" [formGroup]="companyGroup" #ngCompanyForm="ngForm" autocomplete="off">
+  <div class="modal-body input-group p-0">
+    <div class="col-lg-6">
+      <div class="form-group">
+        <label class="col-form-label pt-0 required">{{ 'Company name' | translate }} <span
+            class="text-danger">*</span></label>
+        <input class="form-control" formControlName="name" type="text" placeholder="Lidl d.o.o"
+          [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched || ngCompanyForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="name.invalid && name.errors?.required && (name.dirty || name.touched || ngCompanyForm.submitted)">
+          {{ 'Company name is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="form-group">
+        <label class="col-form-label pt-0 required">{{ 'Company address' | translate }} <span
+            class="text-danger">*</span></label>
+        <input class="form-control" formControlName="address" type="text" placeholder="Zorkovačka 2"
+          [ngClass]="{'is-invalid': address.invalid && (address.dirty || address.touched || ngCompanyForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="address.invalid && address.errors?.required && (address.dirty || address.touched || ngCompanyForm.submitted)">
+          {{ 'Company address is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="form-group">
+        <label class="col-form-label pt-0 required">{{ 'Company headquaters' | translate }} <span
+            class="text-danger">*</span></label>
+        <input class="form-control" formControlName="headquater" type="text" placeholder="Zorkovačka 2"
+          [ngClass]="{'is-invalid': headquater.invalid && (headquater.dirty || headquater.touched || ngCompanyForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="headquater.invalid && headquater.errors?.required && (headquater.dirty || headquater.touched || ngCompanyForm.submitted)">
+          {{ 'Company headquaters is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="form-group">
+        <label class="col-form-label required">
+          {{'Company identificator' | translate}}
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" type="text" formControlName="identificator" placeholder="321-d23-12asd-321"
+          [ngClass]="{'is-invalid': identificator.invalid && (identificator.dirty || identificator.touched || ngCompanyForm.submitted)}">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-light" ngbAutoFocus (click)="modalClose('dismiss')">{{ 'Close' | translate
+      }}</button>
+    <button type="submit" class="btn btn-primary" (click)="modalClose('dismiss')">{{ 'Submit' | translate }}</button>
+  </div>
+</form>

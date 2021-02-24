@@ -14,6 +14,10 @@ export const content: Routes = [
     loadChildren:() => import('../../components/administration/currency/currency.module').then(m => m.CurrencyModule)
   },
   {
+    path: 'administracija/tvrtka',
+    loadChildren: () => import('../../components/administration/company/company.module').then(m => m.CompanyModule)
+  },
+  {
     path: 'mapa',
     loadChildren: () => import('../../components/map/map.module').then(m => m.MapModule)
   },

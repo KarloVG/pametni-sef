@@ -309,7 +309,7 @@ export class DashboardOverviewComponent implements OnInit {
     }
   }
 
-  openImageModalRowDescription() {
+  openImageModalRowDescription(img) {
     const index: number = 0;
     this.customPlainGalleryRowDescConfig = Object.assign({}, this.customPlainGalleryRowDescConfig, { layout: new AdvancedLayout(index, true) });
   }

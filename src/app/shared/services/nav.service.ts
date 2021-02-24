@@ -48,14 +48,15 @@ export class NavService {
   /* #region  Menu Items */
   MENUITEMS: Menu[] = [
     {
-      path: '/naslovna', title: 'Dashboard', icon: 'monitor', type: 'link', active: true
+      path: '/naslovna', title: 'Dashboard', icon: 'monitor', type: 'link', active: false
     },
     {
-      title: 'Administration', icon: 'tool', type: 'sub', active: true, children: [
+      title: 'Administration', icon: 'tool', type: 'sub', active: false, children: [
         { path: '/administracija/kontrolni-centar', title: 'Control Center', type: 'link' },
-        { path: '/administracija/valuta', title: 'Currency', type: 'link' }
+        { path: '/administracija/valuta', title: 'Currency', type: 'link' },
+        { path: '/administracija/tvrtka', title: 'Companies', type: 'link' }
       ]
-    },
+    }
     // {
     //   path: '/upload', title: 'Upload', icon: 'alert-triangle', type: 'link', badgeType: 'primary', badgeValue: 'new', active: true
     // },
