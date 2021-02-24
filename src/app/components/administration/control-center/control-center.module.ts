@@ -4,18 +4,19 @@ import { ControlCenterOverviewComponent } from './control-center-overview/contro
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
-import { ControlCenterDetailComponent } from './control-center-detail/control-center-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalAoeControlCenterComponent } from './modal-aoe-control-center/modal-aoe-control-center.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [ControlCenterOverviewComponent, ControlCenterDetailComponent, ModalAoeControlCenterComponent],
+  declarations: [ControlCenterOverviewComponent, ModalAoeControlCenterComponent],
   imports: [
     CommonModule,
     NgxDatatableModule,
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
     RouterModule.forChild([
       {
         path: '',

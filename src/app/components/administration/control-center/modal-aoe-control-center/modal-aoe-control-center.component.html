@@ -1,1 +1,45 @@
-<p>modal-aoe-control-center works!</p>
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="row; else addCompany">{{ 'Edit control center' | translate}}</h4>
+  <ng-template #addCompany>
+    <h4 class="modal-title">{{ 'Add control center' | translate }}</h4>
+  </ng-template>
+  <button type="button" class="close" aria-label="Close" (click)="modalClose('dismiss')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form class="needs-validation" [formGroup]="controlCenterGroup" #ngControlCenterForm="ngForm" autocomplete="off">
+  <div class="modal-body input-group p-0">
+    <div class="col-lg-6">
+      <div class="form-group">
+        <label class="col-form-label pt-0 required">{{ 'Control center name' | translate }} <span
+            class="text-danger">*</span></label>
+        <input class="form-control" formControlName="name" type="text" placeholder="Zagreb - zapad"
+          [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="name.invalid && name.errors?.required && (name.dirty || name.touched || ngControlCenterForm.submitted)">
+          {{ 'Control center name is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label class="col-form-label required">
+          {{'List of emails for sending reports' | translate}}
+          <strong>({{'For more email adresses separate them with' | translate }}) ","</strong>
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" type="text" formControlName="mailList"
+          placeholder="marko.markovic@proton.hr; ivan.ivanovic@hotmail.com"
+          [ngClass]="{'is-invalid': mailList.invalid && (mailList.dirty || mailList.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback" *ngIf="mailList.invalid && mailList.errors?.required">
+          {{ 'One or more email is required' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-light" ngbAutoFocus (click)="modalClose('dismiss')">{{ 'Close' | translate
+      }}</button>
+    <button type="submit" class="btn btn-primary" (click)="modalClose('dismiss')">{{ 'Submit' | translate }}</button>
+  </div>
+</form>

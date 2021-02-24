@@ -26,7 +26,7 @@
       </a>
       <!-- Link -->
       <a [routerLink]="!menuItem.type ? null : [menuItem.path]" (click)="colapseSidebar()" routerLinkActive="active"
-        class="sidebar-header" *ngIf="menuItem.type === 'link'">
+        class="sidebar-header" *ngIf="menuItem.type === 'link'" [routerLinkActiveOptions]="{exact: true}">
         <app-feather-icons [icon]="menuItem.icon"></app-feather-icons><span>{{menuItem.title | translate}}<span
             class="badge badge-{{menuItem.badgeType}} ml-3" *ngIf="menuItem.badgeType">{{menuItem.badgeValue |
             translate}}</span></span>
