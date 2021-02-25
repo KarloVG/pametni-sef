@@ -5,6 +5,7 @@ import { IBankResponse } from 'src/app/components/administration/bank/models/res
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalAoeIbanComponent } from '../modal-aoe-iban/modal-aoe-iban.component';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
+import { ModalCumulativeOrderComponent } from '../modal-cumulative-order/modal-cumulative-order.component';
 
 @Component({
   selector: 'app-bank-overview',
@@ -49,6 +50,22 @@ export class BankOverviewComponent implements OnInit {
 
   openIBANModal(row?: IBankResponse): void {
     const modalRef = this._modal.open(ModalAoeIbanComponent, {
+      size: 'xl',
+      backdrop: 'static',
+      keyboard: false,
+      windowClass: 'largeModalClass'
+    })
+    modalRef.componentInstance.row = row;
+    modalRef.result.then(res => {
+
+    }).catch(reason => {
+
+    });
+  }
+
+  openCumulativeOrderModal(row?: IBankResponse) {
+    console.log('usao')
+    const modalRef = this._modal.open(ModalCumulativeOrderComponent, {
       size: 'xl',
       backdrop: 'static',
       keyboard: false,

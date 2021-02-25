@@ -1,0 +1,277 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ 'Editing information about cumulative orders' | translate}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modalClose('dismiss')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="col-sm-12">
+  <div class="card p-0 mb-0">
+    <div class="card-header px-2 py-3 b-b-primary d-flex justify-content-between align-items-center">
+      <h5>{{ 'Preview cumulative orders' | translate }}</h5>
+      <button class="btn btn-primary px-3 py-2" (click)="addOrEditCumulativeOrder()" title="Dodaj banku"><i
+          class="fa fa-plus"></i></button>
+    </div>
+    <div class="card-body custom-datatable px-0">
+      <ngx-datatable class="bootstrap" [rows]="cumulativeOrders" [columns]="mainTableColumns" [columnMode]="'force'"
+        [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [messages]="{
+          emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
+          totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
+        <ng-container *ngFor="let column of mainTableColumns; let i = index;">
+          <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [width]="column.width">
+            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+              <span class="d-flex justify-content-start">
+                <button class='btn btn-outline-warning px-2 py-1' title='Uredi' (click)="addOrEditCumulativeOrder(row)">
+                  <i class="fa fa-pencil"></i>
+                </button>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column *ngIf='column.prop !== "actions"' name="{{column.name}}" prop="{{column.prop}}"
+            [width]="column.width">
+          </ngx-datatable-column>
+        </ng-container>
+      </ngx-datatable>
+    </div>
+  </div>
+</div>
+<form class="needs-validation" [formGroup]="cumulativeOrderGroup" #ngControlCenterForm="ngForm" autocomplete="off"
+  *ngIf="isAddOrEdit">
+  <div class="modal-body input-group">
+    <div class="col-lg-12 d-flex justify-content-between px-2 py-3 b-b-primary mb-3">
+      <h5 class="f-w-600 f-18">{{ 'Information about sending cumulative orders' | translate | uppercase }}</h5>
+      <button type="button" class="close" aria-label="Close" (click)="isAddOrEdit = false;">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Name cumulative configuration option' | translate }}
+          <span class="text-danger">*</span></label>
+        <input class="form-control" formControlName="name" type="text"
+          placeholder="primjer: Konfiguracija zbrojnog naloga 1"
+          [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="name.invalid && name.errors?.required && (name.dirty || name.touched || ngControlCenterForm.submitted)">
+          {{ 'Name cumulative configuration option is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{'Path to private key' | translate}}
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" type="text" formControlName="serverPath"
+          placeholder="primjer: securitas.private.key" autocomplete="off"
+          [ngClass]="{'is-invalid': serverPath.invalid && (serverPath.dirty || serverPath.touched || ngControlCenterForm.submitted)}">
+        <small class="form-text text-muted">
+          {{ 'Absolute path for authorization on server' | translate }}
+        </small>
+        <div class="invalid-feedback" *ngIf="serverPath?.errors?.required">
+          {{ 'Path to private key is required' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Private key password' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <div class="input-group">
+          <input class="form-control" formControlName="privateKeyPassword" autocomplete="off"
+            [type]="isPrivateKeyUnsecure ? 'text' : 'password'" placeholder=""
+            [ngClass]="{'is-invalid': privateKeyPassword.invalid && (privateKeyPassword.dirty || privateKeyPassword.touched || ngControlCenterForm.submitted)}">
+          <div class="input-group-append" style="cursor:pointer;">
+            <span class="input-group-text">
+              <i class="fa" [ngClass]="{
+                'fa-eye-slash': isPrivateKeyUnsecure,
+                'fa-eye': !isPrivateKeyUnsecure
+                }" (click)="isPrivateKeyUnsecure = !isPrivateKeyUnsecure;"></i>
+            </span>
+          </div>
+        </div>
+        <div class="invalid-feedback"
+          *ngIf="privateKeyPassword.invalid && privateKeyPassword.errors?.required && (privateKeyPassword.dirty || privateKeyPassword.touched || ngControlCenterForm.submitted)">
+          {{ 'Private key password is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 d-flex align-items-center">
+      <div class="form-group mb-0">
+        <label class="d-block mb-0" for="sftp_checkbox">
+          <input class="checkbox_animated" id="sftp_checkbox" type="checkbox" formControlName="isSFTPAuthorization">
+          {{ 'Authorize SFTP with private key' | translate }}
+        </label>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Server username' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" formControlName="userName" type="text" placeholder="mmarkovic"
+          [ngClass]="{'is-invalid': userName.invalid && (userName.dirty || userName.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="userName.invalid && userName.errors?.required && (userName.dirty || userName.touched || ngControlCenterForm.submitted)">
+          {{ 'Server username is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Server password' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <div class="input-group">
+          <input class="form-control" formControlName="serverPassword"
+            [type]="isServerPasswordUnsecure ? 'text' : 'password'" placeholder=""
+            [ngClass]="{'is-invalid': serverPassword.invalid && (serverPassword.dirty || serverPassword.touched || ngControlCenterForm.submitted)}">
+          <div class="input-group-append" style="cursor:pointer;">
+            <span class="input-group-text">
+              <i class="fa" [ngClass]="{
+                'fa-eye-slash': isServerPasswordUnsecure,
+                'fa-eye': !isServerPasswordUnsecure
+                }" (click)="isServerPasswordUnsecure = !isServerPasswordUnsecure;"></i>
+            </span>
+          </div>
+        </div>
+        <div class="invalid-feedback"
+          *ngIf="serverPassword.invalid && serverPassword.errors?.required && (serverPassword.dirty || serverPassword.touched || ngControlCenterForm.submitted)">
+          {{ 'Server password is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Certificate for signing files(path)' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" formControlName="fileSigningCertificate" type="text"
+          placeholder="primjer: /file/certifikat.cert"
+          [ngClass]="{'is-invalid': fileSigningCertificate.invalid && (fileSigningCertificate.dirty || fileSigningCertificate.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="fileSigningCertificate.invalid && fileSigningCertificate.errors?.required && (fileSigningCertificate.dirty || fileSigningCertificate.touched || ngControlCenterForm.submitted)">
+          {{ 'Certificate for signing files is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Authority certificate(path)' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" formControlName="authorityCertificate" type="text"
+          placeholder="primjer: /file/certifikat.cert"
+          [ngClass]="{'is-invalid': authorityCertificate.invalid && (authorityCertificate.dirty || authorityCertificate.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="authorityCertificate.invalid && authorityCertificate.errors?.required && (authorityCertificate.dirty || authorityCertificate.touched || ngControlCenterForm.submitted)">
+          {{ 'Authority certificate is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Method for signing files' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" formControlName="signingMethod" type="text" placeholder="primjer: MIME"
+          [ngClass]="{'is-invalid': signingMethod.invalid && (signingMethod.dirty || signingMethod.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="signingMethod.invalid && signingMethod.errors?.required && (signingMethod.dirty || signingMethod.touched || ngControlCenterForm.submitted)">
+          {{ 'Method for signing files is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Name/server IP to which the order is sent' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" formControlName="serverIP" type="text"
+          placeholder="primjer: 127.0.0.1 ili securitas.server"
+          [ngClass]="{'is-invalid': serverIP.invalid && (serverIP.dirty || serverIP.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="serverIP.invalid && serverIP.errors?.required && (serverIP.dirty || serverIP.touched || ngControlCenterForm.submitted)">
+          {{ 'Name/server IP to which the order is sent is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'The port server to which the cumulative order is sent' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" formControlName="port" type="text"
+          placeholder="primjer: 127.0.0.1 ili securitas.server"
+          [ngClass]="{'is-invalid': port.invalid && (port.dirty || port.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="port?.errors?.required && (port.dirty || port.touched || ngControlCenterForm.submitted)">
+          {{ 'The port server to which the cumulative order is sent is required' | translate }}
+        </div>
+        <div class="invalid-feedback"
+          *ngIf="port?.errors?.pattern && (port.dirty || port.touched || ngControlCenterForm.submitted)">
+          {{ 'The port server to which the cumulative order is sent must contain up to 5 numbers' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Path on server where the cumulative orders are placed' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" formControlName="orderFilePath" type="text"
+          placeholder="primjer: 127.0.0.1 ili securitas.server"
+          [ngClass]="{'is-invalid': orderFilePath.invalid && (orderFilePath.dirty || orderFilePath.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="orderFilePath.invalid && orderFilePath.errors?.required && (orderFilePath.dirty || orderFilePath.touched || ngControlCenterForm.submitted)">
+          {{ 'Path on server where the cumulative orders are placed is required' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12 m-0 p-0"></div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Send files from' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <ngb-timepicker formControlName="timeFrom" class="time-picker-custom">
+        </ngb-timepicker>
+        <div class="small form-text text-danger"
+          *ngIf="timeFrom.errors?.required && (timeFrom.dirty || timeFrom.touched || ngControlCenterForm.submitted)">
+          {{ 'Send files from is required' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Send files to' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <ngb-timepicker formControlName="timeTo" class="time-picker-custom">
+        </ngb-timepicker>
+        <div class="small form-text text-danger"
+          *ngIf="timeTo.errors?.required && (timeTo.dirty || timeTo.touched || ngControlCenterForm.submitted)">
+          {{ 'Send files to is required' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-light" ngbAutoFocus (click)="modalClose('dismiss')">{{ 'Close' | translate
+      }}</button>
+    <button type="submit" class="btn btn-primary" (click)="modalClose('dismiss')">{{ 'Submit' | translate }}</button>
+  </div>
+</form>

@@ -7,9 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { ModalAoeIbanComponent } from './modal-aoe-iban/modal-aoe-iban.component';
+import { ModalCumulativeOrderComponent } from './modal-cumulative-order/modal-cumulative-order.component';
 
 @NgModule({
-  declarations: [BankOverviewComponent, ModalAoeIbanComponent],
+  declarations: [BankOverviewComponent, ModalAoeIbanComponent, ModalCumulativeOrderComponent],
   imports: [
     CommonModule,
     NgxDatatableModule,

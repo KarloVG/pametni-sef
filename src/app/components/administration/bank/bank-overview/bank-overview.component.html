@@ -8,7 +8,7 @@
       </div>
       <div class="card-body custom-datatable">
         <ngx-datatable class="bootstrap" [rows]="banks" [columns]="mainTableColumns" [columnMode]="'force'"
-          [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true" [messages]="{
+          [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [messages]="{
             emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
             totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
           <ng-container *ngFor="let column of mainTableColumns; let i = index;">
@@ -30,7 +30,8 @@
                   <button class='btn btn-info px-2 py-1' title="Uredi IBAN" (click)="openIBANModal(row)">
                     <small>{{ 'Edit IBAN' | translate }}</small>
                   </button>
-                  <button class='btn btn-secondary px-2 py-1' title='Zbrojne opcije naloga'>
+                  <button class='btn btn-secondary px-2 py-1' title='Zbrojne opcije naloga'
+                    (click)="openCumulativeOrderModal(row)">
                     <small>{{ 'Cumulative order options' | translate}}</small>
                   </button>
                   <button class='btn btn-info px-2 py-1' title='Opcije WEB SERVIS-a'>

@@ -64,11 +64,12 @@
         </label>
         <input class="form-control" type="text" formControlName="iban" placeholder="HR1723600001101234565"
           [ngClass]="{'is-invalid': iban.invalid && (iban.dirty || iban.touched || ngControlCenterForm.submitted)}">
-        <div class="invalid-feedback" *ngIf="iban?.errors?.required">
+        <div class="invalid-feedback"
+          *ngIf="iban?.errors?.required && (iban.dirty || iban.touched || ngControlCenterForm.submitted)">
           {{ 'IBAN is required' | translate }}
         </div>
         <div class="invalid-feedback"
-          *ngIf="iban?.errors?.minlength || iban?.errors?.maxlength || iban?.errors?.pattern">
+          *ngIf="iban?.errors?.pattern && (iban.dirty || iban.touched || ngControlCenterForm.submitted)">
           {{ 'IBAN must contain 19 characters' | translate }}
         </div>
       </div>
