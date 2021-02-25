@@ -61,5 +61,20 @@
   "Company address is required": "Polje adresa tvrtke je obavezno",
   "Company headquaters": "Sjedište tvrtke",
   "Company headquaters is required": "Sjedište tvrtke je obavezno polje",
-  "Company identificator": "Identifikator kompanije"
+  "Company identificator": "Identifikator kompanije",
+  "Bank": "Banka",
+  "Preview banks": "Pregled banaka",
+  "Edit IBAN": "Uredi IBAN",
+  "Cumulative order options": "Opcije zbrojnih naloga",
+  "WEB SERVICE options": "Opcije WEB SERVIS-a",
+  "Edit regions": "Uredi regiju",
+  "IBAN management": "Upravljanje IBAN-om",
+  "Preview IBAN": "Pregled IBAN-a",
+  "Short description": "Kratki opis",
+  "IBAN number": "Broj IBAN-a",
+  "IBAN information": "Informacije o IBAN-u",
+  "Administrating IBAN": "Uređivanje IBAN-a",
+  "Short description is required": "Polje kratki opis je obavezno",
+  "IBAN is required": "Polje IBAN je obavezno",
+  "IBAN must contain 19 characters": "Polje IBAN mora započeti sa HR i sadržavati 19 brojeva"
 }

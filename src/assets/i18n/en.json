@@ -49,5 +49,20 @@
   "Company address is required": "Company address is required",
   "Company headquaters": "Company headquaters",
   "Company headquaters is required": "Company headquaters is required",
-  "Company identificator": "Company identificator"
+  "Company identificator": "Company identificator",
+  "Bank": "Bank",
+  "Preview banks": "Preview banks",
+  "Edit IBAN": "Edit IBAN",
+  "Cumulative order options": "Cumulative order options",
+  "WEB SERVICE options": "WEB SERVICE options",
+  "Edit regions": "Edit regions",
+  "IBAN management": "IBAN management",
+  "Preview IBAN": "Preview IBAN",
+  "Short description": "Short description",
+  "IBAN number": "IBAN number",
+  "Administrating IBAN": "Administrating IBAN",
+  "IBAN information": "IBAN information",
+  "Short description is required": "Short description is required",
+  "IBAN is required": "IBAN is required",
+  "IBAN must contain 19 characters": "IBAN must contain 19 characters"
 }

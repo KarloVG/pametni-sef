@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-header b-b-primary d-flex justify-content-between align-items-center">
+        <h5>{{ 'Preview banks' | translate }}</h5>
+        <button class="btn btn-primary px-3 py-2" (click)="addOrEditBank()" title="Dodaj banku"><i
+            class="fa fa-plus"></i></button>
+      </div>
+      <div class="card-body custom-datatable">
+        <ngx-datatable class="bootstrap" [rows]="banks" [columns]="mainTableColumns" [columnMode]="'force'"
+          [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true" [messages]="{
+            emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
+            totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
+          <ng-container *ngFor="let column of mainTableColumns; let i = index;">
+            <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [width]="column.width">
+              <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                <span class="d-flex justify-content-between">
+                  <button class='btn btn-outline-warning px-2 py-1' title='Uredi' (click)="addOrEditBank(row)">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                  <button class='btn btn-outline-danger px-2 py-1' title='Obriši' (click)="deleteBank(row)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column *ngIf='column.prop === "bankActions"' name="{{column.name}}" [width]="column.width">
+              <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                <span class="d-flex justify-content-between">
+                  <button class='btn btn-info px-2 py-1' title="Uredi IBAN" (click)="openIBANModal(row)">
+                    <small>{{ 'Edit IBAN' | translate }}</small>
+                  </button>
+                  <button class='btn btn-secondary px-2 py-1' title='Zbrojne opcije naloga'>
+                    <small>{{ 'Cumulative order options' | translate}}</small>
+                  </button>
+                  <button class='btn btn-info px-2 py-1' title='Opcije WEB SERVIS-a'>
+                    <small>{{ 'WEB SERVICE options' | translate }}</small>
+                  </button>
+                  <button class='btn btn-secondary px-2 py-1' title='Opcije WEB SERVIS-a'>
+                    <small>{{ 'Edit regions' | translate }}</small>
+                  </button>
+                </span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column *ngIf='column.prop !== "actions" && column.prop !== "bankActions"'
+              name="{{column.name}}" prop="{{column.prop}}" [width]="column.width">
+            </ngx-datatable-column>
+          </ng-container>
+        </ngx-datatable>
+      </div>
+    </div>
+  </div>
+</div>

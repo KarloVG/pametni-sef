@@ -1,0 +1,95 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ 'Administrating IBAN' | translate}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modalClose('dismiss')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="col-sm-12">
+  <div class="card p-0 mb-0">
+    <div class="card-header px-2 py-3 b-b-primary d-flex justify-content-between align-items-center">
+      <h5>{{ 'Preview IBAN' | translate }}</h5>
+      <button class="btn btn-primary px-3 py-2" (click)="addOrEditIBAN()" title="Dodaj banku"><i
+          class="fa fa-plus"></i></button>
+    </div>
+    <div class="card-body custom-datatable px-0">
+      <ngx-datatable class="bootstrap" [rows]="ibanList" [columns]="mainTableColumns" [columnMode]="'force'"
+        [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [messages]="{
+          emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
+          totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
+        <ng-container *ngFor="let column of mainTableColumns; let i = index;">
+          <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [width]="column.width">
+            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+              <span class="d-flex justify-content-start">
+                <button class='btn btn-outline-warning px-2 py-1' title='Uredi' (click)="addOrEditIBAN(row)">
+                  <i class="fa fa-pencil"></i>
+                </button>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column *ngIf='column.prop !== "actions"' name="{{column.name}}" prop="{{column.prop}}"
+            [width]="column.width">
+          </ngx-datatable-column>
+        </ng-container>
+      </ngx-datatable>
+    </div>
+  </div>
+</div>
+<form class="needs-validation" [formGroup]="ibanGroup" #ngControlCenterForm="ngForm" autocomplete="off"
+  *ngIf="isAddOrEdit">
+  <div class="modal-body input-group">
+    <div class="col-lg-12 d-flex justify-content-between px-2 py-3 b-b-primary mb-3">
+      <h5 class="f-w-600 f-18">{{ 'IBAN information' | translate | uppercase }}</h5>
+      <button type="button" class="close" aria-label="Close" (click)="isAddOrEdit = false;">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="col-lg-4">
+      <div class="form-group">
+        <label class="col-form-label required">
+          {{ 'Short description' | translate }}
+          <span class="text-danger">*</span></label>
+        <input class="form-control" formControlName="description" type="text" placeholder="Glavni IBAN"
+          [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="description.invalid && description.errors?.required && (description.dirty || description.touched || ngControlCenterForm.submitted)">
+          {{ 'Short description is required' | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="form-group">
+        <label class="col-form-label  required">
+          {{'IBAN number' | translate}}
+          <span class="text-danger"> *</span>
+        </label>
+        <input class="form-control" type="text" formControlName="iban" placeholder="HR1723600001101234565"
+          [ngClass]="{'is-invalid': iban.invalid && (iban.dirty || iban.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback" *ngIf="iban?.errors?.required">
+          {{ 'IBAN is required' | translate }}
+        </div>
+        <div class="invalid-feedback"
+          *ngIf="iban?.errors?.minlength || iban?.errors?.maxlength || iban?.errors?.pattern">
+          {{ 'IBAN must contain 19 characters' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="form-group">
+        <label class="col-form-label required">
+          {{ 'Company' | translate }}
+        </label>
+        <input class="form-control" formControlName="companyName" type="text" placeholder="Lidl d.o.o"
+          [ngClass]="{'is-invalid': companyName.invalid && (companyName.dirty || companyName.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback"
+          *ngIf="companyName.invalid && companyName.errors?.required && (companyName.dirty || companyName.touched || ngControlCenterForm.submitted)">
+          {{ 'Company is required' | translate}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-light" ngbAutoFocus (click)="modalClose('dismiss')">{{ 'Close' | translate
+      }}</button>
+    <button type="submit" class="btn btn-primary" (click)="modalClose('dismiss')">{{ 'Submit' | translate }}</button>
+  </div>
+</form>

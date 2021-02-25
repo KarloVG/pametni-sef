@@ -813,6 +813,11 @@ agm-map {
         transform-origin: 50% 50%;
     }
 }
+
+/* for extending modal */
+.largeModalClass .modal-dialog {
+  min-width: 90%;
+}
 /**=====================
       01. General CSS Ends
 ==========================**/

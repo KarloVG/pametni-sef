@@ -10,12 +10,16 @@ export const content: Routes = [
     loadChildren: () => import('../../components/administration/control-center/control-center.module').then(m => m.ControlCenterModule)
   },
   {
-    path:'administracija/valuta',
-    loadChildren:() => import('../../components/administration/currency/currency.module').then(m => m.CurrencyModule)
+    path: 'administracija/valuta',
+    loadChildren: () => import('../../components/administration/currency/currency.module').then(m => m.CurrencyModule)
   },
   {
     path: 'administracija/tvrtka',
     loadChildren: () => import('../../components/administration/company/company.module').then(m => m.CompanyModule)
+  },
+  {
+    path: 'administracija/banka',
+    loadChildren: () => import('../../components/administration/bank/bank.module').then(m => m.BankModule)
   },
   {
     path: 'mapa',
