@@ -7,18 +7,19 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ModalApoenStructureComponent } from './modal-apoen-structure/modal-apoen-structure.component';
-
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalAoeCurrencyComponent } from './modal-aoe-currency/modal-aoe-currency.component';
+import { ModalAoeApoenComponent } from './modal-aoe-apoen/modal-aoe-apoen.component';
 
 @NgModule({
-  declarations: [CurrencyDetailComponent, CurrencyOverviewComponent, ModalApoenStructureComponent],
+  declarations: [CurrencyDetailComponent, CurrencyOverviewComponent, ModalAoeCurrencyComponent, ModalAoeApoenComponent],
   imports: [
     CommonModule,
     NgxDatatableModule,
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
     RouterModule.forChild([
       {
         path: '',

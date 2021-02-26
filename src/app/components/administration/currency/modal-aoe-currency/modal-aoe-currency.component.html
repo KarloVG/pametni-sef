@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <h4 class="modal-title" *ngIf="row else addCurrency">{{ 'Edit currency' | translate}}</h4>
+    <ng-template #addCurrency>
+      <h4 class="modal-title">{{ 'Add currency' | translate }}</h4>
+    </ng-template>
+    <button type="button" class="close" aria-label="Close" (click)="modalClose('dismiss')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form class="needs-validation" [formGroup]="controlCurrencyGroup" #ngControlCurrencyForm="ngForm" autocomplete="off">
+    <div class="card-body">
+    <div class="modal-body input-group d-flex p-0">
+      <div class="col-lg-4 pl-4">
+        <div class="form-group">
+          <label class="col-form-label required">{{ 'Currency code' | translate }} <span
+              class="text-danger">*</span></label>
+          <input class="form-control" formControlName="name" type="text" placeholder="HRK"
+            [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched || ngControlCurrencyForm.submitted)}">
+          <div class="invalid-feedback"
+            *ngIf="name.invalid && name.errors?.required && (name.dirty || name.touched || ngControlCurrencyForm.submitted)">
+            {{ 'Currency code name is required' | translate}}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 pl-4">
+        <div class="form-group">
+          <label class="col-form-label required">
+            {{'Currency ratio' | translate}}
+            <span class="text-danger"> *</span>
+          </label>
+          <input class="form-control" type="text" formControlName="ratio"
+            placeholder="1"
+            [ngClass]="{'is-invalid': ratio.invalid && (ratio.dirty || ratio.touched || ngControlCurrencyForm.submitted)}">
+          <div class="invalid-feedback" *ngIf="ratio.invalid && ratio.errors?.required">
+            {{ 'Currency ratio is required' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+    <div class="modal-footer d-flex justify-content-between">
+      <button type="button" class="btn btn-light" ngbAutoFocus (click)="modalClose('dismiss')">{{ 'Close' | translate }}</button>
+      <div class="d-flex">
+        <div>
+          <button type="submit" class="btn btn-primary" (click)="modalClose('dismiss')">{{ 'Submit' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  
+
+  

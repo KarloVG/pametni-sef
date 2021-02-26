@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalApoenStructureComponent } from '../modal-apoen-structure/modal-apoen-structure.component';
 
 @Component({
   selector: 'app-currency-detail',
@@ -23,13 +22,6 @@ export class CurrencyDetailComponent implements OnInit {
 
   addOrEditCurrency():void{}
 
-  apoenStructure():void{
-    const modal = this._modal.open(ModalApoenStructureComponent, {
-      centered: true,
-      backdrop: 'static',
-      keyboard: false,
-    });
-}
 
   setUpFormGroup(): void{
     this.controlCurrencyGroup = this._formBuilder.group({
