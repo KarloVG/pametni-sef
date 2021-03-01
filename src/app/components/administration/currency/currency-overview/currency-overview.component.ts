@@ -61,7 +61,7 @@ export class CurrencyOverviewComponent implements OnInit {
     }
   }
 
-  addOrEditApoen(apoen?: IApoenResponse): void {
+  addOrEditApoen(apoen: IApoenResponse): void {
     const modalRef = this._modalService.open(ModalAoeApoenComponent, {
       size: 'xl',
       backdrop: 'static',
@@ -70,16 +70,13 @@ export class CurrencyOverviewComponent implements OnInit {
     modalRef.componentInstance.apoen = apoen ?? null;
   }
   
-  addOrEditCurrency(row?: ICurrencyResponse): void {
-    console.log(row)
-    if (row) {
-      const modalRef = this._modalService.open(ModalAoeCurrencyComponent, {
-        size: 'xl',
-        backdrop: 'static',
-        keyboard: false
-      });
-      modalRef.componentInstance.currency = row ?? null;
-    }
+  addOrEditCurrency(row: ICurrencyResponse): void {
+    const modalRef = this._modalService.open(ModalAoeCurrencyComponent, {
+      size: 'xl',
+      backdrop: 'static',
+      keyboard: false
+    });
+    modalRef.componentInstance.currency = row ?? null;
   }
 
   deleteApoenCurrency(row: ICurrencyResponse | IApoenResponse): void {
@@ -113,7 +110,7 @@ export class CurrencyOverviewComponent implements OnInit {
         keyboard: false
       });
         modalRef.componentInstance.title = 'Brisanje apoenske strukture';
-        modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name}  sa popisa?`;
+        modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name} sa popisa?`;
         modalRef.componentInstance.isDelete = true;
                 // modalRef.result.then((result) => {
     //   if (result == true) {
