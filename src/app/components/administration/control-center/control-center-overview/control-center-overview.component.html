@@ -3,12 +3,12 @@
     <div class="card">
       <div class="card-header b-b-primary d-flex justify-content-between align-items-center">
         <h5>{{ 'Preview control centers' | translate }}</h5>
-        <button class="btn btn-primary" (click)="addOrEditControlCenter()">{{ 'New control center' | translate
-          }}</button>
+        <button class="btn btn-primary px-3 py-2" (click)="addOrEditControlCenter()" title="Dodaj kontrolni centar"><i
+            class="fa fa-plus"></i></button>
       </div>
       <div class="card-body custom-datatable">
         <ngx-datatable class="bootstrap" [rows]="controlCenters" [columns]="mainTableColumns" [columnMode]="'force'"
-          [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true" [messages]="{
+          [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [messages]="{
             emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
             totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}" (activate)="onClickMainTableRow($event)">
           <ng-container *ngFor="let column of mainTableColumns; let i = index;">

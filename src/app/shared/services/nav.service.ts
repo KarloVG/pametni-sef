@@ -52,6 +52,7 @@ export class NavService {
     },
     {
       title: 'Administration', icon: 'tool', type: 'sub', active: false, children: [
+        { path: '/administracija/banka', title: 'Bank', type: 'link' },
         { path: '/administracija/kontrolni-centar', title: 'Control Center', type: 'link' },
         { path: '/administracija/valuta', title: 'Currency', type: 'link' },
         { path: '/administracija/tvrtka', title: 'Companies', type: 'link' }

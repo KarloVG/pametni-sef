@@ -1,0 +1,214 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ 'Administrating Web Service' | translate}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modalClose('dismiss')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="col-sm-12">
+  <div class="card p-0 mb-0">
+    <div class="card-header px-2 py-3 b-b-primary d-flex justify-content-between align-items-center">
+      <h5>{{ 'Preview Web Service' | translate }}</h5>
+      <button class="btn btn-primary px-3 py-2" (click)="addOrEditWebService()" title="Dodaj Web Servis"><i
+          class="fa fa-plus"></i></button>
+    </div>
+    <div class="card-body custom-datatable px-0">
+      <ngx-datatable class="bootstrap" [rows]="webServices" [columns]="mainTableColumns" [columnMode]="'force'"
+        [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [messages]="{
+          emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
+          totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
+        <ng-container *ngFor="let column of mainTableColumns; let i = index;">
+          <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [width]="column.width">
+            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+              <span class="d-flex justify-content-between">
+                <button class='btn btn-outline-warning px-2 py-1' title='Uredi' (click)="addOrEditWebService(row)">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class='btn btn-outline-danger px-2 py-1' title='Uredi' (click)="deleteWebService(row)">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column *ngIf='column.prop !== "actions"' name="{{column.name}}" prop="{{column.prop}}"
+            [width]="column.width">
+          </ngx-datatable-column>
+        </ng-container>
+      </ngx-datatable>
+    </div>
+  </div>
+</div>
+<div *ngIf="!isDeleteActive; else deleteActive">
+  <form class="needs-validation" [formGroup]="webServiceGroup" #ngControlCenterForm="ngForm" autocomplete="off"
+    *ngIf="isAddOrEdit">
+    <div class="modal-body input-group">
+      <div class="col-lg-12 d-flex justify-content-between px-2 py-3 b-b-primary mb-3">
+        <h5 class="f-w-600 f-18">{{ 'Web Service information' | translate | uppercase }}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="isAddOrEdit = false;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label class="col-form-label">
+            {{ 'Name of Web Service' | translate }}
+            <span class="text-danger">*</span></label>
+          <input class="form-control" formControlName="name" type="text" placeholder="Naziv Web Servisa"
+            [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched || ngControlCenterForm.submitted)}">
+          <div class="invalid-feedback"
+            *ngIf="name.invalid && name.errors?.required && (name.dirty || name.touched || ngControlCenterForm.submitted)">
+            {{ 'Name of Web Service is required' | translate}}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label class="col-form-label">
+            {{'Web Service class' | translate}}
+            <span class="text-danger"> *</span>
+          </label>
+          <input class="form-control" type="text" formControlName="class" placeholder="Klasa Web Servisa"
+            [ngClass]="{'is-invalid': class.invalid && (class.dirty || class.touched || ngControlCenterForm.submitted)}">
+          <div class="invalid-feedback"
+            *ngIf="class?.errors?.required && (class.dirty || class.touched || ngControlCenterForm.submitted)">
+            {{ 'Web Service class is required' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label class="col-form-label">
+            {{ 'Web Service address' | translate }}
+            <span class="text-danger"> *</span>
+          </label>
+          <input class="form-control" formControlName="address" type="text" placeholder="Lidl d.o.o"
+            [ngClass]="{'is-invalid': address.invalid && (address.dirty || address.touched || ngControlCenterForm.submitted)}">
+          <div class="invalid-feedback"
+            *ngIf="address.invalid && address.errors?.required && (address.dirty || address.touched || ngControlCenterForm.submitted)">
+            {{ 'Web Service address is required' | translate}}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 d-flex align-items-center mb-2">
+        <div class="form-group mb-0">
+          <label class="d-block mb-0" for="soap_message">
+            <input class="checkbox_animated" id="soap_message" type="checkbox" formControlName="isSOAPMessageActive">
+            {{ 'Signing a SOAP message when communicating with Web Service' | translate }}
+          </label>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label class="col-form-label">
+            {{ 'Path to KEYSTORE with private key and signing certificate' | translate }}
+          </label>
+          <input class="form-control" formControlName="keystorePath" type="text" placeholder="Putanja do KEYSTORE"
+            [ngClass]="{'is-invalid': keystorePath.invalid && (keystorePath.dirty || keystorePath.touched || ngControlCenterForm.submitted)}">
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label class="col-form-label">
+            {{ 'KEYSTORE password' | translate }}
+          </label>
+          <div class="input-group">
+            <input class="form-control" formControlName="keystorePassword" autocomplete="off"
+              [type]="isKeystorePasswordUnsecure ? 'text' : 'password'" placeholder=""
+              [ngClass]="{'is-invalid': keystorePassword.invalid && (keystorePassword.dirty || keystorePassword.touched || ngControlCenterForm.submitted)}">
+            <div class="input-group-append" style="cursor:pointer;">
+              <span class="input-group-text">
+                <i class="fa" [ngClass]="{
+                'fa-eye-slash': isKeystorePasswordUnsecure,
+                'fa-eye': !isKeystorePasswordUnsecure
+                }" (click)="isKeystorePasswordUnsecure = !isKeystorePasswordUnsecure;"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label class="col-form-label">
+            {{ 'KEYSTORE certificate and private key alias' | translate }}
+          </label>
+          <input class="form-control" formControlName="privateKeyAlias" type="text"
+            placeholder="Alias privatnog ključa i certifikata u KEYSTORE-u"
+            [ngClass]="{'is-invalid': privateKeyAlias.invalid && (privateKeyAlias.dirty || privateKeyAlias.touched || ngControlCenterForm.submitted)}">
+        </div>
+      </div>
+      <div class="col-lg-12 d-flex align-items-center">
+        <div class="form-group mb-0">
+          <label class="d-block mb-0" for="send_mail">
+            <input class="checkbox_animated" id="send_mail" type="checkbox" formControlName="isSendMailActive">
+            {{ 'Send mail if it is faulty Web Service call' | translate }}
+          </label>
+        </div>
+      </div>
+      <div class="col-lg-12 d-flex align-items-center mb-3">
+        <div class="form-group mb-0">
+          <label class="d-block mb-0" for="create_users">
+            <input class="checkbox_animated" id="create_users" type="checkbox" formControlName="isUserCreateActive">
+            {{ 'Create users with Web Service if they dont exist in the system' | translate }}
+          </label>
+        </div>
+      </div>
+      <div class="col-lg-12 d-flex justify-content-between px-2 py-3 b-b-primary mb-3">
+        <h5 class="f-w-600 f-14">{{ 'When the gearbox option is engaged' | translate | uppercase }}</h5>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="form-group">
+          <label class="col-form-label">
+            {{ 'Send messages from' | translate }}
+            <span class="text-danger"> *</span>
+          </label>
+          <ngb-timepicker formControlName="timeFrom" class="time-picker-custom">
+          </ngb-timepicker>
+          <div class="small form-text text-danger"
+            *ngIf="timeFrom.errors?.required && (timeFrom.dirty || timeFrom.touched || ngControlCenterForm.submitted)">
+            {{ 'Send messages from is required' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="form-group">
+          <label class="col-form-label">
+            {{ 'Send messages to' | translate }}
+            <span class="text-danger"> *</span>
+          </label>
+          <ngb-timepicker formControlName="timeTo" class="time-picker-custom">
+          </ngb-timepicker>
+          <div class="small form-text text-danger"
+            *ngIf="timeTo.errors?.required && (timeTo.dirty || timeTo.touched || ngControlCenterForm.submitted)">
+            {{ 'Send messages to is required' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+      <button type="button" class="btn btn-light" ngbAutoFocus (click)="isAddOrEdit = false">{{ 'Close' | translate
+        }}</button>
+      <button type="submit" class="btn btn-primary" (click)="modalClose('dismiss')">{{ 'Submit' | translate }}</button>
+    </div>
+  </form>
+</div>
+<ng-template #deleteActive>
+  <div class="modal-body">
+    <div class="col-lg-12 d-flex justify-content-between px-2 py-3 b-b-primary mb-3">
+      <h5 class="f-w-600 f-18">{{ 'Deleting Web Service' | translate | uppercase }}</h5>
+      <button type="button" class="close" aria-label="Close" (click)="isDeleteActive = false;">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="col-lg-12 mb-3">
+      <p>
+        {{ 'Are you sure that you want to delete' | translate }}
+        <strong> {{ name?.value }} </strong>
+        {{ 'from list' }}?
+      </p>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-light" ngbAutoFocus (click)="isDeleteActive = false">{{ 'Close' | translate
+      }}</button>
+    <button type="submit" class="btn btn-danger" (click)="isDeleteActive = false">{{ 'Submit' | translate }}</button>
+  </div>
+</ng-template>
