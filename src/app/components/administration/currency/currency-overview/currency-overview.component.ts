@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { BehaviorSubject } from 'rxjs';
+import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
 import { LanguageDeterminator } from 'src/app/shared/services/utils/language-determinator';
+import { ModalAoeApoenComponent } from '../modal-aoe-apoen/modal-aoe-apoen.component';
+import { ModalAoeCurrencyComponent } from '../modal-aoe-currency/modal-aoe-currency.component';
+import { APOENS_CRO, APOENS_ENG } from '../models/apoens-column';
 import { CURRENCY_CRO, CURRENCY_ENG } from '../models/currency-columns';
-import { DEVICES_CRO, DEVICES_ENG } from '../models/devices-column';
-import { ICurrency } from '../models/response/currency-response';
+import { IApoenResponse } from '../models/response/apoen-response';
+import { ICurrencyResponse } from '../models/response/currency-response';
 
 @Component({
   selector: 'app-currency-overview',
@@ -14,66 +19,115 @@ import { ICurrency } from '../models/response/currency-response';
 export class CurrencyOverviewComponent implements OnInit {
 
   currentLang: string;
-  mainTableColumns: TableColumn[] = [];
-  altTableColumns: TableColumn[]= [];
-  currencies: ICurrency[] = [
-    {
-      id:1,
-      name: 'HRK',
-      ratio: 1
-    },
-    {
-      id:2,
-      name: 'EUR',
-      ratio: 7.5
-    }
-  ];
-  devices: any[] = [
+  currencyTableColumns: TableColumn[] = [];
+  apoenTableColumns: TableColumn[]= [];
+  currencies: ICurrencyResponse[] = [
     {
       id: 1,
-      transactionId: 32131,
-      name: 'Uređaj 123',
-      locationName: 'Marjan',
-      companyName: 'Lidl d.o.o',
-      status: 'Aktivan',
-      type: 'Uređaj za depozit - MEI',
-      currency: 'HRK'
-    },
-    {
-      id: 2,
-      transactionId: 567576,
-      name: 'Uređaj 654',
-      locationName: 'Zaseok',
-      companyName: 'Špar d.o.o',
-      status: 'Aktivan',
-      type: 'Uređaj za depozit - MEI',
-      currency: 'HRK'
+      name: "HRK",
+      ratio: 1
     }
   ];
+  apoenTable: IApoenResponse[] = [
+    {
+      id: 1,
+      name: 'HRK',
+      value: 10.00,
+      type: { id: 1, name: 'Novčanice' }
+    }
+  ]
 
-
-  private mainTableClickedSubject = new BehaviorSubject<boolean>(false);
-  mainTableClickedAction$ = this.mainTableClickedSubject.asObservable();
+  private currencyTableClickedSubject = new BehaviorSubject<boolean>(false);
+  currencyTableClickedAction$ = this.currencyTableClickedSubject.asObservable();
 
   constructor(
-    private _languageDeterminator: LanguageDeterminator
+    private _languageDeterminator: LanguageDeterminator,
+    private _modalService: NgbModal
   ) {
     this._languageDeterminator.currentActiveLanguage$.subscribe(
       data => {
         this.currentLang = data;
-        this.mainTableColumns = this.currentLang === 'hr' ? CURRENCY_CRO : CURRENCY_ENG;
-        this.altTableColumns = this.currentLang === 'hr' ? DEVICES_CRO : DEVICES_ENG;
+        this.currencyTableColumns = this.currentLang === 'hr' ? CURRENCY_CRO : CURRENCY_ENG;
+        this.apoenTableColumns = this.currentLang === 'hr' ? APOENS_CRO : APOENS_ENG;
       }
     )
   }
-
   ngOnInit(): void {
   }
 
-  onClickMainTableRow(event): void {
+  openApoenStructure(event): void {
     if (event.type === 'click') {
-      this.mainTableClickedSubject.next(true);
+      this.currencyTableClickedSubject.next(true);
     }
   }
 
+  addOrEditApoen(apoen: IApoenResponse): void {
+    const modalRef = this._modalService.open(ModalAoeApoenComponent, {
+      size: 'xl',
+      backdrop: 'static',
+      keyboard: false
+    });
+    modalRef.componentInstance.apoen = apoen ?? null;
+  }
+  
+  addOrEditCurrency(row: ICurrencyResponse): void {
+    const modalRef = this._modalService.open(ModalAoeCurrencyComponent, {
+      size: 'xl',
+      backdrop: 'static',
+      keyboard: false
+    });
+    modalRef.componentInstance.currency = row ?? null;
+  }
+
+  deleteApoenCurrency(row: ICurrencyResponse | IApoenResponse): void {
+    console.log(row)
+    if(row.hasOwnProperty('ratio')) {
+      const modalRef = this._modalService.open(ConfirmationModalComponent, {
+        backdrop: 'static',
+        keyboard: false
+        });
+        modalRef.componentInstance.title = 'Brisanje valute';
+        modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name} sa popisa?`;
+        modalRef.componentInstance.isDelete = true;
+                // modalRef.result.then((result) => {
+    //   if (result == true) {
+    //     this._accountService
+    //       .delete(account.id)
+    //       .pipe(
+    //         take(1)
+    //       )
+    //       .subscribe((data) => {
+    //         this.handleSuccesResponse('Račun je obrisan');
+    //       });
+    //   }
+    // })
+    // .catch((reason) => {
+    //   this.handleModalDismiss('Račun nije obrisan');
+    // });
+    } else {
+      const modalRef = this._modalService.open(ConfirmationModalComponent, {
+        backdrop: 'static',
+        keyboard: false
+      });
+        modalRef.componentInstance.title = 'Brisanje apoenske strukture';
+        modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name} sa popisa?`;
+        modalRef.componentInstance.isDelete = true;
+                // modalRef.result.then((result) => {
+    //   if (result == true) {
+    //     this._accountService
+    //       .delete(account.id)
+    //       .pipe(
+    //         take(1)
+    //       )
+    //       .subscribe((data) => {
+    //         this.handleSuccesResponse('Račun je obrisan');
+    //       });
+    //   }
+    // })
+    // .catch((reason) => {
+    //   this.handleModalDismiss('Račun nije obrisan');
+    // });
+      /* #endregion */
+    }
+  } 
 }
