@@ -6,6 +6,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalAoeIbanComponent } from '../modal-aoe-iban/modal-aoe-iban.component';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
 import { ModalCumulativeOrderComponent } from '../modal-cumulative-order/modal-cumulative-order.component';
+import { ModalAoeWebServiceComponent } from '../modal-aoe-web-service/modal-aoe-web-service.component';
+import { ModalAoeRegionComponent } from '../modal-aoe-region/modal-aoe-region.component';
 
 @Component({
   selector: 'app-bank-overview',
@@ -46,6 +48,33 @@ export class BankOverviewComponent implements OnInit {
 
   addOrEditBank(row?: IBankResponse): void {
 
+  }
+
+  addOrEditWebService(row: IBankResponse): void {
+    const modalRef = this._modal.open(ModalAoeWebServiceComponent, {
+      size: 'xl',
+      backdrop: 'static',
+      keyboard: false,
+      windowClass: 'largeModalClass'
+    })
+    modalRef.componentInstance.row = row;
+    modalRef.result.then(res => {
+
+    }).catch(reason => {
+
+    });
+  }
+
+  addOrEditRegion(row: IBankResponse): void {
+    const modalRef = this._modal.open(ModalAoeRegionComponent, {
+      backdrop: 'static',
+      keyboard: false,
+      size: 'lg'
+    })
+    modalRef.componentInstance.row = row;
+    modalRef.result.then(res => {
+    }).catch(reason => {
+    });
   }
 
   openIBANModal(row?: IBankResponse): void {

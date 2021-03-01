@@ -34,10 +34,10 @@
                     (click)="openCumulativeOrderModal(row)">
                     <small>{{ 'Cumulative order options' | translate}}</small>
                   </button>
-                  <button class='btn btn-info px-2 py-1' title='Opcije WEB SERVIS-a'>
+                  <button class='btn btn-info px-2 py-1' title='Opcije WEB SERVIS-a' (click)="addOrEditWebService(row)">
                     <small>{{ 'WEB SERVICE options' | translate }}</small>
                   </button>
-                  <button class='btn btn-secondary px-2 py-1' title='Opcije WEB SERVIS-a'>
+                  <button class='btn btn-secondary px-2 py-1' title='Uređivanje regije' (click)="addOrEditRegion(row)">
                     <small>{{ 'Edit regions' | translate }}</small>
                   </button>
                 </span>
