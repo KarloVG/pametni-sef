@@ -40,19 +40,19 @@ export class ModalAoeApoenComponent implements OnInit {
     if(this.apoen){
       this.controlApoenGroup = this._formBuilder.group({
         name: [this.apoen.name, Validators.required],
-        value: [this.apoen.value, Validators.required],
+        value: [this.apoen.value,[Validators.required, Validators.pattern('^[0-9]*$')]],
         type: [this.apoen.type.name, Validators.required]
         // type: [this.apoen.type.name, Validators.required]
       })
     } else {
       this.controlApoenGroup = this._formBuilder.group({
         name: ['', Validators.required],
-        value: ['', Validators.required],
+        value: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
         type: ['', Validators.required]
       })
     }
   }
-
+  
   modalClose(reason): void {
     this._modal.close(reason)
   }

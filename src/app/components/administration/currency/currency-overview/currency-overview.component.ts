@@ -23,18 +23,18 @@ export class CurrencyOverviewComponent implements OnInit {
   apoenTableColumns: TableColumn[]= [];
   currencies: ICurrencyResponse[] = [
     {
-      id:1,
+      id: 1,
       name: "HRK",
       ratio: 1
     }
   ];
   apoenTable: IApoenResponse[] = [
     {
-      id: 1, 
-     name: 'HRK',
-     value: 10.00,
-     type: {id: 1, name: 'Novčanice'}
-  }
+      id: 1,
+      name: 'HRK',
+      value: 10.00,
+      type: { id: 1, name: 'Novčanice' }
+    }
   ]
 
   private currencyTableClickedSubject = new BehaviorSubject<boolean>(false);
@@ -52,7 +52,6 @@ export class CurrencyOverviewComponent implements OnInit {
       }
     )
   }
-
   ngOnInit(): void {
   }
 
@@ -63,7 +62,6 @@ export class CurrencyOverviewComponent implements OnInit {
   }
 
   addOrEditApoen(apoen?: IApoenResponse): void {
-    console.log('kaaaj', apoen)
     const modalRef = this._modalService.open(ModalAoeApoenComponent, {
       size: 'xl',
       backdrop: 'static',
@@ -71,25 +69,30 @@ export class CurrencyOverviewComponent implements OnInit {
     });
     modalRef.componentInstance.apoen = apoen ?? null;
   }
-
-  deleteApoen(row: IApoenResponse): void {
-    const modalRef = this._modalService.open(ConfirmationModalComponent, {
-      backdrop: 'static',
-      keyboard: false
-    });
-    modalRef.componentInstance.title = 'Brisanje apoenske strukture';
-    modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name}  vrijednosti ${row.value} sa popisa?`;
-    modalRef.componentInstance.isDelete = true;
+  
+  addOrEditCurrency(row?: ICurrencyResponse): void {
+    console.log(row)
+    if (row) {
+      const modalRef = this._modalService.open(ModalAoeCurrencyComponent, {
+        size: 'xl',
+        backdrop: 'static',
+        keyboard: false
+      });
+      modalRef.componentInstance.currency = row ?? null;
+    }
   }
 
-  addOrEditCurrency(row? : ICurrencyResponse): void {
-    const modalRef = this._modalService.open(ModalAoeCurrencyComponent, {
-      size: 'xl',
-      backdrop: 'static',
-      keyboard: false
-    });
-    modalRef.componentInstance.currency = row ?? null;
-       // modalRef.result.then((result) => {
+  deleteApoenCurrency(row: ICurrencyResponse | IApoenResponse): void {
+    console.log(row)
+    if(row.hasOwnProperty('ratio')) {
+      const modalRef = this._modalService.open(ConfirmationModalComponent, {
+        backdrop: 'static',
+        keyboard: false
+        });
+        modalRef.componentInstance.title = 'Brisanje valute';
+        modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name} sa popisa?`;
+        modalRef.componentInstance.isDelete = true;
+                // modalRef.result.then((result) => {
     //   if (result == true) {
     //     this._accountService
     //       .delete(account.id)
@@ -104,17 +107,15 @@ export class CurrencyOverviewComponent implements OnInit {
     // .catch((reason) => {
     //   this.handleModalDismiss('Račun nije obrisan');
     // });
-  }
-
-  deleteCurrency(row: ICurrencyResponse): void {
-    const modalRef = this._modalService.open(ConfirmationModalComponent, {
-      backdrop: 'static',
-      keyboard: false
-    });
-    modalRef.componentInstance.title = 'Brisanje valute';
-    modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name} sa popisa?`;
-    modalRef.componentInstance.isDelete = true;
-        // modalRef.result.then((result) => {
+    } else {
+      const modalRef = this._modalService.open(ConfirmationModalComponent, {
+        backdrop: 'static',
+        keyboard: false
+      });
+        modalRef.componentInstance.title = 'Brisanje apoenske strukture';
+        modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name}  sa popisa?`;
+        modalRef.componentInstance.isDelete = true;
+                // modalRef.result.then((result) => {
     //   if (result == true) {
     //     this._accountService
     //       .delete(account.id)
@@ -129,6 +130,7 @@ export class CurrencyOverviewComponent implements OnInit {
     // .catch((reason) => {
     //   this.handleModalDismiss('Račun nije obrisan');
     // });
-  }
-  /* #endregion */
+      /* #endregion */
+    }
+  } 
 }

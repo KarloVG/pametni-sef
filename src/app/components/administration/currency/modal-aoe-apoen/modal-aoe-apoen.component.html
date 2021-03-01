@@ -34,6 +34,9 @@
           <div class="invalid-feedback" *ngIf="value.invalid && value.errors?.required">
             {{ 'Value is required' | translate }}
           </div>
+          <div class="invalid-feedback" *ngIf="value?.errors?.pattern">
+            {{'Value required only numbers' | translate}}
+          </div>
         </div>
       </div>
     <div class="col-lg-4 pl-4">
@@ -42,7 +45,7 @@
                 {{'Type' | translate}}
                 <span class="text-danger"> *</span>
             </label>
-            <select class="custom-select" formControlName="type" id="type" name="type" required="required"
+            <select class="form-control digits" formControlName="type" id="type" name="type" required="required"
                 [ngClass]="{'is-invalid': type.invalid && (type.dirty || type.touched || ngControlCurrencyForm.submitted)}">
                 <option value="" disabled selected>{{'Choose' | translate}}</option>
                 <option *ngFor="let curType of currencyType" [value]="curType.id">{{curType.name}}</option>

@@ -72,5 +72,6 @@
   "Type is required": "Polje tip je obavezno",
   "Type": "Tip",
   "Choose": "Odaberite",
-  "Edit apoen structure": "Uredi apoensku strukturu"
+  "Edit apoen structure": "Uredi apoensku strukturu",
+  "Value required only numbers": "Polje vrijednost sadrži samo brojeve"
 }
