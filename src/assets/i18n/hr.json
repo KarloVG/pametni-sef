@@ -56,7 +56,7 @@
   "Submit": "Potvrdi",
   "Close": "Odustani",
   "Company name": "Naziv tvrtke",
-  "Company name is requred": "Polje naziv tvrtke je obavezno",
+  "Company name is required": "Polje naziv tvrtke je obavezno",
   "Company address": "Adresa tvrtke",
   "Company address is required": "Polje adresa tvrtke je obavezno",
   "Company headquaters": "Sjedište tvrtke",
@@ -148,5 +148,13 @@
   "Type": "Tip",
   "Choose": "Odaberite",
   "Edit apoen structure": "Uredi apoensku strukturu",
-  "Value required only numbers": "Polje vrijednost sadrži samo brojeve"
+  "Value required only numbers": "Polje vrijednost sadrži samo brojeve",
+  "Edit location": "Uredi lokaciju",
+  "Add location": "Dodaj lokaciju",
+  "Description": "Opis",
+  "Address": "Adresa",
+  "Location": "Lokacije",
+  "Location preview": "Pregled lokacija",
+  "Address is required": "Polje adresa je obavezno",
+  "Description is required": "Polje opis je obavezno"
 }

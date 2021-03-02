@@ -18,6 +18,10 @@ export const content: Routes = [
     loadChildren: () => import('../../components/administration/company/company.module').then(m => m.CompanyModule)
   },
   {
+    path: 'administracija/lokacija',
+    loadChildren: () => import('../../components/administration/location/location.module').then(m => m.LocationModule)
+  },
+  {
     path: 'administracija/banka',
     loadChildren: () => import('../../components/administration/bank/bank.module').then(m => m.BankModule)
   },
