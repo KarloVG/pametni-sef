@@ -146,5 +146,13 @@
   "Type": "Type",
   "Choose": "Choose",
   "Edit apoen structure": "Edit apoen structure",
-  "Value required only numbers": "Value required only numbers"
+  "Value required only numbers": "Value required only numbers",
+  "Edit location": "Edit location",
+  "Add location": "Add location",
+  "Description": "Description",
+  "Address": "Address",
+  "Location": "Location",
+  "Location preview": "Location preview",
+  "Address is required": "Address is required",
+  "Description is required": "Description is required"
 }

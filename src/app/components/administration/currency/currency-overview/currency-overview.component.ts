@@ -61,7 +61,7 @@ export class CurrencyOverviewComponent implements OnInit {
     }
   }
 
-  addOrEditApoen(apoen: IApoenResponse): void {
+  addOrEditApoen(apoen?: IApoenResponse): void {
     const modalRef = this._modalService.open(ModalAoeApoenComponent, {
       size: 'xl',
       backdrop: 'static',
@@ -70,7 +70,7 @@ export class CurrencyOverviewComponent implements OnInit {
     modalRef.componentInstance.apoen = apoen ?? null;
   }
   
-  addOrEditCurrency(row: ICurrencyResponse): void {
+  addOrEditCurrency(row?: ICurrencyResponse): void {
     const modalRef = this._modalService.open(ModalAoeCurrencyComponent, {
       size: 'xl',
       backdrop: 'static',
