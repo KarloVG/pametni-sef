@@ -35,7 +35,7 @@ export class ModalAoeWebServiceComponent implements OnInit {
       timeTo: { hour: 23, minute: 23 }
     }
   ];
-  isPrivateKeyUnsecure: boolean = false;
+  isKeystorePasswordUnsecure: boolean = false;
   isDeleteActive: boolean = false;
   /* #endregion */
 

@@ -20,7 +20,7 @@ export class CurrencyOverviewComponent implements OnInit {
 
   currentLang: string;
   currencyTableColumns: TableColumn[] = [];
-  apoenTableColumns: TableColumn[]= [];
+  apoenTableColumns: TableColumn[] = [];
   currencies: ICurrencyResponse[] = [
     {
       id: 1,
@@ -61,7 +61,7 @@ export class CurrencyOverviewComponent implements OnInit {
     }
   }
 
-  addOrEditApoen(apoen: IApoenResponse): void {
+  addOrEditApoen(apoen?: IApoenResponse): void {
     const modalRef = this._modalService.open(ModalAoeApoenComponent, {
       size: 'xl',
       backdrop: 'static',
@@ -69,8 +69,8 @@ export class CurrencyOverviewComponent implements OnInit {
     });
     modalRef.componentInstance.apoen = apoen ?? null;
   }
-  
-  addOrEditCurrency(row: ICurrencyResponse): void {
+
+  addOrEditCurrency(row?: ICurrencyResponse): void {
     const modalRef = this._modalService.open(ModalAoeCurrencyComponent, {
       size: 'xl',
       backdrop: 'static',
@@ -81,53 +81,53 @@ export class CurrencyOverviewComponent implements OnInit {
 
   deleteApoenCurrency(row: ICurrencyResponse | IApoenResponse): void {
     console.log(row)
-    if(row.hasOwnProperty('ratio')) {
+    if (row.hasOwnProperty('ratio')) {
       const modalRef = this._modalService.open(ConfirmationModalComponent, {
         backdrop: 'static',
         keyboard: false
-        });
-        modalRef.componentInstance.title = 'Brisanje valute';
-        modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name} sa popisa?`;
-        modalRef.componentInstance.isDelete = true;
-                // modalRef.result.then((result) => {
-    //   if (result == true) {
-    //     this._accountService
-    //       .delete(account.id)
-    //       .pipe(
-    //         take(1)
-    //       )
-    //       .subscribe((data) => {
-    //         this.handleSuccesResponse('Račun je obrisan');
-    //       });
-    //   }
-    // })
-    // .catch((reason) => {
-    //   this.handleModalDismiss('Račun nije obrisan');
-    // });
+      });
+      modalRef.componentInstance.title = 'Brisanje valute';
+      modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name} sa popisa?`;
+      modalRef.componentInstance.isDelete = true;
+      // modalRef.result.then((result) => {
+      //   if (result == true) {
+      //     this._accountService
+      //       .delete(account.id)
+      //       .pipe(
+      //         take(1)
+      //       )
+      //       .subscribe((data) => {
+      //         this.handleSuccesResponse('Račun je obrisan');
+      //       });
+      //   }
+      // })
+      // .catch((reason) => {
+      //   this.handleModalDismiss('Račun nije obrisan');
+      // });
     } else {
       const modalRef = this._modalService.open(ConfirmationModalComponent, {
         backdrop: 'static',
         keyboard: false
       });
-        modalRef.componentInstance.title = 'Brisanje apoenske strukture';
-        modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name} sa popisa?`;
-        modalRef.componentInstance.isDelete = true;
-                // modalRef.result.then((result) => {
-    //   if (result == true) {
-    //     this._accountService
-    //       .delete(account.id)
-    //       .pipe(
-    //         take(1)
-    //       )
-    //       .subscribe((data) => {
-    //         this.handleSuccesResponse('Račun je obrisan');
-    //       });
-    //   }
-    // })
-    // .catch((reason) => {
-    //   this.handleModalDismiss('Račun nije obrisan');
-    // });
+      modalRef.componentInstance.title = 'Brisanje apoenske strukture';
+      modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati valutu pod nazivom ${row.name} sa popisa?`;
+      modalRef.componentInstance.isDelete = true;
+      // modalRef.result.then((result) => {
+      //   if (result == true) {
+      //     this._accountService
+      //       .delete(account.id)
+      //       .pipe(
+      //         take(1)
+      //       )
+      //       .subscribe((data) => {
+      //         this.handleSuccesResponse('Račun je obrisan');
+      //       });
+      //   }
+      // })
+      // .catch((reason) => {
+      //   this.handleModalDismiss('Račun nije obrisan');
+      // });
       /* #endregion */
     }
-  } 
+  }
 }

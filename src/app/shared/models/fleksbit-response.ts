@@ -1,7 +1,6 @@
-export interface FleksbitReponse<TEntry> {
-  readonly error: string[];
-  readonly response: {
-    code: number;
-    data: TEntry;
-  };
+export interface IFleksbitReponse<TEntry> {
+  readonly code: number;
+  readonly error?: string[];
+  readonly errorMessage?: string;
+  readonly response: TEntry;
 }

@@ -22,7 +22,7 @@
             <h4>Prijava u sustav</h4>
             <h6>Upišite email i lozinku</h6>
           </div>
-          <form class="theme-form" [formGroup]="loginForm" #ngLoginForm="ngForm" (ngSubmit)="login()"
+          <form class="theme-form" [formGroup]="loginForm" (ngSubmit)="submit()" #ngLoginForm="ngForm"
             autocomplete="off">
             <div class="form-group">
               <label class="col-form-label pt-0">Email</label>

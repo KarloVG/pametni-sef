@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { exhaustMap, take } from 'rxjs/operators';
+import { catchError, exhaustMap, map, take, tap } from 'rxjs/operators';
 import { LocalStorageService } from 'src/app/shared/services/authorization/local-storage.service';
-import { ILoginResponse } from '../models/responses/login-response';
-import { AuthenticationService } from '../services/authentication.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { AuthenticationService } from 'src/app/components/auth/services/authentication.service';
+import { EMPTY, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
 
   /* #region  Component variables */
   loginForm: FormGroup;
+  submit$: Subject<boolean> = new Subject();
   /* #endregion */
 
   /* #region   Constructor*/
@@ -22,13 +24,33 @@ export class LoginComponent implements OnInit {
     private _fb: FormBuilder,
     public _authenticationService: AuthenticationService,
     private _router: Router,
-    private _localStorageService: LocalStorageService
+    private _localStorageService: LocalStorageService,
+    private _notificationService: NotificationService
   ) { }
   /* #endregion */
 
   /* #region  Component methods */
   ngOnInit(): void {
     this.setUpFormGroup();
+  }
+
+  ngAfterViewInit() {
+    this.submit$.pipe(
+      exhaustMap(() => this._authenticationService.login(this.loginForm.value).pipe(
+        take(1),
+        tap(() => this._authenticationService.isLoaderActive = false),
+        map(response => response.response),
+        catchError(err => {
+          this._notificationService.fireErrorNotification("Greška", err);
+          this._authenticationService.isLoaderActive = false;
+          return EMPTY;
+        })
+      ))
+    ).subscribe(res => {
+      this._localStorageService.set('is_authenticated', true);
+      this._localStorageService.set('token', res.token);
+      this._router.navigate(['naslovna']);
+    });
   }
 
   // Initialize form group for login
@@ -40,26 +62,11 @@ export class LoginComponent implements OnInit {
   }
 
   // Login method
-  login(): void {
-    if (this.loginForm.valid) {
-      if (this.loginForm.dirty) {
-        // todo set role & bearer token
-        this._localStorageService.set('is_authenticated', true)
-        this._router.navigate(["naslovna"]);
-        // this._authenticationService.login(this.loginForm.value).pipe(take(1)).
-        //   subscribe(
-        //     (data: ILoginResponse) => {
-        //       this._router.navigate(["/dashboard"]);
-        //     },
-        //     (error: Error) => {
-        //       console.log(error)
-        //     }
-        //   );
-      }
-    } else {
-      // activate form.submitted
+  submit() {
+    if (this.loginForm.invalid) {
       return;
     }
+    this.submit$.next(true);
   }
   /* #endregion */
 
