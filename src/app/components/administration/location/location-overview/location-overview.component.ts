@@ -17,7 +17,7 @@ export class LocationOverviewComponent implements OnInit {
   /* #region  Variables */
   currentLang: string;
   mainTableColumns: TableColumn[] = [];
-  companies: ILocationResponse[] = [{
+  locations: ILocationResponse[] = [{
     id: 1,
     description: "SPAR ISTOK",
     companyName: "SPAR",
