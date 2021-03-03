@@ -8,17 +8,17 @@
         </div>
         <div class="card-body custom-datatable">
           <ngx-datatable class="bootstrap" [rows]="locations" [columnMode]="'force'" [headerHeight]="50"
-            [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true" [messages]="{
+            [footerHeight]="50" [rowHeight]="'auto'" [limit]="10"  [messages]="{
               emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
               totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
             <ng-container *ngFor="let column of mainTableColumns; let i = index;">
               <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [width]="column.width">
                 <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                   <span class="d-flex justify-content-between">
-                    <button class='btn btn-outline-warning ngx-button' (click)="addOrEditLocation(row)" title='Uredi'>
+                    <button class='btn btn-outline-warning px-2 py-1' (click)="addOrEditLocation(row)" title='Uredi'>
                       <i class="fa fa-pencil"></i>
                     </button>
-                    <button class='btn btn-outline-danger ngx-button'(click)="deleteLocation(row)" title='Obriši'>
+                    <button class='btn btn-outline-danger px-2 py-1'(click)="deleteLocation(row)" title='Obriši'>
                       <i class="fa fa-trash"></i>
                     </button>
                   </span>
