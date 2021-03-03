@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <h4 class="modal-title" *ngIf="row; else addLocation">{{ 'Edit location' | translate}}</h4>
+    <ng-template #addLocation>
+      <h4 class="modal-title">{{ 'Add location' | translate }}</h4>
+    </ng-template>
+    <button type="button" class="close" aria-label="Close" (click)="modalClose('dismiss')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form class="needs-validation" [formGroup]="locationGroup" #ngLocationForm="ngForm" autocomplete="off">
+    <div class="modal-body input-group p-0">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label class="col-form-label pt-0 required">{{ 'Description' | translate }} <span
+              class="text-danger">*</span></label>
+          <input class="form-control" formControlName="description" type="text" placeholder="SPAR ISTOK"
+            [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched || ngLocationForm.submitted)}">
+          <div class="invalid-feedback"
+            *ngIf="description.invalid && description.errors?.required && (description.dirty || description.touched || ngLocationForm.submitted)">
+            {{ 'Description is required' | translate}}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label class="col-form-label pt-0 required">{{ 'Address' | translate }} <span
+              class="text-danger">*</span></label>
+          <input class="form-control" formControlName="address" type="text" placeholder="Zorkovačka 2"
+            [ngClass]="{'is-invalid': address.invalid && (address.dirty || address.touched || ngLocationForm.submitted)}">
+          <div class="invalid-feedback"
+            *ngIf="address.invalid && address.errors?.required && (address.dirty || address.touched || ngLocationForm.submitted)">
+            {{ 'Address is required' | translate}}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label class="col-form-label pt-0 required">{{ 'Company name' | translate }} <span
+              class="text-danger">*</span></label>
+          <input class="form-control" formControlName="companyName" type="text" placeholder="Konzum"
+            [ngClass]="{'is-invalid': companyName.invalid && (companyName.dirty || companyName.touched || ngLocationForm.submitted)}">
+          <div class="invalid-feedback"
+            *ngIf="companyName.invalid && companyName.errors?.required && (companyName.dirty || companyName.touched || ngLocationForm.submitted)">
+            {{ 'Company name is required' | translate}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+      <button type="button" class="btn btn-light" ngbAutoFocus (click)="modalClose('dismiss')">{{ 'Close' | translate
+        }}</button>
+      <button type="submit" class="btn btn-primary" (click)="modalClose('dismiss')">{{ 'Submit' | translate }}</button>
+    </div>
+  </form>
