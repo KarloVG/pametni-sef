@@ -1,7 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { EMPTY } from 'rxjs';
+import { catchError, map, take } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 import { IControlCenterResponse } from '../models/response/control-center-response';
+import { ControlCenterService } from '../services/control-center.service';
 
 @Component({
   selector: 'app-modal-aoe-control-center',
@@ -12,44 +16,89 @@ export class ModalAoeControlCenterComponent implements OnInit {
   /* #region  Variables */
   @Input() row: IControlCenterResponse;
   controlCenterGroup: FormGroup;
+  isSendTimeValidatorActive: boolean = false;
   /* #endregion */
 
   /* #region  Constructor */
   constructor(
     private _formBuilder: FormBuilder,
-    private _modal: NgbActiveModal
-    // public _controlCenterService: ControlCenterService
+    private _modal: NgbActiveModal,
+    public _controlCenterService: ControlCenterService,
+    private _notificationService: NotificationService
   ) { }
   /* #endregion */
 
   /* #region  Methods */
   ngOnInit(): void {
     this.setUpFormGroup();
-    console.log(this.row)
   }
 
   setUpFormGroup(): void {
     if (this.row) {
-      const joinedMailList = this.row.mailList.length > 1 ? this.row.mailList.join(";") : this.row.mailList;
+      const joinedMailList = this.row.emailList.length > 1 ? this.row.emailList.join(";") : this.row.emailList;
       this.controlCenterGroup = this._formBuilder.group({
         name: [this.row.name, Validators.required],
-        mailList: [joinedMailList, Validators.required]
+        emailList: [joinedMailList, Validators.required],
+        sendDailyReport: [this.row.sendDailyReport],
+        sendTime: [this.row.sendTime]
       })
     } else {
       this.controlCenterGroup = this._formBuilder.group({
         name: ['', Validators.required],
-        mailList: ['', Validators.required]
+        emailList: ['', Validators.required],
+        sendDailyReport: [false],
+        sendTime: new Date().toISOString()
       })
+    }
+
+    this.sendDailyReport.valueChanges.subscribe(checked => {
+      if (checked) {
+        this.isSendTimeValidatorActive = true;
+        this.sendTime.setValidators([Validators.required]);
+      } else {
+        this.isSendTimeValidatorActive = false;
+        this.sendTime.setValidators(null);
+      }
+      this.sendTime.updateValueAndValidity();
+    })
+  }
+
+  onSubmit(): void {
+    if (this.row) {
+      this._controlCenterService.editControlCenter(this.controlCenterGroup.value).pipe(
+        take(1),
+        map(response => response.response),
+        catchError(err => {
+          this._notificationService.fireErrorNotification("Greška", err);
+          return EMPTY;
+        })
+      ).subscribe(() => {
+        this._modal.close();
+      }
+      );
+    } else {
+      this._controlCenterService.addControlCenter(this.controlCenterGroup.value).pipe(
+        take(1),
+        catchError(err => {
+          this._notificationService.fireErrorNotification("Greška", err);
+          return EMPTY;
+        })
+      ).subscribe(() => {
+        this._modal.close();
+      }
+      );
     }
   }
 
   modalClose(reson): void {
-    this._modal.close(reson)
+    this._modal.dismiss(reson)
   }
   /* #endregion */
 
   /* #region  Abstract controls */
   get name(): AbstractControl { return this.controlCenterGroup.get('name'); }
-  get mailList(): AbstractControl { return this.controlCenterGroup.get('mailList'); }
+  get emailList(): AbstractControl { return this.controlCenterGroup.get('emailList'); }
+  get sendDailyReport(): AbstractControl { return this.controlCenterGroup.get('sendDailyReport'); }
+  get sendTime(): AbstractControl { return this.controlCenterGroup.get('sendTime'); }
   /* #endregion */
 }

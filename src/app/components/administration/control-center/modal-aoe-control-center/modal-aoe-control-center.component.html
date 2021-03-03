@@ -7,7 +7,8 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<form class="needs-validation" [formGroup]="controlCenterGroup" #ngControlCenterForm="ngForm" autocomplete="off">
+<form class="needs-validation" [formGroup]="controlCenterGroup" #ngControlCenterForm="ngForm" autocomplete="off"
+  (ngSubmit)="onSubmit()">
   <div class="modal-body input-group p-0">
     <div class="col-lg-6">
       <div class="form-group">
@@ -28,11 +29,33 @@
           <strong>({{'For more email adresses separate them with' | translate }}) ","</strong>
           <span class="text-danger"> *</span>
         </label>
-        <input class="form-control" type="text" formControlName="mailList"
+        <input class="form-control" type="text" formControlName="emailList"
           placeholder="marko.markovic@proton.hr; ivan.ivanovic@hotmail.com"
-          [ngClass]="{'is-invalid': mailList.invalid && (mailList.dirty || mailList.touched || ngControlCenterForm.submitted)}">
-        <div class="invalid-feedback" *ngIf="mailList.invalid && mailList.errors?.required">
+          [ngClass]="{'is-invalid': emailList.invalid && (emailList.dirty || emailList.touched || ngControlCenterForm.submitted)}">
+        <div class="invalid-feedback" *ngIf="emailList.invalid && emailList.errors?.required">
           {{ 'One or more email is required' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 d-flex mb-2">
+      <div class="form-group mb-0">
+        <label class="d-block mb-0" for="soap_message">
+          <input class="checkbox_animated" id="soap_message" type="checkbox" formControlName="sendDailyReport">
+          {{ 'Daily report send' | translate }}
+        </label>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12" *ngIf="isSendTimeValidatorActive">
+      <div class="form-group">
+        <label class="col-form-label">
+          {{ 'Daily report send time' | translate }}
+          <span class="text-danger"> *</span>
+        </label>
+        <ngb-timepicker formControlName="sendTime" class="time-picker-custom">
+        </ngb-timepicker>
+        <div class="small form-text text-danger"
+          *ngIf="sendTime.errors?.required && (sendTime.dirty || sendTime.touched || ngControlCenterForm.submitted)">
+          {{ 'Daily report send time is required' | translate }}
         </div>
       </div>
     </div>
@@ -40,6 +63,6 @@
   <div class="modal-footer d-flex justify-content-between">
     <button type="button" class="btn btn-light" ngbAutoFocus (click)="modalClose('dismiss')">{{ 'Close' | translate
       }}</button>
-    <button type="submit" class="btn btn-primary" (click)="modalClose('dismiss')">{{ 'Submit' | translate }}</button>
+    <button type="submit" class="btn btn-primary">{{ 'Submit' | translate }}</button>
   </div>
 </form>

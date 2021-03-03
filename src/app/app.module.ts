@@ -11,6 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LocalStorageService } from './shared/services/authorization/local-storage.service';
 import { AuthorizationGuard } from './shared/services/guards/authorization.guard';
+import { httpInterceptorProviders } from './shared/services/interceptors/interceptor-providers';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -41,7 +42,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: [
     LocalStorageService,
     AuthorizationGuard,
-    //httpInterceptorProviders - providers
+    httpInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })
