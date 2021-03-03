@@ -34,6 +34,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       }
     ])
   ],
-  // providers: [ControlCenterService]
+  providers: []
 })
 export class ControlCenterModule { }

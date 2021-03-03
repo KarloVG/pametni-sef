@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseURL: 'https://edonacijeapi.azurewebsites.net'
+  baseURL: 'https://smartsafe-rest.azurewebsites.net/api'
 };
 
 /*

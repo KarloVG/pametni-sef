@@ -1,13 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TableColumn } from '@swimlane/ngx-datatable';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
+import { catchError, map, take, tap } from 'rxjs/operators';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 import { LanguageDeterminator } from 'src/app/shared/services/utils/language-determinator';
 import { ModalAoeControlCenterComponent } from '../modal-aoe-control-center/modal-aoe-control-center.component';
 import { CONTROL_CENTERS_CRO, CONTROL_CENTERS_ENG } from '../models/control-center-columns';
 import { DEVICES_CRO, DEVICES_ENG } from '../models/devices-columns';
 import { IControlCenterResponse } from '../models/response/control-center-response';
+import { ControlCenterService } from '../services/control-center.service';
 
 @Component({
   selector: 'app-control-center-overview',
@@ -15,19 +18,15 @@ import { IControlCenterResponse } from '../models/response/control-center-respon
   styleUrls: ['./control-center-overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ControlCenterOverviewComponent implements OnInit {
+export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
 
   /* #region Variables */
   currentLang: string;
   mainTableColumns: TableColumn[] = [];
   altTableColumns: TableColumn[] = [];
-  controlCenters: IControlCenterResponse[] = [
-    {
-      id: 1,
-      name: 'Rijeka sjever',
-      mailList: ['boško.buha@securitas.net', 'jure.boban@securitas.net', 'marko.markovic@securitas.net']
-    }
-  ];
+  controlCenters$: Observable<IControlCenterResponse[]>;
+  controlCenterSubject$: Subject<boolean> = new Subject();
+  isLoadingMainTable: boolean = false;
   devices: any[] = [
     {
       id: 1,
@@ -57,7 +56,9 @@ export class ControlCenterOverviewComponent implements OnInit {
   /* #region Constructor */
   constructor(
     private _languageDeterminator: LanguageDeterminator,
-    private _modalService: NgbModal
+    private _modalService: NgbModal,
+    private _controlCenterService: ControlCenterService,
+    private readonly _notificationService: NotificationService
   ) {
     this._languageDeterminator.currentActiveLanguage$.subscribe(
       data => {
@@ -71,6 +72,20 @@ export class ControlCenterOverviewComponent implements OnInit {
 
   /* #region  Public methods */
   ngOnInit(): void {
+    this.controlCenterSubject$.subscribe(res => {
+      this.isLoadingMainTable = true;
+      this.controlCenters$ = this._controlCenterService.controlCenters$.pipe(
+        tap(() => this.isLoadingMainTable = false),
+        catchError(err => {
+          this._notificationService.fireErrorNotification("Greška", err);
+          return EMPTY;
+        })
+      );
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.controlCenterSubject$.next(true);
   }
 
   onClickMainTableRow(event): void {
@@ -86,21 +101,12 @@ export class ControlCenterOverviewComponent implements OnInit {
       keyboard: false
     });
     modalRef.componentInstance.row = row ?? null;
-    // modalRef.result.then((result) => {
-    //   if (result == true) {
-    //     this._accountService
-    //       .delete(account.id)
-    //       .pipe(
-    //         take(1)
-    //       )
-    //       .subscribe((data) => {
-    //         this.handleSuccesResponse('Račun je obrisan');
-    //       });
-    //   }
-    // })
-    // .catch((reason) => {
-    //   this.handleModalDismiss('Račun nije obrisan');
-    // });
+    modalRef.result.then((result) => {
+      this._notificationService.fireSuccessMessage('Uspjeh', row ? "Kontrolni centar je uređen" : "Kontrolni centar je dodan.");
+      this.controlCenterSubject$.next(true);
+    }).catch((reason) => {
+      this._notificationService.fireWarningMessage('Pažnja', row ? "Kontrolni centar nije uređen" : "Kontrolni centar nije dodan.");
+    });
   }
 
   deleteControlCenter(row: IControlCenterResponse): void {
@@ -111,21 +117,23 @@ export class ControlCenterOverviewComponent implements OnInit {
     modalRef.componentInstance.title = 'Brisanje kontrolnog centra';
     modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati kontrolni centar pod nazivom ${row.name} sa popisa?`;
     modalRef.componentInstance.isDelete = true;
-    // modalRef.result.then((result) => {
-    //   if (result == true) {
-    //     this._accountService
-    //       .delete(account.id)
-    //       .pipe(
-    //         take(1)
-    //       )
-    //       .subscribe((data) => {
-    //         this.handleSuccesResponse('Račun je obrisan');
-    //       });
-    //   }
-    // })
-    // .catch((reason) => {
-    //   this.handleModalDismiss('Račun nije obrisan');
-    // });
+    modalRef.result.then((result) => {
+      this._controlCenterService.delete(row.id)
+        .pipe(
+          take(1),
+          catchError(err => {
+            this._notificationService.fireErrorNotification('Greška', err);
+            return EMPTY;
+          })
+        )
+        .subscribe((data) => {
+          this._notificationService.fireSuccessMessage('Uspjeh', 'Kontrolni centar je obrisan.');
+          this.controlCenterSubject$.next(true);
+        });
+    })
+      .catch((reason) => {
+        this._notificationService.fireWarningMessage('Pažnja', 'Kontrolni centar nije obrisan');
+      });
   }
   /* #endregion */
 }

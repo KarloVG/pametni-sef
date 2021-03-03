@@ -7,11 +7,11 @@ import { HttpErrorInterceptor } from './http-error.interceptor';
  * Outside-in order
  */
 export const httpInterceptorProviders: Provider[] = [
-  {
-    provide: HTTP_INTERCEPTORS,
-    useClass: HttpErrorInterceptor,
-    multi: true
-  },
+  // {
+  //   provide: HTTP_INTERCEPTORS,
+  //   useClass: HttpErrorInterceptor,
+  //   multi: true
+  // },
   {
     provide: HTTP_INTERCEPTORS,
     useClass: HttpAuthInterceptor,

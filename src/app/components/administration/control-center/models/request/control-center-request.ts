@@ -1,7 +1,7 @@
-export interface IControlCenterResponse {
+export interface IControlCenterRequest {
   id: number;
   name: string;
-  emailList: string[];
+  emailList: string[] | string;
   sendDailyReport: boolean;
   sendTime: string;
 }
