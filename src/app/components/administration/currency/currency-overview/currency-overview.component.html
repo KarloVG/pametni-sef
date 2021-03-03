@@ -11,24 +11,24 @@
         <div>
           <div class=" card-header d-flex justify-content-between align-items-center">
             <h6>{{ 'Currency preview' | translate }}</h6>
-            <button class="btn btn-primary" (click)="addOrEditCurrency()">
+            <button class="btn btn-primary px-3 py-2" (click)="addOrEditCurrency()">
               <i class="fa fa-plus"></i></button>       
         </div>
         </div>
         <div class="card-body custom-datatable">
           <ngx-datatable class="bootstrap" [rows]="currencies" [columns]="currencyTableColumns" [columnMode]="'force'"
-            [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true" [messages]="{
+            [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [messages]="{
               emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
               totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
               <ng-container *ngFor="let column of currencyTableColumns; let i = index;">
                 <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [width]="column.width">
                   <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                     <span class="d-flex justify-content-between">
-                      <button class='btn btn-outline-warning ngx-button' title='Uredi'
+                      <button class='btn btn-outline-warning px-2 py-1' title='Uredi'
                       (click)="addOrEditCurrency(row)">
                     <i class="fa fa-pencil"></i>
                   </button>
-                  <button class='btn btn-outline-danger ngx-button' title='Obriši' (click)="deleteApoenCurrency(row)">
+                  <button class='btn btn-outline-danger px-2 py-1' title='Obriši' (click)="deleteApoenCurrency(row)">
                     <i class="fa fa-trash"></i>
                   </button>
                     </span>
@@ -36,16 +36,15 @@
                 </ngx-datatable-column>
                 <ngx-datatable-column *ngIf='column.prop === "apoen"' name="{{column.name}}" [width]="column.width">
                   <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-                  <button class='btn btn-outline-secondary ngx-button' title='Apoenska Struktura'
+                  <button class='btn btn-secondary px-2 py-1' title='Apoenska Struktura'
                   (click)="openApoenStructure($event)">
-                <i class="fa fa-money"></i>
+                <small>{{'Apoen structure' | translate}}</small>
                 </button>
               </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column *ngIf='column.prop !== "actions" && column.prop !== "apoen"' name="{{column.name}}" prop="{{column.prop}}"
                 [width]="column.width">
               </ngx-datatable-column>
-
               </ng-container>
           </ngx-datatable>
         </div>
@@ -59,18 +58,18 @@
         </div>
         <div class="card-body custom-datatable">
           <ngx-datatable class="bootstrap" [rows]="apoenTable" [columns]="apoenTableColumns" [columnMode]="'force'"
-            [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true" [messages]="{
+            [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [messages]="{
               emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
               totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
               <ng-container *ngFor="let column of apoenTableColumns; let i = index;">
                 <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [width]="column.width">
                   <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                     <span class="d-flex justify-content-between">
-                      <button class='btn btn-outline-warning ngx-button' title='Uredi'
+                      <button class='btn btn-outline-warning px-2 py-1' title='Uredi'
                       (click)="addOrEditApoen(row)">
                     <i class="fa fa-pencil"></i>
                   </button>
-                  <button class='btn btn-outline-danger ngx-button' title='Obriši'
+                  <button class='btn btn-outline-danger px-2 py-1' title='Obriši'
                   (click)="deleteApoenCurrency(row)">
                     <i class="fa fa-trash"></i>
                   </button>
