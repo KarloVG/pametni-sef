@@ -17,15 +17,7 @@ export class CompanyOverviewComponent implements OnInit {
   /* #region  Variables */
   currentLang: string;
   mainTableColumns: TableColumn[] = [];
-  companies: ICompanyResponse[] = [{
-    id: 1,
-    deviceCount: 40,
-    userCount: 12,
-    name: 'Uređaj 321',
-    headquarters: 'Podsusedska 21',
-    address: 'Podsusedska 21',
-    identificator: '321-ds2332-dsa1255'
-  }];
+  companies: ICompanyResponse[] = []
   /* #endregion */
 
   /* #region  Constructor */
@@ -43,6 +35,17 @@ export class CompanyOverviewComponent implements OnInit {
   /* #endregion */
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.companies = [{
+        id: 1,
+        deviceCount: 40,
+        userCount: 12,
+        name: 'Uređaj 321',
+        headquarters: 'Podsusedska 21',
+        address: 'Podsusedska 21',
+        identificator: '321-ds2332-dsa1255'
+      }];
+    }, 1000)
   }
 
   addOrEditCompany(row?: ICompanyResponse): void {
@@ -52,21 +55,6 @@ export class CompanyOverviewComponent implements OnInit {
       keyboard: false
     });
     modalRef.componentInstance.row = row ?? null;
-    // modalRef.result.then((result) => {
-    //   if (result == true) {
-    //     this._accountService
-    //       .delete(account.id)
-    //       .pipe(
-    //         take(1)
-    //       )
-    //       .subscribe((data) => {
-    //         this.handleSuccesResponse('Račun je obrisan');
-    //       });
-    //   }
-    // })
-    // .catch((reason) => {
-    //   this.handleModalDismiss('Račun nije obrisan');
-    // });
   }
 
   deleteCompany(row: ICompanyResponse): void {
@@ -77,21 +65,6 @@ export class CompanyOverviewComponent implements OnInit {
     modalRef.componentInstance.title = 'Brisanje tvrtke';
     modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati tvrtku pod nazivom ${row.name} sa popisa?`;
     modalRef.componentInstance.isDelete = true;
-    // modalRef.result.then((result) => {
-    //   if (result == true) {
-    //     this._accountService
-    //       .delete(account.id)
-    //       .pipe(
-    //         take(1)
-    //       )
-    //       .subscribe((data) => {
-    //         this.handleSuccesResponse('Račun je obrisan');
-    //       });
-    //   }
-    // })
-    // .catch((reason) => {
-    //   this.handleModalDismiss('Račun nije obrisan');
-    // });
   }
 
 }

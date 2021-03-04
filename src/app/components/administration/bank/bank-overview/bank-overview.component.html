@@ -12,7 +12,8 @@
             emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
             totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
           <ng-container *ngFor="let column of mainTableColumns; let i = index;">
-            <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [width]="column.width">
+            <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [maxWidth]="column.maxWidth"
+              [minWidth]="column.minWidth">
               <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                 <span class="d-flex justify-content-between">
                   <button class='btn btn-outline-warning px-2 py-1' title='Uredi' (click)="addOrEditBank(row)">
@@ -24,7 +25,8 @@
                 </span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column *ngIf='column.prop === "bankActions"' name="{{column.name}}" [width]="column.width">
+            <ngx-datatable-column *ngIf='column.prop === "bankActions"' name="{{column.name}}"
+              [maxWidth]="column.maxWidth" [minWidth]="column.minWidth">
               <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                 <span class="d-flex justify-content-between">
                   <button class='btn btn-info px-2 py-1' title="Uredi IBAN" (click)="openIBANModal(row)">
@@ -44,7 +46,7 @@
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column *ngIf='column.prop !== "actions" && column.prop !== "bankActions"'
-              name="{{column.name}}" prop="{{column.prop}}" [width]="column.width">
+              name="{{column.name}}" prop="{{column.prop}}" [maxWidth]="column.maxWidth" [minWidth]="column.minWidth">
             </ngx-datatable-column>
           </ng-container>
         </ngx-datatable>

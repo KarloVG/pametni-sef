@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angu
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
-import { catchError, map, take, tap } from 'rxjs/operators';
+import { catchError, take, tap } from 'rxjs/operators';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { LanguageDeterminator } from 'src/app/shared/services/utils/language-determinator';
@@ -100,6 +100,7 @@ export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
       backdrop: 'static',
       keyboard: false
     });
+    console.log(row)
     modalRef.componentInstance.row = row ?? null;
     modalRef.result.then((result) => {
       this._notificationService.fireSuccessMessage('Uspjeh', row ? "Kontrolni centar je uređen" : "Kontrolni centar je dodan.");
