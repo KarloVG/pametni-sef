@@ -18,18 +18,7 @@ export class BankOverviewComponent implements OnInit {
 
   currentLang: string;
   mainTableColumns = [];
-  banks: IBankResponse[] = [
-    {
-      id: 1,
-      name: 'PBZ d.o.o',
-      roles: ['Administrator banke', 'CEO Securitas']
-    },
-    {
-      id: 2,
-      name: 'HPB d.o.o',
-      roles: ['Administrator banke']
-    }
-  ];
+  banks: IBankResponse[] = [];
 
   constructor(
     private _languageDeterminator: LanguageDeterminator,
@@ -44,6 +33,20 @@ export class BankOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.banks = [
+        {
+          id: 1,
+          name: 'PBZ d.o.o',
+          roles: ['Administrator banke', 'CEO Securitas']
+        },
+        {
+          id: 2,
+          name: 'HPB d.o.o',
+          roles: ['Administrator banke']
+        }
+      ];
+    }, 1000)
   }
 
   addOrEditBank(row?: IBankResponse): void {

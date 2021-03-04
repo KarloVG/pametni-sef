@@ -55,8 +55,9 @@ export class ControlCenterService {
   editControlCenter(controlCenterRequest: IControlCenterRequest):
     Observable<any> {
     this.loader.show();
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'editControlCenter', controlCenterRequest.id.toString());
-    return this._http.put<any>(url, controlCenterRequest).pipe(
+    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList] }
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateControlCenter', controlCenterRequest.id.toString());
+    return this._http.put<any>(url, request).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );

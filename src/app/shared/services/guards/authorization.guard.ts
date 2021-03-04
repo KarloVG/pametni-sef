@@ -13,10 +13,12 @@ export class AuthorizationGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | UrlTree {
+    console.log(state.url);
+
     if (this._localStorageService.get('is_authenticated')) {
       if (state.url === '/prijava') {
         // trebalo bi ići na naslovnu tu
-        return false;
+        return this._router.parseUrl('/naslovna');
       } else {
         return true;
       }

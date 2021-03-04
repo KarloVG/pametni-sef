@@ -35,10 +35,10 @@ export class ModalAoeControlCenterComponent implements OnInit {
 
   setUpFormGroup(): void {
     if (this.row) {
-      const joinedMailList = this.row.emailList.length > 1 ? this.row.emailList.join(";") : this.row.emailList;
       this.controlCenterGroup = this._formBuilder.group({
+        id: [this.row.id],
         name: [this.row.name, Validators.required],
-        emailList: [joinedMailList, Validators.required],
+        emailList: [this.row.emailList, Validators.required],
         sendDailyReport: [this.row.sendDailyReport],
         sendTime: [this.row.sendTime]
       })
