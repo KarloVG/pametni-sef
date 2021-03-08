@@ -159,5 +159,9 @@
   "Location": "Lokacije",
   "Location preview": "Pregled lokacija",
   "Address is required": "Polje adresa je obavezno",
-  "Description is required": "Polje opis je obavezno"
+  "Description is required": "Polje opis je obavezno",
+  "Edit bank": "Uređivanje banke",
+  "Add bank": "Dodavanje banke",
+  "Bank name": "Naziv banke",
+  "Bank name is required": "Polje naziv banke je obavezno"
 }

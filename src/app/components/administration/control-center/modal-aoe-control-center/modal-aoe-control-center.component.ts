@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EMPTY } from 'rxjs';
@@ -12,7 +12,7 @@ import { ControlCenterService } from '../services/control-center.service';
   templateUrl: './modal-aoe-control-center.component.html',
   styleUrls: ['./modal-aoe-control-center.component.scss']
 })
-export class ModalAoeControlCenterComponent implements OnInit {
+export class ModalAoeControlCenterComponent implements OnInit, AfterViewInit {
   /* #region  Variables */
   @Input() row: IControlCenterResponse;
   controlCenterGroup: FormGroup;
@@ -39,15 +39,15 @@ export class ModalAoeControlCenterComponent implements OnInit {
         id: [this.row.id],
         name: [this.row.name, Validators.required],
         emailList: [this.row.emailList, Validators.required],
-        sendDailyReport: [this.row.sendDailyReport],
-        sendTime: [this.row.sendTime]
+        sendDailyReport: [''],
+        sendTime: ['']
       })
     } else {
       this.controlCenterGroup = this._formBuilder.group({
         name: ['', Validators.required],
         emailList: ['', Validators.required],
         sendDailyReport: [false],
-        sendTime: new Date().toISOString()
+        sendTime: [null]
       })
     }
 
@@ -58,9 +58,27 @@ export class ModalAoeControlCenterComponent implements OnInit {
       } else {
         this.isSendTimeValidatorActive = false;
         this.sendTime.setValidators(null);
+        this.controlCenterGroup.patchValue({
+          sendTime: {
+            hour: null,
+            minute: null
+          }
+        })
       }
       this.sendTime.updateValueAndValidity();
     })
+  }
+
+  ngAfterViewInit(): void {
+    if (this.row) {
+      this.controlCenterGroup.patchValue({
+        sendDailyReport: this.row.sendDailyReport,
+        sendTime: {
+          hour: this.row.sendDailyReport ? +this.row.sendTime.split(':')[0] : null,
+          minute: this.row.sendDailyReport ? +this.row.sendTime.split(':')[1] : null
+        }
+      });
+    }
   }
 
   onSubmit(): void {

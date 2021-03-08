@@ -157,5 +157,9 @@
   "Location": "Location",
   "Location preview": "Location preview",
   "Address is required": "Address is required",
-  "Description is required": "Description is required"
+  "Description is required": "Description is required",
+  "Edit bank": "Edit bank",
+  "Add bank": "Add bank",
+  "Bank name": "Bank name",
+  "Bank name is required": "Bank name is required"
 }

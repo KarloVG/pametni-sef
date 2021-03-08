@@ -7,6 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { IControlCenterRequest } from '../models/request/control-center-request';
 import { IControlCenterResponse } from '../models/response/control-center-response';
 import { IFleksbitReponse } from 'src/app/shared/models/fleksbit-response';
+import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
 
 @Injectable({
   providedIn: 'any',
@@ -16,11 +17,7 @@ export class ControlCenterService {
   /* #region  Variables */
   private readonly CONTROLLER_NAME = 'ControlCenter';
   loader: NgxSpinnerService;
-  controlCenters$ = this._http.get<IFleksbitReponse<IControlCenterResponse[]>>(this.getControlCentersURL()).pipe(
-    map(res => res.response),
-    tap(res => console.log("Get all control centers", res)),
-    catchError(error => this.handleError(error))
-  );
+
   /* #endregion */
 
   /* #region  Constructor */
@@ -35,15 +32,26 @@ export class ControlCenterService {
 
   /* #region Methods */
   // get control centers
-  getControlCentersURL(): string {
-    return this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllControllCenters');
+  getControlCentersPaginated(controlCenterRequest): Observable<any> {
+    const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllControllCenters');
+    const request: IPaginationBase = {
+      page: controlCenterRequest.page,
+      pageSize: controlCenterRequest.pageSize,
+      searchString: controlCenterRequest.searchString,
+      filtering: controlCenterRequest.filtering
+    }
+    return this._http.post<IFleksbitReponse<IControlCenterResponse[]>>(url, request).pipe(
+      map(res => res.response),
+      tap(res => console.log("Get all control centers", res)),
+      catchError(error => this.handleError(error))
+    );
   }
 
   // add control center
   addControlCenter(controlCenterRequest: IControlCenterRequest):
     Observable<any> {
     this.loader.show();
-    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList] }
+    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList], sendTime: { hour: controlCenterRequest.sendTime?.hour ?? null, minute: controlCenterRequest.sendTime?.minute ?? null } }
     const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addControlCenter');
     return this._http.post<any>(url, request).pipe(
       tap(() => this.loader.hide()),
@@ -54,8 +62,9 @@ export class ControlCenterService {
   // edit control center
   editControlCenter(controlCenterRequest: IControlCenterRequest):
     Observable<any> {
+    console.log(controlCenterRequest)
     this.loader.show();
-    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList] }
+    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList], sendTime: { hour: controlCenterRequest.sendTime?.hour ?? null, minute: controlCenterRequest.sendTime?.minute ?? null } }
     const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateControlCenter', controlCenterRequest.id.toString());
     return this._http.put<any>(url, request).pipe(
       tap(() => this.loader.hide()),

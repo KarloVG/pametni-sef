@@ -1,9 +1,11 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
-import { catchError, take, tap } from 'rxjs/operators';
+import { catchError, map, take, tap } from 'rxjs/operators';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
+import { BasePaginationComponent } from 'src/app/shared/components/pagination/base-pagination.component';
+import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { LanguageDeterminator } from 'src/app/shared/services/utils/language-determinator';
 import { ModalAoeControlCenterComponent } from '../modal-aoe-control-center/modal-aoe-control-center.component';
@@ -18,7 +20,7 @@ import { ControlCenterService } from '../services/control-center.service';
   styleUrls: ['./control-center-overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
+export class ControlCenterOverviewComponent extends BasePaginationComponent implements OnInit, AfterViewInit {
 
   /* #region Variables */
   currentLang: string;
@@ -26,31 +28,34 @@ export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
   altTableColumns: TableColumn[] = [];
   controlCenters$: Observable<IControlCenterResponse[]>;
   controlCenterSubject$: Subject<boolean> = new Subject();
-  isLoadingMainTable: boolean = false;
-  devices: any[] = [
-    {
-      id: 1,
-      transactionId: 32131,
-      name: 'Uređaj 123',
-      locationName: 'Marjan',
-      companyName: 'Lidl d.o.o',
-      status: 'Aktivan',
-      type: 'Uređaj za depozit - MEI',
-      controlCenter: 'Rijeka zapad - Rijeka'
-    },
-    {
-      id: 2,
-      transactionId: 567576,
-      name: 'Uređaj 654',
-      locationName: 'Zaseok',
-      companyName: 'Špar d.o.o',
-      status: 'Aktivan',
-      type: 'Uređaj za depozit - MEI',
-      controlCenter: 'Rijeka zapad - Rijeka'
-    }
-  ];
-  private mainTableClickedSubject = new BehaviorSubject<boolean>(false);
-  mainTableClickedAction$ = this.mainTableClickedSubject.asObservable();
+  isLoadingMainTable: boolean = true;
+  paginationRequest: IPaginationBase;
+  pageSize: number = 10;
+  count: number = 0;
+  // devices: any[] = [
+  //   {
+  //     id: 1,
+  //     transactionId: 32131,
+  //     name: 'Uređaj 123',
+  //     locationName: 'Marjan',
+  //     companyName: 'Lidl d.o.o',
+  //     status: 'Aktivan',
+  //     type: 'Uređaj za depozit - MEI',
+  //     controlCenter: 'Rijeka zapad - Rijeka'
+  //   },
+  //   {
+  //     id: 2,
+  //     transactionId: 567576,
+  //     name: 'Uređaj 654',
+  //     locationName: 'Zaseok',
+  //     companyName: 'Špar d.o.o',
+  //     status: 'Aktivan',
+  //     type: 'Uređaj za depozit - MEI',
+  //     controlCenter: 'Rijeka zapad - Rijeka'
+  //   }
+  // ];
+  // private mainTableClickedSubject = new BehaviorSubject<boolean>(false);
+  // mainTableClickedAction$ = this.mainTableClickedSubject.asObservable();
   /* #endregion */
 
   /* #region Constructor */
@@ -58,8 +63,10 @@ export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
     private _languageDeterminator: LanguageDeterminator,
     private _modalService: NgbModal,
     private _controlCenterService: ControlCenterService,
-    private readonly _notificationService: NotificationService
+    private readonly _notificationService: NotificationService,
+    private ref: ChangeDetectorRef
   ) {
+    super();
     this._languageDeterminator.currentActiveLanguage$.subscribe(
       data => {
         this.currentLang = data;
@@ -72,15 +79,18 @@ export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
 
   /* #region  Public methods */
   ngOnInit(): void {
+    this.paginationRequest = {
+      page: this.currentPage + 1,
+      pageSize: this.pageSize,
+      searchString: "",
+      orderBy: null,
+      filtering: null
+    };
+
     this.controlCenterSubject$.subscribe(res => {
       this.isLoadingMainTable = true;
-      this.controlCenters$ = this._controlCenterService.controlCenters$.pipe(
-        tap(() => this.isLoadingMainTable = false),
-        catchError(err => {
-          this._notificationService.fireErrorNotification("Greška", err);
-          return EMPTY;
-        })
-      );
+      this.ref.markForCheck();
+      this.fetchPage();
     });
   }
 
@@ -88,11 +98,45 @@ export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
     this.controlCenterSubject$.next(true);
   }
 
-  onClickMainTableRow(event): void {
-    if (event.type === 'click') {
-      this.mainTableClickedSubject.next(true);
+  setPage(pageInfo): void {
+    this.setPaginationOption(+pageInfo.offset);
+    this.fetchPage();
+  }
+
+  onSort(event) {
+    this.paginationRequest = {
+      page: this.currentPage + 1,
+      pageSize: this.pageSize,
+      orderBy: event.sorts[0],
+    };
+    this.fetchPage()
+  }
+
+  setPaginationOption(page: number, pageSize?: number): void {
+    this.currentPage = page;
+    this.paginationRequest.page = page + 1;
+
+    if (pageSize) {
+      this.paginationRequest.pageSize = pageSize;
     }
   }
+
+  fetchPage(): void {
+    this.controlCenters$ = this._controlCenterService.getControlCentersPaginated(this.paginationRequest).pipe(
+      tap((data) => { this.isLoadingMainTable = false; this.count = data.count; }),
+      map((response) => response.data),
+      catchError(err => {
+        this._notificationService.fireErrorNotification("Greška", err);
+        return EMPTY;
+      })
+    );
+  }
+
+  // onClickMainTableRow(event): void {
+  //   if (event.type === 'click') {
+  //     this.mainTableClickedSubject.next(true);
+  //   }
+  // }
 
   addOrEditControlCenter(row?: IControlCenterResponse): void {
     const modalRef = this._modalService.open(ModalAoeControlCenterComponent, {
