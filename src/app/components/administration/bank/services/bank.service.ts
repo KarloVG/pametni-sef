@@ -6,6 +6,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { IFleksbitReponse } from 'src/app/shared/models/fleksbit-response';
 import { IBankRequest } from '../models/request/bank-request';
+import { IBankResponse } from '../models/response/bank-response';
 
 @Injectable({
   providedIn: 'any',
@@ -15,9 +16,9 @@ export class BankService {
   /* #region  Variables */
   private readonly CONTROLLER_NAME = 'Bank';
   loader: NgxSpinnerService;
-  banks$ = this._http.get<IFleksbitReponse<any>>(this.getBanksURL()).pipe(
-    map(res => res.response),
+  banks$ = this._http.get<IFleksbitReponse<IBankResponse[]>>(this.getBanksURL()).pipe(
     tap(res => console.log("Get all banks", res)),
+    map(res => res.response),
     catchError(error => this.handleError(error))
   );
   /* #endregion */
@@ -35,18 +36,18 @@ export class BankService {
   /* #region Methods */
   // get control centers
   getBanksURL(): string {
-    return this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllBanks');
+    return this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllBank');
   }
 
   // add bank
   addBank(bankRequest: IBankRequest):
-    Observable<any> {
+    Observable<IFleksbitReponse<boolean>> {
     this.loader.show();
     const request: IBankRequest = {
       name: bankRequest.name
     }
     const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addBank');
-    return this._http.post<any>(url, request).pipe(
+    return this._http.post<IFleksbitReponse<boolean>>(url, request).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
@@ -54,14 +55,15 @@ export class BankService {
 
   // edit bank
   editBank(bankRequest: IBankRequest):
-    Observable<any> {
+    Observable<IFleksbitReponse<boolean>> {
     this.loader.show();
     const request: IBankRequest = {
       id: bankRequest.id,
       name: bankRequest.name
     }
+    console.log(request)
     const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateBank', bankRequest.id.toString());
-    return this._http.post<any>(url, request).pipe(
+    return this._http.put<IFleksbitReponse<boolean>>(url, request).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
