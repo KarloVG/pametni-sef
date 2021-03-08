@@ -4,21 +4,20 @@ import { UrlHelperService } from 'src/app/shared/services/url-helper.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { IControlCenterRequest } from '../models/request/control-center-request';
-import { IControlCenterResponse } from '../models/response/control-center-response';
 import { IFleksbitReponse } from 'src/app/shared/models/fleksbit-response';
-import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
+import { ICompanyResponse } from '../models/response/company-response';
 import { IPaginatedResponse } from 'src/app/shared/models/pagination/paginated-response';
+import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
+import { ICompanyRequest } from '../models/request/company-request';
 
 @Injectable({
   providedIn: 'any',
 })
-export class ControlCenterService {
+export class CompanyService {
 
   /* #region  Variables */
-  private readonly CONTROLLER_NAME = 'ControlCenter';
+  private readonly CONTROLLER_NAME = 'Company';
   loader: NgxSpinnerService;
-
   /* #endregion */
 
   /* #region  Constructor */
@@ -33,51 +32,49 @@ export class ControlCenterService {
 
   /* #region Methods */
   // get control centers
-  getControlCentersPaginated(controlCenterRequest): Observable<IPaginatedResponse<IControlCenterResponse[]>> {
-    const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllControllCenters');
+  getCompaniesPaginated(controlCenterRequest): Observable<IPaginatedResponse<ICompanyResponse[]>> {
+    const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllCompanies');
     const request: IPaginationBase = {
       page: controlCenterRequest.page,
       pageSize: controlCenterRequest.pageSize,
       searchString: controlCenterRequest.searchString,
       filtering: controlCenterRequest.filtering
     }
-    return this._http.post<IFleksbitReponse<IPaginatedResponse<IControlCenterResponse[]>>>(url, request).pipe(
+    return this._http.post<IFleksbitReponse<IPaginatedResponse<ICompanyResponse[]>>>(url, request).pipe(
       map(res => res.response),
-      tap(res => console.log("Get all control centers", res)),
+      tap(res => console.log("Get all companies", res)),
       catchError(error => this.handleError(error))
     );
   }
 
-  // add control center
-  addControlCenter(controlCenterRequest: IControlCenterRequest):
-    Observable<any> {
+  // add company
+  addCompany(companyRequest: ICompanyRequest):
+    Observable<IFleksbitReponse<boolean>> {
     this.loader.show();
-    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList], sendTime: { hour: controlCenterRequest.sendTime?.hour ?? null, minute: controlCenterRequest.sendTime?.minute ?? null } }
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addControlCenter');
-    return this._http.post<any>(url, request).pipe(
+    console.log(companyRequest)
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addCompany');
+    return this._http.post<IFleksbitReponse<boolean>>(url, companyRequest).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
   }
 
-  // edit control center
-  editControlCenter(controlCenterRequest: IControlCenterRequest):
-    Observable<any> {
-    console.log(controlCenterRequest)
+  // edit company
+  editCompany(companyRequest: ICompanyRequest):
+    Observable<IFleksbitReponse<boolean>> {
     this.loader.show();
-    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList], sendTime: { hour: controlCenterRequest.sendTime?.hour ?? null, minute: controlCenterRequest.sendTime?.minute ?? null } }
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateControlCenter', controlCenterRequest.id.toString());
-    return this._http.put<any>(url, request).pipe(
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateCompany', companyRequest.id.toString());
+    return this._http.put<IFleksbitReponse<boolean>>(url, companyRequest).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
   }
 
-  // delete control center
+  // delete company
   delete(id: number):
     Observable<any> {
     this.loader.show();
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteControlCenter', id.toString());
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteBank', id.toString());
     return this._http.delete<any>(url).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))

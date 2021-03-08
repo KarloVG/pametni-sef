@@ -4,21 +4,19 @@ import { UrlHelperService } from 'src/app/shared/services/url-helper.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { IControlCenterRequest } from '../models/request/control-center-request';
-import { IControlCenterResponse } from '../models/response/control-center-response';
 import { IFleksbitReponse } from 'src/app/shared/models/fleksbit-response';
-import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
 import { IPaginatedResponse } from 'src/app/shared/models/pagination/paginated-response';
+import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
+import { ILocationResponse } from '../models/response/location-response';
 
 @Injectable({
   providedIn: 'any',
 })
-export class ControlCenterService {
+export class LocationService {
 
   /* #region  Variables */
-  private readonly CONTROLLER_NAME = 'ControlCenter';
+  private readonly CONTROLLER_NAME = 'Location';
   loader: NgxSpinnerService;
-
   /* #endregion */
 
   /* #region  Constructor */
@@ -33,51 +31,48 @@ export class ControlCenterService {
 
   /* #region Methods */
   // get control centers
-  getControlCentersPaginated(controlCenterRequest): Observable<IPaginatedResponse<IControlCenterResponse[]>> {
-    const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllControllCenters');
+  getLocationsPaginated(controlCenterRequest): Observable<IPaginatedResponse<ILocationResponse[]>> {
+    const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllLocations');
     const request: IPaginationBase = {
       page: controlCenterRequest.page,
       pageSize: controlCenterRequest.pageSize,
       searchString: controlCenterRequest.searchString,
       filtering: controlCenterRequest.filtering
     }
-    return this._http.post<IFleksbitReponse<IPaginatedResponse<IControlCenterResponse[]>>>(url, request).pipe(
+    return this._http.post<IFleksbitReponse<IPaginatedResponse<ILocationResponse[]>>>(url, request).pipe(
       map(res => res.response),
-      tap(res => console.log("Get all control centers", res)),
+      tap(res => console.log("Get all companies", res)),
       catchError(error => this.handleError(error))
     );
   }
 
-  // add control center
-  addControlCenter(controlCenterRequest: IControlCenterRequest):
-    Observable<any> {
+  // add location
+  addLocation(locationRequest: ILocationResponse):
+    Observable<IFleksbitReponse<boolean>> {
     this.loader.show();
-    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList], sendTime: { hour: controlCenterRequest.sendTime?.hour ?? null, minute: controlCenterRequest.sendTime?.minute ?? null } }
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addControlCenter');
-    return this._http.post<any>(url, request).pipe(
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addLocation');
+    return this._http.post<IFleksbitReponse<boolean>>(url, locationRequest).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
   }
 
-  // edit control center
-  editControlCenter(controlCenterRequest: IControlCenterRequest):
-    Observable<any> {
-    console.log(controlCenterRequest)
+  // edit location
+  editLocation(locationRequest: ILocationResponse):
+    Observable<IFleksbitReponse<boolean>> {
     this.loader.show();
-    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList], sendTime: { hour: controlCenterRequest.sendTime?.hour ?? null, minute: controlCenterRequest.sendTime?.minute ?? null } }
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateControlCenter', controlCenterRequest.id.toString());
-    return this._http.put<any>(url, request).pipe(
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateLocation', locationRequest.id.toString());
+    return this._http.put<IFleksbitReponse<boolean>>(url, locationRequest).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
   }
 
-  // delete control center
+  // delete location
   delete(id: number):
     Observable<any> {
     this.loader.show();
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteControlCenter', id.toString());
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteBank', id.toString());
     return this._http.delete<any>(url).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))

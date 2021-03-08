@@ -7,8 +7,10 @@
           <i class="fa fa-plus"></i></button>
       </div>
       <div class="card-body custom-datatable">
-        <ngx-datatable class="material" [rows]="companies" [columnMode]="'force'" [headerHeight]="50"
-          [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [messages]="{
+        <ngx-datatable class="material" [rows]="(companies$ | async) || []" [columnMode]="'force'" [headerHeight]="50"
+          [loadingIndicator]="isLoadingMainTable | async" [footerHeight]="50" [rowHeight]="'auto'"
+          [offset]="currentPage" limit="{{pageSize}}" (page)="setPage($event)" (sort)="onSort($event)"
+          [externalSorting]="true" [externalPaging]="true" [count]="count" [messages]="{
             emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
             totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
           <ng-container *ngFor="let column of mainTableColumns; let i = index;">

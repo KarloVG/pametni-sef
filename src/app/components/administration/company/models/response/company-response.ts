@@ -5,5 +5,7 @@ export interface ICompanyResponse {
   headquarters: string;
   userCount: number;
   deviceCount: number;
-  identificator?: string;
+  identificationNumber?: string;
+  isAdmin: boolean;
+  jointOrderFilename: string;
 }
