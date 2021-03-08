@@ -28,7 +28,7 @@ export class ControlCenterOverviewComponent extends BasePaginationComponent impl
   altTableColumns: TableColumn[] = [];
   controlCenters$: Observable<IControlCenterResponse[]>;
   controlCenterSubject$: Subject<boolean> = new Subject();
-  isLoadingMainTable: boolean = true;
+  isLoadingMainTable: BehaviorSubject<boolean> = new BehaviorSubject(true);
   paginationRequest: IPaginationBase;
   pageSize: number = 10;
   count: number = 0;
@@ -88,7 +88,7 @@ export class ControlCenterOverviewComponent extends BasePaginationComponent impl
     };
 
     this.controlCenterSubject$.subscribe(res => {
-      this.isLoadingMainTable = true;
+      this.isLoadingMainTable.next(true);
       this.ref.markForCheck();
       this.fetchPage();
     });
@@ -123,7 +123,7 @@ export class ControlCenterOverviewComponent extends BasePaginationComponent impl
 
   fetchPage(): void {
     this.controlCenters$ = this._controlCenterService.getControlCentersPaginated(this.paginationRequest).pipe(
-      tap((data) => { this.isLoadingMainTable = false; this.count = data.count; }),
+      tap((data) => { this.isLoadingMainTable.next(false); this.count = data.count; }),
       map((response) => response.data),
       catchError(err => {
         this._notificationService.fireErrorNotification("Greška", err);

@@ -8,7 +8,7 @@
       </div>
       <div class="card-body custom-datatable">
         <ngx-datatable class="bootstrap" [rows]="(controlCenters$ | async) || []"
-          [loadingIndicator]="isLoadingMainTable" [columns]="mainTableColumns" [columnMode]="'force'"
+          [loadingIndicator]="isLoadingMainTable | async" [columns]="mainTableColumns" [columnMode]="'force'"
           [headerHeight]="'50'" [footerHeight]="50" [rowHeight]="'auto'" [offset]="currentPage" limit="{{pageSize}}"
           (page)="setPage($event)" (sort)="onSort($event)" [externalSorting]="true" [externalPaging]="true"
           [count]="count" [messages]="{

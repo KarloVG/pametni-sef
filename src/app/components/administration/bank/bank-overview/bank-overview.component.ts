@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { LanguageDeterminator } from 'src/app/shared/services/utils/language-determinator';
 import { BANK_CRO, BANK_ENG } from 'src/app/components/administration/bank/models/bank-columns';
 import { IBankResponse } from 'src/app/components/administration/bank/models/response/bank-response';
@@ -17,14 +17,18 @@ import { EMPTY } from 'rxjs';
 @Component({
   selector: 'app-bank-overview',
   templateUrl: './bank-overview.component.html',
-  styleUrls: ['./bank-overview.component.scss']
+  styleUrls: ['./bank-overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BankOverviewComponent implements OnInit {
 
+  /* #region  Variables */
   currentLang: string;
   mainTableColumns = [];
   banks: IBankResponse[] = [];
+  /* #endregion */
 
+  /* #region  Constructor */
   constructor(
     private _languageDeterminator: LanguageDeterminator,
     private _modal: NgbModal,
@@ -38,7 +42,9 @@ export class BankOverviewComponent implements OnInit {
       }
     )
   }
+  /* #endregion */
 
+  /* #region  Methods */
   ngOnInit(): void {
     setTimeout(() => {
       this.banks = [
@@ -152,5 +158,6 @@ export class BankOverviewComponent implements OnInit {
         this._notificationService.fireWarningMessage('Pažnja', 'Banka nije obrisana');
       });
   }
+  /* #endregion */
 
 }
