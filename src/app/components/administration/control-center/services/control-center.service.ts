@@ -7,6 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { IControlCenterRequest } from '../models/request/control-center-request';
 import { IControlCenterResponse } from '../models/response/control-center-response';
 import { IFleksbitReponse } from 'src/app/shared/models/fleksbit-response';
+import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
 
 @Injectable({
   providedIn: 'any',
@@ -16,11 +17,7 @@ export class ControlCenterService {
   /* #region  Variables */
   private readonly CONTROLLER_NAME = 'ControlCenter';
   loader: NgxSpinnerService;
-  controlCenters$ = this._http.get<IFleksbitReponse<IControlCenterResponse[]>>(this.getControlCentersURL()).pipe(
-    map(res => res.response),
-    tap(res => console.log("Get all control centers", res)),
-    catchError(error => this.handleError(error))
-  );
+
   /* #endregion */
 
   /* #region  Constructor */
@@ -35,8 +32,19 @@ export class ControlCenterService {
 
   /* #region Methods */
   // get control centers
-  getControlCentersURL(): string {
-    return this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllControllCenters');
+  getControlCentersPaginated(controlCenterRequest): Observable<any> {
+    const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllControllCenters');
+    const request: IPaginationBase = {
+      page: controlCenterRequest.page,
+      pageSize: controlCenterRequest.pageSize,
+      searchString: controlCenterRequest.searchString,
+      filtering: controlCenterRequest.filtering
+    }
+    return this._http.post<IFleksbitReponse<IControlCenterResponse[]>>(url, request).pipe(
+      map(res => res.response),
+      tap(res => console.log("Get all control centers", res)),
+      catchError(error => this.handleError(error))
+    );
   }
 
   // add control center

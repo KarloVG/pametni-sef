@@ -17,14 +17,16 @@ export abstract class BasePaginationComponent implements OnDestroy {
     fromEvent(nativeElement.nativeElement, 'keyup').pipe(
       map((event: Event) => (<HTMLInputElement>event.target).value),
       debounceTime(debounceTimeDuration),
-      distinctUntilChanged(),
-      switchMap(value => {
+      distinctUntilChanged()
+    ).subscribe(
+      data => {
         this.setPaginationOption(0);
         this.fetchPage();
-      })
+      }
+    )
   }
 
-  abstract fetchPage(): Observable<any>;
+  abstract fetchPage(): void;
 
   abstract setPaginationOption(page: number, pageSize?: number);
 

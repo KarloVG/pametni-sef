@@ -1,6 +1,12 @@
-export interface IBasePagination<TEntry> {
-  readonly count: number;
-  readonly previous: string;
-  readonly next: string;
-  readonly results: TEntry[];
+export interface IPaginationBase {
+  page: number;
+  pageSize: number;
+  orderBy?: IOrderBy;
+  filtering?: any;
+  searchString?: string;
+}
+
+interface IOrderBy {
+  prop: string;
+  dir: string;
 }
