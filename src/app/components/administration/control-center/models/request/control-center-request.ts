@@ -3,5 +3,8 @@ export interface IControlCenterRequest {
   name: string;
   emailList: string[] | string;
   sendDailyReport: boolean;
-  sendTime: string;
+  sendTime: {
+    hour: number | null;
+    minute: number | null;
+  };
 }

@@ -11,7 +11,8 @@
           [columns]="mainTableColumns" [columnMode]="'force'" [headerHeight]="'50'" [footerHeight]="50"
           [rowHeight]="'auto'" [limit]="10" [messages]="{
             emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
-            totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}" (activate)="onClickMainTableRow($event)">
+            totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
+          <!-- (activate)="onClickMainTableRow($event)" -->
           <ng-container *ngFor="let column of mainTableColumns; let i = index;">
             <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [maxWidth]="column.maxWidth"
               [minWidth]="column.minWidth">

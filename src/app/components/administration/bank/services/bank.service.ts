@@ -4,21 +4,20 @@ import { UrlHelperService } from 'src/app/shared/services/url-helper.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { IControlCenterRequest } from '../models/request/control-center-request';
-import { IControlCenterResponse } from '../models/response/control-center-response';
 import { IFleksbitReponse } from 'src/app/shared/models/fleksbit-response';
+import { IBankRequest } from '../models/request/bank-request';
 
 @Injectable({
   providedIn: 'any',
 })
-export class ControlCenterService {
+export class BankService {
 
   /* #region  Variables */
-  private readonly CONTROLLER_NAME = 'ControlCenter';
+  private readonly CONTROLLER_NAME = 'Bank';
   loader: NgxSpinnerService;
-  controlCenters$ = this._http.get<IFleksbitReponse<IControlCenterResponse[]>>(this.getControlCentersURL()).pipe(
+  banks$ = this._http.get<IFleksbitReponse<any>>(this.getBanksURL()).pipe(
     map(res => res.response),
-    tap(res => console.log("Get all control centers", res)),
+    tap(res => console.log("Get all banks", res)),
     catchError(error => this.handleError(error))
   );
   /* #endregion */
@@ -35,30 +34,34 @@ export class ControlCenterService {
 
   /* #region Methods */
   // get control centers
-  getControlCentersURL(): string {
-    return this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllControllCenters');
+  getBanksURL(): string {
+    return this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllBanks');
   }
 
-  // add control center
-  addControlCenter(controlCenterRequest: IControlCenterRequest):
+  // add bank
+  addBank(bankRequest: IBankRequest):
     Observable<any> {
     this.loader.show();
-    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList], sendTime: { hour: controlCenterRequest.sendTime?.hour ?? null, minute: controlCenterRequest.sendTime?.minute ?? null } }
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addControlCenter');
+    const request: IBankRequest = {
+      name: bankRequest.name
+    }
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addBank');
     return this._http.post<any>(url, request).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
   }
 
-  // edit control center
-  editControlCenter(controlCenterRequest: IControlCenterRequest):
+  // edit bank
+  editBank(bankRequest: IBankRequest):
     Observable<any> {
-    console.log(controlCenterRequest)
     this.loader.show();
-    const request = { ...controlCenterRequest, emailList: [controlCenterRequest.emailList], sendTime: { hour: controlCenterRequest.sendTime?.hour ?? null, minute: controlCenterRequest.sendTime?.minute ?? null } }
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateControlCenter', controlCenterRequest.id.toString());
-    return this._http.put<any>(url, request).pipe(
+    const request: IBankRequest = {
+      id: bankRequest.id,
+      name: bankRequest.name
+    }
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateBank', bankRequest.id.toString());
+    return this._http.post<any>(url, request).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
@@ -68,7 +71,7 @@ export class ControlCenterService {
   delete(id: number):
     Observable<any> {
     this.loader.show();
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteControlCenter', id.toString());
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteBank', id.toString());
     return this._http.delete<any>(url).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))

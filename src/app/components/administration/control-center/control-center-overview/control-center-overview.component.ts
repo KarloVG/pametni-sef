@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
@@ -16,7 +16,8 @@ import { ControlCenterService } from '../services/control-center.service';
   selector: 'app-control-center-overview',
   templateUrl: './control-center-overview.component.html',
   styleUrls: ['./control-center-overview.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ControlCenterService]
 })
 export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
 
@@ -27,30 +28,30 @@ export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
   controlCenters$: Observable<IControlCenterResponse[]>;
   controlCenterSubject$: Subject<boolean> = new Subject();
   isLoadingMainTable: boolean = false;
-  devices: any[] = [
-    {
-      id: 1,
-      transactionId: 32131,
-      name: 'Uređaj 123',
-      locationName: 'Marjan',
-      companyName: 'Lidl d.o.o',
-      status: 'Aktivan',
-      type: 'Uređaj za depozit - MEI',
-      controlCenter: 'Rijeka zapad - Rijeka'
-    },
-    {
-      id: 2,
-      transactionId: 567576,
-      name: 'Uređaj 654',
-      locationName: 'Zaseok',
-      companyName: 'Špar d.o.o',
-      status: 'Aktivan',
-      type: 'Uređaj za depozit - MEI',
-      controlCenter: 'Rijeka zapad - Rijeka'
-    }
-  ];
-  private mainTableClickedSubject = new BehaviorSubject<boolean>(false);
-  mainTableClickedAction$ = this.mainTableClickedSubject.asObservable();
+  // devices: any[] = [
+  //   {
+  //     id: 1,
+  //     transactionId: 32131,
+  //     name: 'Uređaj 123',
+  //     locationName: 'Marjan',
+  //     companyName: 'Lidl d.o.o',
+  //     status: 'Aktivan',
+  //     type: 'Uređaj za depozit - MEI',
+  //     controlCenter: 'Rijeka zapad - Rijeka'
+  //   },
+  //   {
+  //     id: 2,
+  //     transactionId: 567576,
+  //     name: 'Uređaj 654',
+  //     locationName: 'Zaseok',
+  //     companyName: 'Špar d.o.o',
+  //     status: 'Aktivan',
+  //     type: 'Uređaj za depozit - MEI',
+  //     controlCenter: 'Rijeka zapad - Rijeka'
+  //   }
+  // ];
+  // private mainTableClickedSubject = new BehaviorSubject<boolean>(false);
+  // mainTableClickedAction$ = this.mainTableClickedSubject.asObservable();
   /* #endregion */
 
   /* #region Constructor */
@@ -58,7 +59,8 @@ export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
     private _languageDeterminator: LanguageDeterminator,
     private _modalService: NgbModal,
     private _controlCenterService: ControlCenterService,
-    private readonly _notificationService: NotificationService
+    private readonly _notificationService: NotificationService,
+    private ref: ChangeDetectorRef
   ) {
     this._languageDeterminator.currentActiveLanguage$.subscribe(
       data => {
@@ -74,6 +76,7 @@ export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.controlCenterSubject$.subscribe(res => {
       this.isLoadingMainTable = true;
+      this.ref.markForCheck();
       this.controlCenters$ = this._controlCenterService.controlCenters$.pipe(
         tap(() => this.isLoadingMainTable = false),
         catchError(err => {
@@ -88,11 +91,11 @@ export class ControlCenterOverviewComponent implements OnInit, AfterViewInit {
     this.controlCenterSubject$.next(true);
   }
 
-  onClickMainTableRow(event): void {
-    if (event.type === 'click') {
-      this.mainTableClickedSubject.next(true);
-    }
-  }
+  // onClickMainTableRow(event): void {
+  //   if (event.type === 'click') {
+  //     this.mainTableClickedSubject.next(true);
+  //   }
+  // }
 
   addOrEditControlCenter(row?: IControlCenterResponse): void {
     const modalRef = this._modalService.open(ModalAoeControlCenterComponent, {

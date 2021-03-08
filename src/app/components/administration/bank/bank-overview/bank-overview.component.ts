@@ -8,6 +8,11 @@ import { ConfirmationModalComponent } from 'src/app/shared/components/confirmati
 import { ModalCumulativeOrderComponent } from '../modal-cumulative-order/modal-cumulative-order.component';
 import { ModalAoeWebServiceComponent } from '../modal-aoe-web-service/modal-aoe-web-service.component';
 import { ModalAoeRegionComponent } from '../modal-aoe-region/modal-aoe-region.component';
+import { ModalAoeBankComponent } from '../modal-aoe-bank/modal-aoe-bank.component';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { BankService } from '../services/bank.service';
+import { catchError, take } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-bank-overview',
@@ -22,7 +27,9 @@ export class BankOverviewComponent implements OnInit {
 
   constructor(
     private _languageDeterminator: LanguageDeterminator,
-    private _modal: NgbModal
+    private _modal: NgbModal,
+    private _notificationService: NotificationService,
+    private _bankService: BankService
   ) {
     this._languageDeterminator.currentActiveLanguage$.subscribe(
       data => {
@@ -50,7 +57,16 @@ export class BankOverviewComponent implements OnInit {
   }
 
   addOrEditBank(row?: IBankResponse): void {
-
+    const modalRef = this._modal.open(ModalAoeBankComponent, {
+      backdrop: 'static',
+      keyboard: false
+    })
+    modalRef.componentInstance.row = row ?? null;
+    modalRef.result.then(res => {
+      this._notificationService.fireSuccessMessage('Uspjeh', row ? 'Banka je uređena' : 'Banka je dodana');
+    }).catch(reason => {
+      this._notificationService.fireWarningMessage('Pažnja', row ? 'Banka nije uređena' : 'Banka nije dodana');
+    });
   }
 
   addOrEditWebService(row: IBankResponse): void {
@@ -120,10 +136,21 @@ export class BankOverviewComponent implements OnInit {
     modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati banku pod nazivom ${row.name} sa popisa?`;
     modalRef.componentInstance.isDelete = true;
     modalRef.result.then(res => {
-
-    }).catch(reason => {
-
-    });
+      this._bankService.delete(row.id)
+        .pipe(
+          take(1),
+          catchError(err => {
+            this._notificationService.fireErrorNotification('Greška', err);
+            return EMPTY;
+          })
+        )
+        .subscribe((data) => {
+          this._notificationService.fireSuccessMessage('Uspjeh', 'Banka je obrisana.');
+        });
+    })
+      .catch((reason) => {
+        this._notificationService.fireWarningMessage('Pažnja', 'Banka nije obrisana');
+      });
   }
 
 }
