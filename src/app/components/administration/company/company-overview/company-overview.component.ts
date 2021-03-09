@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/co
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, take, tap } from 'rxjs/operators';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
 import { BasePaginationComponent } from 'src/app/shared/components/pagination/base-pagination.component';
 import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
@@ -126,6 +126,23 @@ export class CompanyOverviewComponent extends BasePaginationComponent implements
     modalRef.componentInstance.title = 'Brisanje tvrtke';
     modalRef.componentInstance.description = `Jeste li sigurni da želite obrisati tvrtku pod nazivom ${row.name} sa popisa?`;
     modalRef.componentInstance.isDelete = true;
+    modalRef.result.then((result) => {
+      this._companyService
+        .delete(row.id)
+        .pipe(
+          take(1),
+          catchError(err => {
+            this._notificationService.fireErrorNotification('Greška', err);
+            return EMPTY;
+          })
+        )
+        .subscribe((data) => {
+          this._notificationService.fireSuccessMessage('Uspjeh', 'Tvrtka je obrisana.');
+          this.companySubject$.next(true);
+        });
+    }).catch((reason) => {
+      this._notificationService.fireWarningMessage('Pažnja', 'Tvrtka nije obrisana.');
+    });
   }
 
 }

@@ -47,7 +47,7 @@ export class ModalAoeControlCenterComponent implements OnInit, AfterViewInit {
         name: ['', Validators.required],
         emailList: ['', Validators.required],
         sendDailyReport: [false],
-        sendTime: [null]
+        sendTime: null
       })
     }
 
@@ -55,6 +55,12 @@ export class ModalAoeControlCenterComponent implements OnInit, AfterViewInit {
       if (checked) {
         this.isSendTimeValidatorActive = true;
         this.sendTime.setValidators([Validators.required]);
+        this.controlCenterGroup.patchValue({
+          sendTime: {
+            hour: 6,
+            minute: 0
+          }
+        })
       } else {
         this.isSendTimeValidatorActive = false;
         this.sendTime.setValidators(null);

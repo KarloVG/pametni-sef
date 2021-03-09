@@ -111,21 +111,12 @@ export class LocationOverviewComponent extends BasePaginationComponent implement
       keyboard: false
     });
     modalRef.componentInstance.row = row ?? null;
-    // modalRef.result.then((result) => {
-    //   if (result == true) {
-    //     this._accountService
-    //       .delete(account.id)
-    //       .pipe(
-    //         take(1)
-    //       )
-    //       .subscribe((data) => {
-    //         this.handleSuccesResponse('Račun je obrisan');
-    //       });
-    //   }
-    // })
-    // .catch((reason) => {
-    //   this.handleModalDismiss('Račun nije obrisan');
-    // });
+    modalRef.result.then((result) => {
+      this._notificationService.fireSuccessMessage('Uspjeh', row ? "Lokacija je uređena" : "Lokacija je dodana.");
+      this.locationSubject$.next(true);
+    }).catch((reason) => {
+      this._notificationService.fireWarningMessage('Pažnja', row ? "Lokacija nije uređena." : "Lokacija nije dodana.");
+    });
   }
 
   deleteLocation(row: ILocationResponse): void {

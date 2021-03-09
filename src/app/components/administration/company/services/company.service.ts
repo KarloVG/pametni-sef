@@ -74,7 +74,7 @@ export class CompanyService {
   delete(id: number):
     Observable<any> {
     this.loader.show();
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteBank', id.toString());
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteCompany', id.toString());
     return this._http.delete<any>(url).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))

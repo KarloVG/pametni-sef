@@ -103,7 +103,8 @@ export class ControlCenterOverviewComponent extends BasePaginationComponent impl
     this.fetchPage();
   }
 
-  onSort(event) {
+  onSort(event): void {
+    console.log(event)
     this.paginationRequest = {
       page: this.currentPage + 1,
       pageSize: this.pageSize,
@@ -179,6 +180,16 @@ export class ControlCenterOverviewComponent extends BasePaginationComponent impl
       .catch((reason) => {
         this._notificationService.fireWarningMessage('Pažnja', 'Kontrolni centar nije obrisan');
       });
+  }
+
+  parseTime(sendTime: string) {
+    if (sendTime) {
+      const hour = sendTime.split(':')[0].length === 1 ? `0${sendTime.split(':')[0]}` : sendTime.split(':')[0];
+      const minute = sendTime.split(':')[1].length === 1 ? `0${sendTime.split(':')[1]}` : sendTime.split(':')[1];
+      return hour + ':' + minute;
+    } else {
+      return 'Error'
+    }
   }
   /* #endregion */
 }

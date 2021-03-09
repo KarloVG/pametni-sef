@@ -163,5 +163,6 @@
   "Bank name": "Bank name",
   "Bank name is required": "Bank name is required",
   "Administrator company (sees every device)": "Administrator company (sees every device)",
-  "The daily file name of the summary cash order": "The daily file name of the summary cash order"
+  "The daily file name of the summary cash order": "The daily file name of the summary cash order",
+  "Not defined": "Not defined"
 }
