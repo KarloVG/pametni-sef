@@ -36,13 +36,13 @@
     </div>
     <div class="col-lg-6">
       <div class="form-group">
-        <label class="col-form-label pt-0 required">{{ 'Company headquaters' | translate }} <span
+        <label class="col-form-label pt-0 required">{{ 'Company headquarters' | translate }} <span
             class="text-danger">*</span></label>
-        <input class="form-control" formControlName="headquaters" type="text" placeholder="Zorkovačka 2"
-          [ngClass]="{'is-invalid': headquaters.invalid && (headquaters.dirty || headquaters.touched || ngCompanyForm.submitted)}">
+        <input class="form-control" formControlName="headquarters" type="text" placeholder="Zorkovačka 2"
+          [ngClass]="{'is-invalid': headquarters.invalid && (headquarters.dirty || headquarters.touched || ngCompanyForm.submitted)}">
         <div class="invalid-feedback"
-          *ngIf="headquaters.invalid && headquaters.errors?.required && (headquaters.dirty || headquaters.touched || ngCompanyForm.submitted)">
-          {{ 'Company headquaters is required' | translate}}
+          *ngIf="headquarters.invalid && headquarters.errors?.required && (headquarters.dirty || headquarters.touched || ngCompanyForm.submitted)">
+          {{ 'Company headquarters is required' | translate}}
         </div>
       </div>
     </div>

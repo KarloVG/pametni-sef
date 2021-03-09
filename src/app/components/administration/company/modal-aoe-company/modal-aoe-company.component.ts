@@ -34,7 +34,7 @@ export class ModalAoeCompanyComponent implements OnInit {
         id: this.row.id,
         name: [this.row.name, Validators.required],
         address: [this.row.address, Validators.required],
-        headquaters: [this.row.headquarters, Validators.required],
+        headquarters: [this.row.headquarters, Validators.required],
         identificationNumber: this.row.identificationNumber,
         isAdmin: this.row.isAdmin,
         jointOrderFilename: this.row.jointOrderFilename
@@ -43,7 +43,7 @@ export class ModalAoeCompanyComponent implements OnInit {
       this.companyGroup = this._formBuilder.group({
         name: ['', Validators.required],
         address: ['', Validators.required],
-        headquaters: ['', Validators.required],
+        headquarters: ['', Validators.required],
         identificationNumber: '',
         isAdmin: false,
         jointOrderFilename: ''
@@ -90,6 +90,6 @@ export class ModalAoeCompanyComponent implements OnInit {
 
   get name(): AbstractControl | null { return this.companyGroup.get('name'); }
   get address(): AbstractControl | null { return this.companyGroup.get('address'); }
-  get headquaters(): AbstractControl | null { return this.companyGroup.get('headquaters'); }
+  get headquarters(): AbstractControl | null { return this.companyGroup.get('headquarters'); }
   get identificationNumber(): AbstractControl | null { return this.companyGroup.get('identificationNumber'); }
 }
