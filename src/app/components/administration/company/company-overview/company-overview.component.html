@@ -7,15 +7,15 @@
           <i class="fa fa-plus"></i></button>
       </div>
       <div class="card-body custom-datatable">
-        <ngx-datatable class="material" [rows]="(companies$ | async) || []" [columnMode]="'force'" [headerHeight]="50"
+        <ngx-datatable class="bootstrap" [rows]="(companies$ | async) || []" [columnMode]="'force'" [headerHeight]="50"
           [loadingIndicator]="isLoadingMainTable | async" [footerHeight]="50" [rowHeight]="'auto'"
           [offset]="currentPage" limit="{{pageSize}}" (page)="setPage($event)" (sort)="onSort($event)"
           [externalSorting]="true" [externalPaging]="true" [count]="count" [messages]="{
             emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
             totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
           <ng-container *ngFor="let column of mainTableColumns; let i = index;">
-            <ngx-datatable-column *ngIf='column.prop === "actions"' name="{{column.name}}" [maxWidth]="column.maxWidth"
-              [minWidth]="column.minWidth">
+            <ngx-datatable-column *ngIf='column.prop === "actions"' [sortable]="column.sortable" name="{{column.name}}"
+              [maxWidth]="column.maxWidth" [minWidth]="column.minWidth">
               <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                 <span class="d-flex justify-content-between">
                   <button class='btn btn-outline-warning ngx-button' title='Uredi' (click)="addOrEditCompany(row)">
@@ -27,8 +27,8 @@
                 </span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column *ngIf='column.prop !== "actions"' name="{{column.name}}" prop="{{column.prop}}"
-              [maxWidth]="column.maxWidth" [minWidth]="column.minWidth">
+            <ngx-datatable-column *ngIf='column.prop !== "actions"' [sortable]="column.sortable" name="{{column.name}}"
+              prop="{{column.prop}}" [maxWidth]="column.maxWidth" [minWidth]="column.minWidth">
             </ngx-datatable-column>
           </ng-container>
         </ngx-datatable>

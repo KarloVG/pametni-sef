@@ -165,6 +165,10 @@ export class BankOverviewComponent implements OnInit, AfterViewInit {
         this._notificationService.fireWarningMessage('Pažnja', 'Banka nije obrisana');
       });
   }
+
+  sortI18nComparator = (valA: string, valB: string): number => {
+    return valA.localeCompare(valB);
+  }
   /* #endregion */
 
 }

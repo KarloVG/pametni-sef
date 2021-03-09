@@ -110,7 +110,7 @@ export class ControlCenterOverviewComponent extends BasePaginationComponent impl
       pageSize: this.pageSize,
       orderBy: event.sorts[0],
     };
-    this.fetchPage()
+    this.fetchPage();
   }
 
   setPaginationOption(page: number, pageSize?: number): void {

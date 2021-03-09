@@ -411,6 +411,33 @@ table{
 }
 
 .ngx-datatable {
+
+  .sortable .sort-btn:before {
+    font-size: 1.2rem;
+    color: $primary-color;
+    font-family: $font-awesome;
+    content: "\f0dc";
+    margin-left: .3rem;
+    margin-left: .3rem;
+    margin-top: -0.6rem;
+  }
+  .sortable .sort-btn.datatable-icon-down:before {
+    font-size: 1.5rem;
+    color: $primary-color;
+    content: "\f0dd";
+    font-family: $font-awesome;
+    margin-left: .3rem;
+    margin-top: -0.6rem;
+  }
+  .sortable .sort-btn.datatable-icon-up:before {
+    font-size: 1.5rem;
+    color: $primary-color;
+    content: "\f0de";
+    font-family: $font-awesome;
+    margin-left: .3rem;
+    margin-left: .3rem;
+    margin-top: -0.6rem;
+  }
   .datatable-body {
     .progress-linear {
       display: block;

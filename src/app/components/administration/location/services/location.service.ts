@@ -37,7 +37,8 @@ export class LocationService {
       page: controlCenterRequest.page,
       pageSize: controlCenterRequest.pageSize,
       searchString: controlCenterRequest.searchString,
-      filtering: controlCenterRequest.filtering
+      filtering: controlCenterRequest.filtering,
+      orderBy: controlCenterRequest.orderBy
     }
     return this._http.post<IFleksbitReponse<IPaginatedResponse<ILocationResponse[]>>>(url, request).pipe(
       map(res => res.response),
