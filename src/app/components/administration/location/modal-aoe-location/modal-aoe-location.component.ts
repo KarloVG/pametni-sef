@@ -3,7 +3,9 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EMPTY } from 'rxjs';
 import { catchError, take } from 'rxjs/operators';
+import { IDropdown } from 'src/app/shared/models/dropdown';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { CompanyService } from '../../company/services/company.service';
 import { ILocationResponse } from '../models/response/location-response';
 import { LocationService } from '../services/location.service';
 
@@ -16,31 +18,49 @@ export class ModalAoeLocationComponent implements OnInit {
 
   @Input() row: ILocationResponse;
   locationGroup: FormGroup;
+  companies: IDropdown[] = [];
 
   constructor(
-    private _modalService: NgbActiveModal,
+    public _modalService: NgbActiveModal,
     private _formBuilder: FormBuilder,
     private _locationService: LocationService,
-    private _notificationService: NotificationService
+    private _notificationService: NotificationService,
+    private _companyService: CompanyService
   ) { }
 
   ngOnInit(): void {
     this.setUpFormGroup();
+    this._companyService.getCompaniesDropdown().pipe(
+      take(1),
+      catchError(err => {
+        this._notificationService.fireErrorNotification("Greška", err);
+        return EMPTY;
+      })
+    ).subscribe(
+      data => {
+        this.companies = data;
+        if (this.row) {
+          this.locationGroup.patchValue({
+            companyId: this.row.companyId
+          })
+        }
+      }
+    )
   }
 
   setUpFormGroup(): void {
     if (this.row) {
       this.locationGroup = this._formBuilder.group({
         id: this.row.id,
-        description: [this.row.description, Validators.required],
+        name: [this.row.name, Validators.required],
         address: [this.row.address, Validators.required],
-        companyName: [this.row.companyName, Validators.required]
+        companyId: [null, Validators.required]
       })
     } else {
       this.locationGroup = this._formBuilder.group({
-        description: ['', Validators.required],
+        name: ['', Validators.required],
         address: ['', Validators.required],
-        companyName: ['', Validators.required]
+        companyId: ['', Validators.required]
       })
     }
   }
@@ -76,14 +96,13 @@ export class ModalAoeLocationComponent implements OnInit {
     } else {
       this._modalService.dismiss('cancel');
     }
-
   }
 
   modalClose(reason): void {
     this._modalService.close(reason);
   }
 
-  get description(): AbstractControl | null { return this.locationGroup.get('description'); }
+  get name(): AbstractControl | null { return this.locationGroup.get('name'); }
   get address(): AbstractControl | null { return this.locationGroup.get('address'); }
-  get companyName(): AbstractControl | null { return this.locationGroup.get('companyName') }
+  get companyId(): AbstractControl | null { return this.locationGroup.get('companyId') }
 }

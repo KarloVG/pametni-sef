@@ -2,18 +2,11 @@ import { TableColumn } from "@swimlane/ngx-datatable";
 
 export const BANK_CRO: TableColumn[] = [
   {
-    name: '#',
-    prop: 'id',
-    draggable: false,
-    resizeable: false,
-    minWidth: 25,
-    maxWidth: 50
-  },
-  {
     name: 'Naziv banke',
     prop: 'name',
     draggable: false,
     resizeable: false,
+    sortable: true,
     minWidth: 300,
     maxWidth: 600
   },
@@ -22,6 +15,7 @@ export const BANK_CRO: TableColumn[] = [
     prop: 'bankActions',
     draggable: false,
     resizeable: false,
+    sortable: false,
     minWidth: 600,
     maxWidth: 1200
   },
@@ -30,6 +24,7 @@ export const BANK_CRO: TableColumn[] = [
     prop: 'actions',
     draggable: false,
     resizeable: false,
+    sortable: false,
     minWidth: 100,
     maxWidth: 150
   },
@@ -37,18 +32,11 @@ export const BANK_CRO: TableColumn[] = [
 
 export const BANK_ENG: TableColumn[] = [
   {
-    name: '#',
-    prop: 'id',
-    draggable: false,
-    resizeable: false,
-    minWidth: 25,
-    maxWidth: 50
-  },
-  {
     name: 'Bank name',
     prop: 'name',
     draggable: false,
     resizeable: false,
+    sortable: true,
     minWidth: 300,
     maxWidth: 600
   },
@@ -57,6 +45,7 @@ export const BANK_ENG: TableColumn[] = [
     prop: 'bankActions',
     draggable: false,
     resizeable: false,
+    sortable: false,
     minWidth: 600,
     maxWidth: 1200
   },
@@ -65,6 +54,7 @@ export const BANK_ENG: TableColumn[] = [
     prop: 'actions',
     draggable: false,
     resizeable: false,
+    sortable: false,
     minWidth: 100,
     maxWidth: 150
   },

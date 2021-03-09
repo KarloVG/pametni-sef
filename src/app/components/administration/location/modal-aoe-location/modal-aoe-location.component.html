@@ -3,7 +3,7 @@
   <ng-template #addLocation>
     <h4 class="modal-title">{{ 'Add location' | translate }}</h4>
   </ng-template>
-  <button type="button" class="close" aria-label="Close" (click)="modalClose('dismiss')">
+  <button type="button" class="close" aria-label="Close" (click)="_modalService.dismiss('dismiss')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -12,13 +12,12 @@
   <div class="modal-body input-group p-0">
     <div class="col-lg-6">
       <div class="form-group">
-        <label class="col-form-label pt-0 required">{{ 'Description' | translate }} <span
-            class="text-danger">*</span></label>
-        <input class="form-control" formControlName="description" type="text" placeholder="SPAR ISTOK"
-          [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched || ngLocationForm.submitted)}">
+        <label class="col-form-label pt-0 required">{{ 'Name' | translate }} <span class="text-danger">*</span></label>
+        <input class="form-control" formControlName="name" type="text" placeholder="SPAR ISTOK"
+          [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched || ngLocationForm.submitted)}">
         <div class="invalid-feedback"
-          *ngIf="description.invalid && description.errors?.required && (description.dirty || description.touched || ngLocationForm.submitted)">
-          {{ 'Description is required' | translate}}
+          *ngIf="name.invalid && name.errors?.required && (name.dirty || name.touched || ngLocationForm.submitted)">
+          {{ 'Name is required' | translate}}
         </div>
       </div>
     </div>
@@ -36,19 +35,24 @@
     </div>
     <div class="col-lg-6">
       <div class="form-group">
-        <label class="col-form-label pt-0 required">{{ 'Company name' | translate }} <span
-            class="text-danger">*</span></label>
-        <input class="form-control" formControlName="companyName" type="text" placeholder="Konzum"
-          [ngClass]="{'is-invalid': companyName.invalid && (companyName.dirty || companyName.touched || ngLocationForm.submitted)}">
-        <div class="invalid-feedback"
-          *ngIf="companyName.invalid && companyName.errors?.required && (companyName.dirty || companyName.touched || ngLocationForm.submitted)">
-          {{ 'Company name is required' | translate}}
+        <label class="col-form-label required">
+          {{'Company' | translate}}
+          <span class="text-danger"> *</span>
+        </label>
+        <select class="form-control digits" formControlName="companyId" required="required"
+          [ngClass]="{'is-invalid': companyId.invalid && (companyId.dirty || companyId.touched || ngLocationForm.submitted)}">
+          <option value="" disabled selected>{{'Choose' | translate}}</option>
+          <option *ngFor="let company of companies" [value]="company.id">{{company.name}}</option>
+        </select>
+        <div class="invalid-feedback">
+          {{ 'Company is required' | translate }}
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer d-flex justify-content-between">
-    <button type="button" class="btn btn-light" ngbAutoFocus (click)="modalClose('dismiss')">{{ 'Close' | translate
+    <button type="button" class="btn btn-light" ngbAutoFocus (click)="_modalService.dismiss('dismiss')">{{ 'Close' |
+      translate
       }}</button>
     <button type="submit" class="btn btn-primary">{{ 'Submit' | translate }}</button>
   </div>

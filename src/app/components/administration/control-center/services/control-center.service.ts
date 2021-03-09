@@ -34,12 +34,14 @@ export class ControlCenterService {
   /* #region Methods */
   // get control centers
   getControlCentersPaginated(controlCenterRequest): Observable<IPaginatedResponse<IControlCenterResponse[]>> {
+    console.log(controlCenterRequest)
     const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllControllCenters');
     const request: IPaginationBase = {
       page: controlCenterRequest.page,
       pageSize: controlCenterRequest.pageSize,
       searchString: controlCenterRequest.searchString,
-      filtering: controlCenterRequest.filtering
+      filtering: controlCenterRequest.filtering,
+      orderBy: controlCenterRequest.orderBy
     }
     return this._http.post<IFleksbitReponse<IPaginatedResponse<IControlCenterResponse[]>>>(url, request).pipe(
       map(res => res.response),

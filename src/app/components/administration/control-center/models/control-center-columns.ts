@@ -24,7 +24,7 @@ export const CONTROL_CENTERS_CRO: TableColumn[] = [
     prop: 'sendDailyReport',
     draggable: false,
     resizeable: false,
-    sortable: true,
+    sortable: false,
     minWidth: 200,
     maxWidth: 300
   },
@@ -45,6 +45,7 @@ export const CONTROL_CENTERS_ENG: TableColumn[] = [
     prop: 'name',
     draggable: false,
     resizeable: false,
+    sortable: true,
     minWidth: 200,
     maxWidth: 300
   },
@@ -53,6 +54,7 @@ export const CONTROL_CENTERS_ENG: TableColumn[] = [
     prop: 'emailList',
     draggable: false,
     resizeable: false,
+    sortable: false,
     minWidth: 500,
     maxWidth: 1000
   },
@@ -61,6 +63,7 @@ export const CONTROL_CENTERS_ENG: TableColumn[] = [
     prop: 'sendDailyReport',
     draggable: false,
     resizeable: false,
+    sortable: false,
     minWidth: 200,
     maxWidth: 300
   },
@@ -69,6 +72,7 @@ export const CONTROL_CENTERS_ENG: TableColumn[] = [
     prop: 'actions',
     draggable: false,
     resizeable: false,
+    sortable: false,
     minWidth: 50,
     maxWidth: 100
   }

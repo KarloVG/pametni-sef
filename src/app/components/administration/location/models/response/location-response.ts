@@ -1,6 +1,6 @@
 export interface ILocationResponse {
-    id: number,
-    companyName: string,
-    description: string,
-    address: string
+  id: number,
+  companyId: string,
+  name: string,
+  address: string
 }

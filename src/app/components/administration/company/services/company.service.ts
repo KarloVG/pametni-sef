@@ -9,6 +9,7 @@ import { ICompanyResponse } from '../models/response/company-response';
 import { IPaginatedResponse } from 'src/app/shared/models/pagination/paginated-response';
 import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
 import { ICompanyRequest } from '../models/request/company-request';
+import { IDropdown } from 'src/app/shared/models/dropdown';
 
 @Injectable({
   providedIn: 'any',
@@ -38,9 +39,20 @@ export class CompanyService {
       page: controlCenterRequest.page,
       pageSize: controlCenterRequest.pageSize,
       searchString: controlCenterRequest.searchString,
-      filtering: controlCenterRequest.filtering
+      filtering: controlCenterRequest.filtering,
+      orderBy: controlCenterRequest.orderBy
     }
     return this._http.post<IFleksbitReponse<IPaginatedResponse<ICompanyResponse[]>>>(url, request).pipe(
+      map(res => res.response),
+      tap(res => console.log("Get all companies", res)),
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  // get control centers
+  getCompaniesDropdown(): Observable<IDropdown[]> {
+    const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getDropdownCompany');
+    return this._http.get<IFleksbitReponse<IDropdown[]>>(url).pipe(
       map(res => res.response),
       tap(res => console.log("Get all companies", res)),
       catchError(error => this.handleError(error))
