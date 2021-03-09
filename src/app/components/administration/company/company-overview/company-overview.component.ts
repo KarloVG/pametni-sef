@@ -111,10 +111,10 @@ export class CompanyOverviewComponent extends BasePaginationComponent implements
     });
     modalRef.componentInstance.row = row ?? null;
     modalRef.result.then((result) => {
-      this._notificationService.fireSuccessMessage('Uspjeh', row ? "Kontrolni centar je uređen" : "Kontrolni centar je dodan.");
+      this._notificationService.fireSuccessMessage('Uspjeh', row ? "Tvrtka je uređena" : "Tvrtka je dodana.");
       this.companySubject$.next(true);
     }).catch((reason) => {
-      this._notificationService.fireWarningMessage('Pažnja', row ? "Kontrolni centar nije uređen" : "Kontrolni centar nije dodan.");
+      this._notificationService.fireWarningMessage('Pažnja', row ? "Tvrtka nije uređena" : "Tvrtka nije dodana.");
     });
   }
 
