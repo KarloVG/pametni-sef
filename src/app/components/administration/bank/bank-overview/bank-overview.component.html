@@ -7,8 +7,9 @@
             class="fa fa-plus"></i></button>
       </div>
       <div class="card-body custom-datatable">
-        <ngx-datatable class="bootstrap" [rows]="banks" [columns]="mainTableColumns" [columnMode]="'force'"
-          [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [messages]="{
+        <ngx-datatable class="bootstrap" [rows]="(banks$ | async) || []" [columns]="mainTableColumns"
+          [loadingIndicator]="isLoadingMainTable | async" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+          [rowHeight]="'auto'" [limit]="10" [messages]="{
             emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
             totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}">
           <ng-container *ngFor="let column of mainTableColumns; let i = index;">

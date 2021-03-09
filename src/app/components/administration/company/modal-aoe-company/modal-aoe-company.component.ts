@@ -1,7 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { EMPTY } from 'rxjs';
+import { catchError, take } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ICompanyResponse } from '../models/response/company-response';
+import { CompanyService } from '../services/company.service';
 
 @Component({
   selector: 'app-modal-aoe-company',
@@ -14,8 +18,10 @@ export class ModalAoeCompanyComponent implements OnInit {
   companyGroup: FormGroup;
 
   constructor(
-    private _modalService: NgbActiveModal,
-    private _formBuilder: FormBuilder
+    public _modalService: NgbActiveModal,
+    private _formBuilder: FormBuilder,
+    private _companyService: CompanyService,
+    private _notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -25,18 +31,56 @@ export class ModalAoeCompanyComponent implements OnInit {
   setUpFormGroup(): void {
     if (this.row) {
       this.companyGroup = this._formBuilder.group({
+        id: this.row.id,
         name: [this.row.name, Validators.required],
         address: [this.row.address, Validators.required],
-        headquater: [this.row.headquarters, Validators.required],
-        identificator: [this.row.identificator]
+        headquaters: [this.row.headquarters, Validators.required],
+        identificationNumber: this.row.identificationNumber,
+        isAdmin: this.row.isAdmin,
+        jointOrderFilename: this.row.jointOrderFilename
       })
     } else {
       this.companyGroup = this._formBuilder.group({
         name: ['', Validators.required],
         address: ['', Validators.required],
-        headquater: ['', Validators.required],
-        identificator: ['']
+        headquaters: ['', Validators.required],
+        identificationNumber: '',
+        isAdmin: false,
+        jointOrderFilename: ''
       })
+    }
+  }
+
+  onSubmit(): void {
+    if (this.companyGroup.invalid) return;
+    if (this.companyGroup.dirty) {
+      if (this.row) {
+        this._companyService.editCompany(this.companyGroup.value).pipe(
+          take(1),
+          catchError(err => {
+            this._notificationService.fireErrorNotification("Greška", err);
+            return EMPTY;
+          })
+        ).subscribe(
+          data => {
+            this.modalClose(true);
+          }
+        )
+      } else {
+        this._companyService.addCompany(this.companyGroup.value).pipe(
+          take(1),
+          catchError(err => {
+            this._notificationService.fireErrorNotification("Greška", err);
+            return EMPTY;
+          })
+        ).subscribe(
+          data => {
+            this.modalClose(true);
+          }
+        )
+      }
+    } else {
+      this._modalService.dismiss('cancel');
     }
   }
 
@@ -46,6 +90,6 @@ export class ModalAoeCompanyComponent implements OnInit {
 
   get name(): AbstractControl | null { return this.companyGroup.get('name'); }
   get address(): AbstractControl | null { return this.companyGroup.get('address'); }
-  get headquater(): AbstractControl | null { return this.companyGroup.get('headquater'); }
-  get identificator(): AbstractControl | null { return this.companyGroup.get('identificator'); }
+  get headquaters(): AbstractControl | null { return this.companyGroup.get('headquaters'); }
+  get identificationNumber(): AbstractControl | null { return this.companyGroup.get('identificationNumber'); }
 }

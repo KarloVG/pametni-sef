@@ -3,11 +3,12 @@
   <ng-template #addCompany>
     <h4 class="modal-title">{{ 'Add company' | translate }}</h4>
   </ng-template>
-  <button type="button" class="close" aria-label="Close" (click)="modalClose('dismiss')">
+  <button type="button" class="close" aria-label="Close" (click)="_modalService.dismiss('dismiss')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<form class="needs-validation" [formGroup]="companyGroup" #ngCompanyForm="ngForm" autocomplete="off">
+<form class="needs-validation" [formGroup]="companyGroup" #ngCompanyForm="ngForm" autocomplete="off"
+  (ngSubmit)="onSubmit()">
   <div class="modal-body input-group p-0">
     <div class="col-lg-6">
       <div class="form-group">
@@ -37,10 +38,10 @@
       <div class="form-group">
         <label class="col-form-label pt-0 required">{{ 'Company headquaters' | translate }} <span
             class="text-danger">*</span></label>
-        <input class="form-control" formControlName="headquater" type="text" placeholder="Zorkovačka 2"
-          [ngClass]="{'is-invalid': headquater.invalid && (headquater.dirty || headquater.touched || ngCompanyForm.submitted)}">
+        <input class="form-control" formControlName="headquaters" type="text" placeholder="Zorkovačka 2"
+          [ngClass]="{'is-invalid': headquaters.invalid && (headquaters.dirty || headquaters.touched || ngCompanyForm.submitted)}">
         <div class="invalid-feedback"
-          *ngIf="headquater.invalid && headquater.errors?.required && (headquater.dirty || headquater.touched || ngCompanyForm.submitted)">
+          *ngIf="headquaters.invalid && headquaters.errors?.required && (headquaters.dirty || headquaters.touched || ngCompanyForm.submitted)">
           {{ 'Company headquaters is required' | translate}}
         </div>
       </div>
@@ -51,14 +52,30 @@
           {{'Company identificator' | translate}}
           <span class="text-danger"> *</span>
         </label>
-        <input class="form-control" type="text" formControlName="identificator" placeholder="321-d23-12asd-321"
-          [ngClass]="{'is-invalid': identificator.invalid && (identificator.dirty || identificator.touched || ngCompanyForm.submitted)}">
+        <input class="form-control" type="text" formControlName="identificationNumber" placeholder="321-d23-12asd-321"
+          [ngClass]="{'is-invalid': identificationNumber.invalid && (identificationNumber.dirty || identificationNumber.touched || ngCompanyForm.submitted)}">
+      </div>
+    </div>
+    <div class="col-lg-12 d-flex align-items-center mb-3">
+      <div class="form-group mb-0">
+        <label class="d-block mb-0" for="send_mail">
+          <input class="checkbox_animated" id="send_mail" type="checkbox" formControlName="isAdmin">
+          {{ 'Administrator company (sees every device)' | translate }}
+        </label>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="form-group">
+        <label class="col-form-label pt-0 required">
+          {{ 'The daily file name of the summary cash order' | translate }}</label>
+        <input class="form-control" formControlName="jointOrderFilename" type="text"
+          placeholder="Naziv dnevne datoteke">
       </div>
     </div>
   </div>
   <div class="modal-footer d-flex justify-content-between">
-    <button type="button" class="btn btn-light" ngbAutoFocus (click)="modalClose('dismiss')">{{ 'Close' | translate
-      }}</button>
-    <button type="submit" class="btn btn-primary" (click)="modalClose('dismiss')">{{ 'Submit' | translate }}</button>
+    <button type="button" class="btn btn-light" ngbAutoFocus (click)="_modalService.dismiss('dismiss')">
+      {{ 'Close' | translate }}</button>
+    <button type="submit" class="btn btn-primary">{{ 'Submit' | translate }}</button>
   </div>
 </form>

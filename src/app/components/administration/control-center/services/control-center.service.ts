@@ -8,6 +8,7 @@ import { IControlCenterRequest } from '../models/request/control-center-request'
 import { IControlCenterResponse } from '../models/response/control-center-response';
 import { IFleksbitReponse } from 'src/app/shared/models/fleksbit-response';
 import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
+import { IPaginatedResponse } from 'src/app/shared/models/pagination/paginated-response';
 
 @Injectable({
   providedIn: 'any',
@@ -32,7 +33,7 @@ export class ControlCenterService {
 
   /* #region Methods */
   // get control centers
-  getControlCentersPaginated(controlCenterRequest): Observable<any> {
+  getControlCentersPaginated(controlCenterRequest): Observable<IPaginatedResponse<IControlCenterResponse[]>> {
     const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllControllCenters');
     const request: IPaginationBase = {
       page: controlCenterRequest.page,
@@ -40,7 +41,7 @@ export class ControlCenterService {
       searchString: controlCenterRequest.searchString,
       filtering: controlCenterRequest.filtering
     }
-    return this._http.post<IFleksbitReponse<IControlCenterResponse[]>>(url, request).pipe(
+    return this._http.post<IFleksbitReponse<IPaginatedResponse<IControlCenterResponse[]>>>(url, request).pipe(
       map(res => res.response),
       tap(res => console.log("Get all control centers", res)),
       catchError(error => this.handleError(error))
@@ -72,7 +73,7 @@ export class ControlCenterService {
     );
   }
 
-  // edit control center
+  // delete control center
   delete(id: number):
     Observable<any> {
     this.loader.show();

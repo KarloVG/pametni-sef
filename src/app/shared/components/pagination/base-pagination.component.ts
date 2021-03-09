@@ -3,13 +3,10 @@ import { fromEvent, Observable } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 
-export abstract class BasePaginationComponent implements OnDestroy {
+export abstract class BasePaginationComponent {
 
   currentPage = 0;
   isLoading = true;
-
-  ngOnDestroy(): void {
-  }
 
   constructor() { }
 

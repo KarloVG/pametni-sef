@@ -5,22 +5,18 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { IFleksbitReponse } from 'src/app/shared/models/fleksbit-response';
-import { IBankRequest } from '../models/request/bank-request';
-import { IBankResponse } from '../models/response/bank-response';
+import { IPaginatedResponse } from 'src/app/shared/models/pagination/paginated-response';
+import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
+import { ILocationResponse } from '../models/response/location-response';
 
 @Injectable({
   providedIn: 'any',
 })
-export class BankService {
+export class LocationService {
 
   /* #region  Variables */
-  private readonly CONTROLLER_NAME = 'Bank';
+  private readonly CONTROLLER_NAME = 'Location';
   loader: NgxSpinnerService;
-  banks$ = this._http.get<IFleksbitReponse<IBankResponse[]>>(this.getBanksURL()).pipe(
-    tap(res => console.log("Get all banks", res)),
-    map(res => res.response),
-    catchError(error => this.handleError(error))
-  );
   /* #endregion */
 
   /* #region  Constructor */
@@ -35,45 +31,48 @@ export class BankService {
 
   /* #region Methods */
   // get control centers
-  getBanksURL(): string {
-    return this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllBank');
+  getLocationsPaginated(controlCenterRequest): Observable<IPaginatedResponse<ILocationResponse[]>> {
+    const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllLocations');
+    const request: IPaginationBase = {
+      page: controlCenterRequest.page,
+      pageSize: controlCenterRequest.pageSize,
+      searchString: controlCenterRequest.searchString,
+      filtering: controlCenterRequest.filtering
+    }
+    return this._http.post<IFleksbitReponse<IPaginatedResponse<ILocationResponse[]>>>(url, request).pipe(
+      map(res => res.response),
+      tap(res => console.log("Get all companies", res)),
+      catchError(error => this.handleError(error))
+    );
   }
 
-  // add bank
-  addBank(bankRequest: IBankRequest):
+  // add location
+  addLocation(locationRequest: ILocationResponse):
     Observable<IFleksbitReponse<boolean>> {
     this.loader.show();
-    const request: IBankRequest = {
-      name: bankRequest.name
-    }
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addBank');
-    return this._http.post<IFleksbitReponse<boolean>>(url, request).pipe(
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addLocation');
+    return this._http.post<IFleksbitReponse<boolean>>(url, locationRequest).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
   }
 
-  // edit bank
-  editBank(bankRequest: IBankRequest):
+  // edit location
+  editLocation(locationRequest: ILocationResponse):
     Observable<IFleksbitReponse<boolean>> {
     this.loader.show();
-    const request: IBankRequest = {
-      id: bankRequest.id,
-      name: bankRequest.name
-    }
-    console.log(request)
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateBank', bankRequest.id.toString());
-    return this._http.put<IFleksbitReponse<boolean>>(url, request).pipe(
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateLocation', locationRequest.id.toString());
+    return this._http.put<IFleksbitReponse<boolean>>(url, locationRequest).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
   }
 
-  // edit control center
+  // delete location
   delete(id: number):
     Observable<any> {
     this.loader.show();
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteBank', id.toString());
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteLocation', id.toString());
     return this._http.delete<any>(url).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))

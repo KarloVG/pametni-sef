@@ -8,7 +8,7 @@
       </div>
       <div class="card-body custom-datatable">
         <ngx-datatable class="bootstrap" [rows]="(controlCenters$ | async) || []"
-          [loadingIndicator]="isLoadingMainTable" [columns]="mainTableColumns" [columnMode]="'force'"
+          [loadingIndicator]="isLoadingMainTable | async" [columns]="mainTableColumns" [columnMode]="'force'"
           [headerHeight]="'50'" [footerHeight]="50" [rowHeight]="'auto'" [offset]="currentPage" limit="{{pageSize}}"
           (page)="setPage($event)" (sort)="onSort($event)" [externalSorting]="true" [externalPaging]="true"
           [count]="count" [messages]="{
@@ -30,26 +30,25 @@
                 </span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column *ngIf='column.prop !== "actions"' name="{{column.name}}" prop="{{column.prop}}"
+            <ngx-datatable-column *ngIf='column.prop == "sendDailyReport"' name="{{column.name}}" prop="{{column.prop}}"
               [maxWidth]="column.maxWidth" [minWidth]="column.minWidth">
+              <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                <span *ngIf="value; else dailyReportFalse">
+                  {{ parseTime(row.sendTime) }}
+                </span>
+                <ng-template #dailyReportFalse>
+                  <span>
+                    {{'Not defined' | translate}}
+                  </span>
+                </ng-template>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column *ngIf='column.prop !== "actions" && column.prop !== "sendDailyReport"'
+              name="{{column.name}}" prop="{{column.prop}}" [maxWidth]="column.maxWidth" [minWidth]="column.minWidth">
             </ngx-datatable-column>
           </ng-container>
         </ngx-datatable>
       </div>
     </div>
   </div>
-  <!-- <div class="col-sm-12" *ngIf="mainTableClickedAction$ | async">
-    <div class="card">
-      <div class="card-header b-b-primary">
-        <h5>{{ 'Preview devices' | translate }}</h5>
-      </div>
-      <div class="card-body custom-datatable">
-        <ngx-datatable class="bootstrap" [rows]="devices" [columns]="altTableColumns" [columnMode]="'force'"
-          [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true" [messages]="{
-            emptyMessage: currentLang == 'hr' ? 'Nema rezultata' : 'No entries',
-            totalMessage: currentLang == 'hr' ? 'ukupno' : 'total'}" (activate)="onClickMainTableRow($event)">
-        </ngx-datatable>
-      </div>
-    </div>
-  </div> -->
 </div>

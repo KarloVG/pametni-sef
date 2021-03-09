@@ -18,7 +18,7 @@ export class ModalAoeBankComponent implements OnInit {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _modal: NgbActiveModal,
+    public _modal: NgbActiveModal,
     private _bankService: BankService,
     private _notificationService: NotificationService
   ) { }
@@ -30,6 +30,7 @@ export class ModalAoeBankComponent implements OnInit {
   setUpFormGroup() {
     if (this.row) {
       this.bankGroup = this._formBuilder.group({
+        id: this.row.id,
         name: [this.row.name, Validators.required]
       });
     } else {

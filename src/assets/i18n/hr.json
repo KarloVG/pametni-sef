@@ -163,5 +163,8 @@
   "Edit bank": "Uređivanje banke",
   "Add bank": "Dodavanje banke",
   "Bank name": "Naziv banke",
-  "Bank name is required": "Polje naziv banke je obavezno"
+  "Bank name is required": "Polje naziv banke je obavezno",
+  "Administrator company (sees every device)": "Administratorska tvrtka (vidi sve uređaje)",
+  "The daily file name of the summary cash order": "Naziv dnevne datoteke zbrojnog naloga za pouzeće",
+  "Not defined": "Nije zadano"
 }

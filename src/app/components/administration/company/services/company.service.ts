@@ -5,22 +5,19 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { IFleksbitReponse } from 'src/app/shared/models/fleksbit-response';
-import { IBankRequest } from '../models/request/bank-request';
-import { IBankResponse } from '../models/response/bank-response';
+import { ICompanyResponse } from '../models/response/company-response';
+import { IPaginatedResponse } from 'src/app/shared/models/pagination/paginated-response';
+import { IPaginationBase } from 'src/app/shared/models/pagination/base-pagination';
+import { ICompanyRequest } from '../models/request/company-request';
 
 @Injectable({
   providedIn: 'any',
 })
-export class BankService {
+export class CompanyService {
 
   /* #region  Variables */
-  private readonly CONTROLLER_NAME = 'Bank';
+  private readonly CONTROLLER_NAME = 'Company';
   loader: NgxSpinnerService;
-  banks$ = this._http.get<IFleksbitReponse<IBankResponse[]>>(this.getBanksURL()).pipe(
-    tap(res => console.log("Get all banks", res)),
-    map(res => res.response),
-    catchError(error => this.handleError(error))
-  );
   /* #endregion */
 
   /* #region  Constructor */
@@ -35,45 +32,49 @@ export class BankService {
 
   /* #region Methods */
   // get control centers
-  getBanksURL(): string {
-    return this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllBank');
+  getCompaniesPaginated(controlCenterRequest): Observable<IPaginatedResponse<ICompanyResponse[]>> {
+    const url: string = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'getAllCompanies');
+    const request: IPaginationBase = {
+      page: controlCenterRequest.page,
+      pageSize: controlCenterRequest.pageSize,
+      searchString: controlCenterRequest.searchString,
+      filtering: controlCenterRequest.filtering
+    }
+    return this._http.post<IFleksbitReponse<IPaginatedResponse<ICompanyResponse[]>>>(url, request).pipe(
+      map(res => res.response),
+      tap(res => console.log("Get all companies", res)),
+      catchError(error => this.handleError(error))
+    );
   }
 
-  // add bank
-  addBank(bankRequest: IBankRequest):
+  // add company
+  addCompany(companyRequest: ICompanyRequest):
     Observable<IFleksbitReponse<boolean>> {
     this.loader.show();
-    const request: IBankRequest = {
-      name: bankRequest.name
-    }
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addBank');
-    return this._http.post<IFleksbitReponse<boolean>>(url, request).pipe(
+    console.log(companyRequest)
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'addCompany');
+    return this._http.post<IFleksbitReponse<boolean>>(url, companyRequest).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
   }
 
-  // edit bank
-  editBank(bankRequest: IBankRequest):
+  // edit company
+  editCompany(companyRequest: ICompanyRequest):
     Observable<IFleksbitReponse<boolean>> {
     this.loader.show();
-    const request: IBankRequest = {
-      id: bankRequest.id,
-      name: bankRequest.name
-    }
-    console.log(request)
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateBank', bankRequest.id.toString());
-    return this._http.put<IFleksbitReponse<boolean>>(url, request).pipe(
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'updateCompany', companyRequest.id.toString());
+    return this._http.put<IFleksbitReponse<boolean>>(url, companyRequest).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
     );
   }
 
-  // edit control center
+  // delete company
   delete(id: number):
     Observable<any> {
     this.loader.show();
-    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteBank', id.toString());
+    const url = this._urlHelper.getUrl(this.CONTROLLER_NAME, 'deleteCompany', id.toString());
     return this._http.delete<any>(url).pipe(
       tap(() => this.loader.hide()),
       catchError(error => this.handleError(error, this.loader))
